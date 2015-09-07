@@ -5,7 +5,7 @@ import java.util.*;
 public class Administratie {
 
     //************************datavelden*************************************
-    private int nextGezinsNr;
+    private int nextGezinsNr = 1;
     private int nextPersNr;
     private final List<Persoon> personen;
     private final List<Gezin> gezinnen;
@@ -18,8 +18,9 @@ public class Administratie {
      */
     public Administratie() {
         //todo opgave 1
-        this.personen = null;
-        this.gezinnen = null;
+        // Initialiseert de persoon en gezinnen lijst.
+        this.personen = new ArrayList<>();
+        this.gezinnen = new ArrayList<>();
     }
 
     //**********************methoden****************************************
@@ -47,7 +48,7 @@ public class Administratie {
     public Persoon addPersoon(Geslacht geslacht, String[] vnamen, String anaam,
             String tvoegsel, Calendar gebdat,
             String gebplaats, Gezin ouderlijkGezin) {
-
+        
         if (vnamen.length == 0) {
             throw new IllegalArgumentException("ten minste 1 voornaam");
         }
@@ -66,7 +67,22 @@ public class Administratie {
         }
 
         //todo opgave 1
-        return null;
+        for (String vnaam : vnamen)
+        {
+            vnaam = vnaam.toLowerCase();
+            vnaam = vnaam.substring(0,1).toUpperCase();
+        }
+        
+        anaam = anaam.substring(0,1).toUpperCase() + anaam.substring(1,anaam.length()).toLowerCase();
+        
+        gebplaats = gebplaats.substring(0,1).toUpperCase() + gebplaats.substring(1, gebplaats.length()).toLowerCase();
+        
+        tvoegsel = tvoegsel.toLowerCase();
+       
+        Persoon p = new Persoon(++nextPersNr, vnamen, anaam, tvoegsel,
+                                    gebdat, gebplaats, geslacht, ouderlijkGezin);
+        this.personen.add(p);       
+        return p;
     }
 
     /**
@@ -102,8 +118,7 @@ public class Administratie {
             return null;
         }
 
-        Gezin gezin = new Gezin(nextGezinsNr, ouder1, ouder2);
-        nextGezinsNr++;
+        Gezin gezin = new Gezin(nextGezinsNr++, ouder1, ouder2);
         gezinnen.add(gezin);
 
         ouder1.wordtOuderIn(gezin);
@@ -180,7 +195,20 @@ public class Administratie {
      */
     public Gezin addHuwelijk(Persoon ouder1, Persoon ouder2, Calendar huwdatum) {
         //todo opgave 1
-        return null;
+        if (ouder1 == ouder2)
+        {
+            return null;
+        }
+        
+        if (ouder1.isGetrouwdOp(huwdatum) || ouder2.isGetrouwdOp(huwdatum))
+        {
+            return null;
+        }
+        
+        Gezin g = new Gezin(nextGezinsNr++, ouder1, ouder2);
+        g.setHuwelijk(huwdatum);
+        this.gezinnen.add(g);
+        return g;
     }
 
     /**
@@ -208,6 +236,13 @@ public class Administratie {
     public Persoon getPersoon(int nr) {
         //todo opgave 1
         //aanname: er worden geen personen verwijderd
+        for (Persoon persoon : personen)
+        {
+            if (persoon.getNr() == nr)
+            {
+                return persoon;
+            }
+        }
         return null;
     }
 
@@ -218,7 +253,16 @@ public class Administratie {
      */
     public ArrayList<Persoon> getPersonenMetAchternaam(String achternaam) {
         //todo opgave 1
-        return null;
+        ArrayList<Persoon> tijdelijkeLijst = new ArrayList<>();
+        
+        for (Persoon persoon : personen)
+        {
+            if (persoon.getAchternaam().equalsIgnoreCase(achternaam))
+            {
+                tijdelijkeLijst.add(persoon);
+            }
+        }
+        return tijdelijkeLijst;
     }
 
     /**
@@ -227,7 +271,7 @@ public class Administratie {
      */
     public List<Persoon> getPersonen() {
         // todo opgave 1
-        return null;
+        return Collections.unmodifiableList(personen);
     }
 
     /**
@@ -244,6 +288,27 @@ public class Administratie {
     public Persoon getPersoon(String[] vnamen, String anaam, String tvoegsel,
             Calendar gebdat, String gebplaats) {
         //todo opgave 1
+        StringBuilder sb = new StringBuilder();
+        
+        for (String vnaam : vnamen)
+        {
+            sb.append(vnaam.substring(0,1).toUpperCase()).append(".");
+        }
+        
+        gebplaats = gebplaats.toLowerCase();
+        
+        for (Persoon p : personen)
+        {
+           if (p.getInitialen().equals(sb.toString()) 
+                   && p.getTussenvoegsel().equals(tvoegsel)
+                   && p.getAchternaam().equals(anaam) 
+                   && (p.getGebPlaats().equalsIgnoreCase(gebplaats) || p.getGebPlaats() == null)
+                   && (p.getGebDat().equals(gebdat) || p.getGebDat() == null)
+                   )
+           {
+               return p;
+           }
+        }        
         return null;
     }
 

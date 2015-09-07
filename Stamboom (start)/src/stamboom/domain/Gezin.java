@@ -1,5 +1,6 @@
 package stamboom.domain;
 
+import java.time.LocalDate;
 import java.util.*;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -170,6 +171,12 @@ public class Gezin {
      */
     boolean setHuwelijk(Calendar datum) {
         //todo opgave 1
+        Calendar today = Calendar.getInstance();
+        
+        int age = today.get(Calendar.YEAR) - this.ouder1.getGebDat().get(Calendar.YEAR);
+        if ((today.get(Calendar.DAY_OF_YEAR) < this.ouder1.getGebDat().get(Calendar.DAY_OF_YEAR)) )
+        age--;
+        
         return false;
     }
 

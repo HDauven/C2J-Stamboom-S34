@@ -34,7 +34,39 @@ public class Persoon {
     Persoon(int persNr, String[] vnamen, String anaam, String tvoegsel,
             Calendar gebdat, String gebplaats, Geslacht g, Gezin ouderlijkGezin) {
         //todo opgave 1
-        throw new UnsupportedOperationException();
+        //throw new UnsupportedOperationException();
+        // For loop die alle namen in de array vnamen omzet naar kleine letters,
+        // en dan de eerste letter van de naam omzet naar een hoofdletter.
+        for (String vnaam : vnamen)
+        {
+            vnaam = vnaam.toLowerCase();
+            vnaam = vnaam.substring(0,1).toUpperCase();
+        }
+        
+        // Zet alle letters van de achternaam om naar kleine letters, en zet erna
+        // de eerste letter om naar een hoofdletter.
+        anaam = anaam.toLowerCase();
+        anaam = anaam.substring(0,1).toUpperCase();
+        
+        // Zet het tussenvoegsel om naar kleine letters.
+        tvoegsel = tvoegsel.toLowerCase();
+        
+        // Initialiseert het tvoegsel naar "".
+        if (tvoegsel == null)
+            tvoegsel = "";
+        
+        // Wijst de opgegeven en verwerkte waarde toe aan de bij behorende
+        // variabelen.
+        this.nr = persNr;
+        this.voornamen = vnamen;
+        this.achternaam = anaam;
+        this.tussenvoegsel = tvoegsel;
+        this.gebDat = gebdat;
+        this.gebPlaats = gebplaats;
+        this.geslacht = g;
+        this.ouderlijkGezin = ouderlijkGezin;
+        
+        this.alsOuderBetrokkenIn = new ArrayList<>();
     }
 
     // ********methoden****************************************
@@ -75,7 +107,17 @@ public class Persoon {
      */
     public String getInitialen() {
         //todo opgave 1
-        return null;
+        // initialiseert een StringBuilder class.
+        StringBuilder initialen = new StringBuilder();
+        // Gaat door de array met voornamen.
+        for (String vnaam : this.voornamen)
+        {
+            // Pakt de eerste letter van de voornaam en voegt een punt eraan toe
+            // en voegt deze vervolgens toe aan de StringBuilder class.
+            initialen.append(vnaam.substring(0,1)).append(".");
+        }
+        // Zet de opgebouwde string in stringBuilder om naar een string.
+        return initialen.toString();
     }
 
     /**
@@ -86,7 +128,11 @@ public class Persoon {
      */
     public String getNaam() {
         //todo opgave 1
-        return null;
+        // Controleert of het tussenvoegsel leeg is of niet.
+        if (this.tussenvoegsel.equals("") || this.tussenvoegsel.equals(" "))
+            return this.getInitialen() + " " + this.achternaam;
+        else 
+            return this.getInitialen() + " " + this.tussenvoegsel + " " + this.achternaam;
     }
 
     /**
@@ -152,6 +198,12 @@ public class Persoon {
      */
     boolean setOuders(Gezin ouderlijkGezin) {
         //todo opgave 1
+        if (this.ouderlijkGezin != null)
+        {
+            this.ouderlijkGezin = ouderlijkGezin;
+            ouderlijkGezin.breidUitMet(this);
+            return true;
+        }
         return false;
     }
 
@@ -204,6 +256,18 @@ public class Persoon {
      */
     public Gezin heeftOngehuwdGezinMet(Persoon andereOuder) {
         //todo opgave 1
+        for (Gezin g : this.alsOuderBetrokkenIn)
+        {
+            if (g.getOuder1() == andereOuder || g.getOuder2() == andereOuder)
+            {
+                return g;
+            }
+            
+            if (g.getOuder1() == this || g.getOuder2() == this)
+            {
+                return g;
+            }
+        }
         return null;
     }
 
