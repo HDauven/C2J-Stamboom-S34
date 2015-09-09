@@ -46,7 +46,7 @@ public class Persoon {
         // Zet alle letters van de achternaam om naar kleine letters, en zet erna
         // de eerste letter om naar een hoofdletter.
         anaam = anaam.toLowerCase();
-        anaam = anaam.substring(0,1).toUpperCase();
+        anaam = anaam.substring(0,1).toUpperCase() + anaam.substring(1,anaam.length());
         
         // Zet het tussenvoegsel om naar kleine letters.
         tvoegsel = tvoegsel.toLowerCase();
