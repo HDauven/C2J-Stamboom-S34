@@ -77,6 +77,7 @@ public class Administratie {
                 throw new IllegalArgumentException("lege voornaam is niet toegestaan");
             } else {
                 // Format de voornamen
+                vnamen[i] = vnamen[i].trim();
                 vnamen[i] = vnamen[i].substring(0,1).toUpperCase() + vnamen[i].substring(1).toLowerCase();
             }
         }
@@ -85,6 +86,7 @@ public class Administratie {
             throw new IllegalArgumentException("lege achternaam is niet toegestaan");
         } else {
             // format de achternaam
+            anaam = anaam.trim();
             anaam = anaam.substring(0,1).toUpperCase() + anaam.substring(1).toLowerCase();
         }
 
@@ -92,6 +94,7 @@ public class Administratie {
             throw new IllegalArgumentException("lege geboorteplaats is niet toegestaan");
         } else  {
             // format de geboorteplaats
+            gebplaats = gebplaats.trim();
             gebplaats = gebplaats.substring(0,1).toUpperCase() + gebplaats.substring(1).toLowerCase();
         }       
        
