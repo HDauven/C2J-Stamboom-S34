@@ -1,20 +1,26 @@
 package stamboom.console;
 
+import java.io.IOException;
 import stamboom.domain.*;
 import java.util.*;
 import stamboom.util.StringUtilities;
 import stamboom.controller.StamboomController;
+import stamboom.storage.SerializationMediator;
 
 public class StamboomConsole {
 
     // **********datavelden**********************************************
     private final Scanner input;
     private final StamboomController controller;
+    private final SerializationMediator mediator;
 
     // **********constructoren*******************************************
     public StamboomConsole(StamboomController controller) {
         input = new Scanner(System.in);
         this.controller = controller;
+        // Maakt een serialization mediator aan om de administratie
+        // op te slaan en in te laden
+        this.mediator = new SerializationMediator();
         this.startMenu();
     }
 
@@ -40,6 +46,16 @@ public class StamboomConsole {
                     break;
                 case SHOW_GEZIN:
                     toonGezinsgegevens();
+                    break;
+                // Toegevoegde menu items
+                case SHOW_STAMBOOM:
+                    toonStamboomgegevens();
+                    break;
+                case SAVE_STAMBOOM:
+                    slaStamboomOp();
+                    break;
+                case OPEN_STAMBOOM:
+                    openStamboom();
                     break;
             }
             choice = kiesMenuItem();
@@ -138,6 +154,29 @@ public class StamboomConsole {
             }
         } else {
             System.out.println("gezin onbekend");
+        }
+    }
+    
+    // toont de gemaakte stamboom
+    void toonStamboomgegevens() {
+        
+    }
+    
+    // Slaat de stamboom op
+    void slaStamboomOp() {
+        try {
+            mediator.save(getAdmin());
+        } catch (IOException e) {
+            System.out.println("opslaan van administratie mislukt!");
+        }
+    }
+    
+    // Opent een stamboom
+    void openStamboom() {
+        try {
+            mediator.load();
+        } catch (IOException e) {
+            System.out.println("Openen van administratie mislukt!");
         }
     }
 
