@@ -5,7 +5,7 @@ import java.util.*;
 public class Administratie {
 
     //************************datavelden*************************************
-    private int nextGezinsNr = 1;
+    private int nextGezinsNr;
     private int nextPersNr;
     private final List<Persoon> personen;
     private final List<Gezin> gezinnen;
@@ -18,6 +18,9 @@ public class Administratie {
      */
     public Administratie() {
         //todo opgave 1
+        // zet beide integer variabelen op de waarde 1
+        nextGezinsNr = 1;
+        nextPersNr = 1;
         // Initialiseert de persoon en gezinnen lijst.
         this.personen = new ArrayList<>();
         this.gezinnen = new ArrayList<>();
@@ -48,41 +51,71 @@ public class Administratie {
     public Persoon addPersoon(Geslacht geslacht, String[] vnamen, String anaam,
             String tvoegsel, Calendar gebdat,
             String gebplaats, Gezin ouderlijkGezin) {
-        
+        //todo opgave 1
         if (vnamen.length == 0) {
             throw new IllegalArgumentException("ten minste 1 voornaam");
         }
-        for (String voornaam : vnamen) {
-            if (voornaam.trim().isEmpty()) {
+        
+        if (geslacht == null) {
+            throw new IllegalArgumentException("voer geslacht in");
+        }
+
+        if (gebdat == null) {
+            throw new IllegalArgumentException("geboortedatum mag niet leeg zijn");
+        }        
+        
+        //for (String voornaam : vnamen) {
+        //    if (voornaam.trim().isEmpty()) {
+        //        throw new IllegalArgumentException("lege voornaam is niet toegestaan");
+        //    } else {
+        //        // Format de voornamen
+        //        voornaam = voornaam.substring(0,1).toUpperCase() + voornaam.substring(1).toLowerCase();
+        //    }
+        //}
+        for (int i = 0; i < vnamen.length; i++) {
+            if (vnamen[i].trim().isEmpty()) {
                 throw new IllegalArgumentException("lege voornaam is niet toegestaan");
+            } else {
+                // Format de voornamen
+                vnamen[i] = vnamen[i].substring(0,1).toUpperCase() + vnamen[i].substring(1).toLowerCase();
             }
         }
 
         if (anaam.trim().isEmpty()) {
             throw new IllegalArgumentException("lege achternaam is niet toegestaan");
+        } else {
+            // format de achternaam
+            anaam = anaam.substring(0,1).toUpperCase() + anaam.substring(1).toLowerCase();
         }
 
         if (gebplaats.trim().isEmpty()) {
             throw new IllegalArgumentException("lege geboorteplaats is niet toegestaan");
-        }
-
-        //todo opgave 1
-        for (String vnaam : vnamen)
-        {
-            vnaam = vnaam.toLowerCase();
-            vnaam = vnaam.substring(0,1).toUpperCase();
-        }
-        
-        anaam = anaam.substring(0,1).toUpperCase() + anaam.substring(1,anaam.length()).toLowerCase();
-        
-        gebplaats = gebplaats.substring(0,1).toUpperCase() + gebplaats.substring(1, gebplaats.length()).toLowerCase();
-        
-        tvoegsel = tvoegsel.toLowerCase();
+        } else  {
+            // format de geboorteplaats
+            gebplaats = gebplaats.substring(0,1).toUpperCase() + gebplaats.substring(1).toLowerCase();
+        }       
        
-        Persoon p = new Persoon(++nextPersNr, vnamen, anaam, tvoegsel,
+        Persoon persoon = new Persoon(nextPersNr, vnamen, anaam, tvoegsel.toLowerCase(),
                                     gebdat, gebplaats, geslacht, ouderlijkGezin);
-        this.personen.add(p);       
-        return p;
+        
+        for (Persoon p : this.personen) {
+            if (p.getNaam().equals(persoon.getNaam())
+                    && p.getGebDat().get(Calendar.DATE) == persoon.getGebDat().get(Calendar.DATE)
+                    && p.getGebDat().get(Calendar.MONTH) == persoon.getGebDat().get(Calendar.MONTH)
+                    && p.getGebDat().get(Calendar.YEAR) == persoon.getGebDat().get(Calendar.YEAR)
+                    && p.getGebPlaats().equals(persoon.getGebPlaats())) {
+                return null;
+            }
+        }        
+        
+        
+        this.personen.add(persoon); 
+        nextPersNr++;
+        
+        if (ouderlijkGezin != null)
+            ouderlijkGezin.breidUitMet(persoon);
+        
+        return persoon;
     }
 
     /**
@@ -195,20 +228,61 @@ public class Administratie {
      */
     public Gezin addHuwelijk(Persoon ouder1, Persoon ouder2, Calendar huwdatum) {
         //todo opgave 1
-        if (ouder1 == ouder2)
-        {
+        //Calendar now = Calendar.getInstance();       
+        Gezin nieuwGezin = null;
+        
+        // Controleert of de ouders gelijk aan elkaar zijn en of ze 18+ zijn op
+        // de datum dat het huwelijk wordt voltrokken
+        if (ouder1 == ouder2 
+                //|| (now.get(Calendar.YEAR) - ouder1.getGebDat().get(Calendar.YEAR) < 18)
+                //|| (now.get(Calendar.YEAR) - ouder2.getGebDat().get(Calendar.YEAR) < 18)
+                || (huwdatum.get(Calendar.YEAR) - ouder1.getGebDat().get(Calendar.YEAR) < 18)
+                || (huwdatum.get(Calendar.YEAR) - ouder2.getGebDat().get(Calendar.YEAR) < 18)) {
             return null;
         }
         
-        if (ouder1.isGetrouwdOp(huwdatum) || ouder2.isGetrouwdOp(huwdatum))
-        {
-            return null;
+        // Gaat de lijst met gezinnen af en controleert of een van de ouders al
+        // gehuwd is op de meegegeven datum
+        for (Gezin g : this.gezinnen) {
+            // Controle voor ouder 1
+            if (g.getOuder1() == ouder1 
+                    || g.getOuder2() == ouder1){
+                if (g.getHuwelijksdatum() != null 
+                        && (g.getScheidingsdatum() == null 
+                        || huwdatum.before(g.getScheidingsdatum()))) {
+                    return null;
+                }
+            }
+            // Controle voor ouder 2
+            if (g.getOuder1() == ouder2 
+                    || g.getOuder2() == ouder2){
+                if (g.getHuwelijksdatum() != null 
+                        && (g.getScheidingsdatum() == null 
+                        || huwdatum.before(g.getScheidingsdatum()))) {
+                    return null;
+                }
+            }
         }
         
-        Gezin g = new Gezin(nextGezinsNr++, ouder1, ouder2);
-        g.setHuwelijk(huwdatum);
-        this.gezinnen.add(g);
-        return g;
+        // Gaat de lijst met personen af om te kijken of een van de ouders al een
+        // ongehuwd gezin heeft met de ander, anders wordt er een nieuw gezin 
+        // aangemaakt
+        for (Persoon p : this.personen) {
+            if (p.equals(ouder1)) {
+                nieuwGezin = ouder1.heeftOngehuwdGezinMet(ouder2);
+                if (nieuwGezin != null) {
+                    ouder1.heeftOngehuwdGezinMet(ouder2).setHuwelijk(huwdatum);
+                } else {
+                    nieuwGezin = new Gezin(this.nextGezinsNr, ouder1, ouder2);
+                    nieuwGezin.setHuwelijk(huwdatum);
+                    this.nextGezinsNr++;
+                    ouder1.wordtOuderIn(nieuwGezin);
+                    ouder2.wordtOuderIn(nieuwGezin);
+                    this.gezinnen.add(nieuwGezin);
+                }                
+            }
+        }
+        return nieuwGezin;
     }
 
     /**
@@ -236,14 +310,17 @@ public class Administratie {
     public Persoon getPersoon(int nr) {
         //todo opgave 1
         //aanname: er worden geen personen verwijderd
-        for (Persoon persoon : personen)
+        Persoon result = null;
+        
+        for (Persoon persoon : this.personen)
         {
             if (persoon.getNr() == nr)
             {
-                return persoon;
+                result = persoon;
+                return result;
             }
         }
-        return null;
+        return result;
     }
 
     /**
@@ -253,16 +330,17 @@ public class Administratie {
      */
     public ArrayList<Persoon> getPersonenMetAchternaam(String achternaam) {
         //todo opgave 1
-        ArrayList<Persoon> tijdelijkeLijst = new ArrayList<>();
+        List<Persoon> result = new ArrayList<>();
         
-        for (Persoon persoon : personen)
-        {
-            if (persoon.getAchternaam().equalsIgnoreCase(achternaam))
-            {
-                tijdelijkeLijst.add(persoon);
+        for (Persoon persoon : this.personen) {
+            if (persoon.getAchternaam().toLowerCase() == null 
+                    ? achternaam.toLowerCase() == null 
+                    : persoon.getAchternaam()
+                            .toLowerCase().equals(achternaam.toLowerCase())) {
+                result.add(persoon);
             }
         }
-        return tijdelijkeLijst;
+        return (ArrayList) result;
     }
 
     /**
@@ -271,7 +349,7 @@ public class Administratie {
      */
     public List<Persoon> getPersonen() {
         // todo opgave 1
-        return Collections.unmodifiableList(personen);
+        return Collections.unmodifiableList(this.personen);
     }
 
     /**
@@ -288,28 +366,34 @@ public class Administratie {
     public Persoon getPersoon(String[] vnamen, String anaam, String tvoegsel,
             Calendar gebdat, String gebplaats) {
         //todo opgave 1
-        StringBuilder sb = new StringBuilder();
-        
-        for (String vnaam : vnamen)
-        {
-            sb.append(vnaam.substring(0,1).toUpperCase()).append(".");
+        Persoon result = null;
+
+        for (Persoon persoon : this.personen) {
+            String initialen = "";
+            for (String s : vnamen) {
+                if (s.length() >= 1) {
+                    initialen += s.substring(0, 1).toUpperCase() + ".";
+                }
+            }
+
+            //Beginnen met hoofdletters
+            anaam = anaam.substring(0, 1).toUpperCase() + anaam.substring(1);
+            gebplaats = gebplaats.substring(0, 1).toUpperCase() + gebplaats.substring(1);
+
+            if (persoon.getInitialen().equals(initialen.trim())
+                    && persoon.getAchternaam().equals(anaam)
+                    && persoon.getTussenvoegsel().equals(tvoegsel)
+                    && persoon.getGebDat().get(Calendar.DATE) == gebdat.get(Calendar.DATE)
+                    && persoon.getGebDat().get(Calendar.MONTH) == gebdat.get(Calendar.MONTH)
+                    && persoon.getGebDat().get(Calendar.YEAR) == gebdat.get(Calendar.YEAR)
+                    && persoon.getGebPlaats().equals(gebplaats)) {
+
+                result = persoon;
+                return result;
+            }
         }
-        
-        gebplaats = gebplaats.toLowerCase();
-        
-        for (Persoon p : personen)
-        {
-           if (p.getInitialen().equals(sb.toString()) 
-                   && p.getTussenvoegsel().equals(tvoegsel)
-                   && p.getAchternaam().equals(anaam) 
-                   && (p.getGebPlaats().equalsIgnoreCase(gebplaats) || p.getGebPlaats() == null)
-                   && (p.getGebDat().equals(gebdat) || p.getGebDat() == null)
-                   )
-           {
-               return p;
-           }
-        }        
-        return null;
+
+        return result;
     }
 
     /**
@@ -328,7 +412,8 @@ public class Administratie {
      */
     public Gezin getGezin(int gezinsNr) {
         // aanname: er worden geen gezinnen verwijderd
-        if (gezinnen != null && 1 <= gezinsNr && 1 <= gezinnen.size()) {
+        // Logica fout, 1 <= gezinnen.size werd gezinsNr <= gezinnen.size
+        if (gezinnen != null && 1 <= gezinsNr && gezinsNr <= gezinnen.size()) {
             return gezinnen.get(gezinsNr - 1);
         }
         return null;

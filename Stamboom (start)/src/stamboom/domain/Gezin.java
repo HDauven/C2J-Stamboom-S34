@@ -37,7 +37,7 @@ public class Gezin {
      * @param ouder2 ongelijk aan ouder1, moet al geboren zijn,
      * en mag geen familie van ouder1 zijn.
      */
-    Gezin(int gezinsNr, Persoon ouder1, Persoon ouder2) {
+      Gezin(int gezinsNr, Persoon ouder1, Persoon ouder2) {
         if (ouder1 == null) {
             throw new RuntimeException("Eerste ouder mag niet null zijn");
         }
@@ -171,13 +171,17 @@ public class Gezin {
      */
     boolean setHuwelijk(Calendar datum) {
         //todo opgave 1
-        Calendar today = Calendar.getInstance();
+        boolean result = false;       
+        //Calendar today = Calendar.getInstance();       
+        //int age = today.get(Calendar.YEAR) - this.ouder1.getGebDat().get(Calendar.YEAR);
+        //if ((today.get(Calendar.DAY_OF_YEAR) < this.ouder1.getGebDat().get(Calendar.DAY_OF_YEAR)) )
+        //age--;       
+        if (this.huwelijksdatum == null & datum != null){
+            this.huwelijksdatum = datum;
+            result = true;
+        }
         
-        int age = today.get(Calendar.YEAR) - this.ouder1.getGebDat().get(Calendar.YEAR);
-        if ((today.get(Calendar.DAY_OF_YEAR) < this.ouder1.getGebDat().get(Calendar.DAY_OF_YEAR)) )
-        age--;
-        
-        return false;
+        return result;
     }
 
     /**
@@ -188,7 +192,20 @@ public class Gezin {
      */
     public String beschrijving() {
         //todo opgave 1
-        return null;
+        String result = this.nr + " " + this.ouder1.getNaam() + " met " + this.ouder2.getNaam();
+
+        if (this.huwelijksdatum != null) 
+        {
+            result = result + " " + StringUtilities.datumString(huwelijksdatum);
+        }
+        
+        if (this.kinderen != null && this.kinderen.size() >= 1) {            
+            result = result + "; kinderen: ";
+          for (Persoon persoon : this.kinderen) {
+                result = result + "-" + persoon.getVoornamen() + " ";
+          }
+        }
+        return result.trim();
     }
 
     /**
@@ -244,7 +261,15 @@ public class Gezin {
      */
     public boolean isHuwelijkOp(Calendar datum) {
         //todo opgave 1
-        return false;
+        boolean result = false;
+        
+        if(this.huwelijksdatum != null){
+            if (this.huwelijksdatum.before(datum)) {
+                result = true;
+            }
+        }
+       
+        return result;
     }
 
     /**
@@ -262,6 +287,13 @@ public class Gezin {
      */
     public boolean heeftGescheidenOudersOp(Calendar datum) {
         //todo opgave 1
-        return false;
+        boolean result = false;
+            
+        if (ouder1.isGescheidenOp(datum))
+            result = true;
+        else if (ouder2.isGescheidenOp(datum))
+            result = true;
+        
+        return result;
     }
 }

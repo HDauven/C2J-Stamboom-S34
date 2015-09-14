@@ -35,28 +35,6 @@ public class Persoon {
             Calendar gebdat, String gebplaats, Geslacht g, Gezin ouderlijkGezin) {
         //todo opgave 1
         //throw new UnsupportedOperationException();
-        // For loop die alle namen in de array vnamen omzet naar kleine letters,
-        // en dan de eerste letter van de naam omzet naar een hoofdletter.
-        for (String vnaam : vnamen)
-        {
-            vnaam = vnaam.toLowerCase();
-            vnaam = vnaam.substring(0,1).toUpperCase();
-        }
-        
-        // Zet alle letters van de achternaam om naar kleine letters, en zet erna
-        // de eerste letter om naar een hoofdletter.
-        anaam = anaam.toLowerCase();
-        anaam = anaam.substring(0,1).toUpperCase() + anaam.substring(1,anaam.length());
-        
-        // Zet het tussenvoegsel om naar kleine letters.
-        tvoegsel = tvoegsel.toLowerCase();
-        
-        // Initialiseert het tvoegsel naar "".
-        if (tvoegsel == null)
-            tvoegsel = "";
-        
-        // Wijst de opgegeven en verwerkte waarde toe aan de bij behorende
-        // variabelen.
         this.nr = persNr;
         this.voornamen = vnamen;
         this.achternaam = anaam;
@@ -64,8 +42,7 @@ public class Persoon {
         this.gebDat = gebdat;
         this.gebPlaats = gebplaats;
         this.geslacht = g;
-        this.ouderlijkGezin = ouderlijkGezin;
-        
+        this.ouderlijkGezin = ouderlijkGezin;       
         this.alsOuderBetrokkenIn = new ArrayList<>();
     }
 
@@ -129,10 +106,14 @@ public class Persoon {
     public String getNaam() {
         //todo opgave 1
         // Controleert of het tussenvoegsel leeg is of niet.
-        if (this.tussenvoegsel.equals("") || this.tussenvoegsel.equals(" "))
-            return this.getInitialen() + " " + this.achternaam;
-        else 
-            return this.getInitialen() + " " + this.tussenvoegsel + " " + this.achternaam;
+        String result = "";
+        
+        if (this.tussenvoegsel.equals("") || this.tussenvoegsel.equals(" ")) {
+            result = this.getInitialen() + " " + this.achternaam;
+        } else {
+            result = this.getInitialen() + " " + this.tussenvoegsel + " " + this.achternaam;
+        }       
+        return result;
     }
 
     /**
@@ -198,13 +179,14 @@ public class Persoon {
      */
     boolean setOuders(Gezin ouderlijkGezin) {
         //todo opgave 1
-        if (this.ouderlijkGezin != null)
+        boolean result = false;
+        if (this.ouderlijkGezin == null)
         {
             this.ouderlijkGezin = ouderlijkGezin;
             ouderlijkGezin.breidUitMet(this);
-            return true;
+            result = true;
         }
-        return false;
+        return result;
     }
 
     /**
@@ -256,19 +238,18 @@ public class Persoon {
      */
     public Gezin heeftOngehuwdGezinMet(Persoon andereOuder) {
         //todo opgave 1
+        Gezin result = null;
+        
         for (Gezin g : this.alsOuderBetrokkenIn)
         {
-            if (g.getOuder1() == andereOuder || g.getOuder2() == andereOuder)
-            {
-                return g;
-            }
-            
-            if (g.getOuder1() == this || g.getOuder2() == this)
-            {
-                return g;
+            if (g.isOngehuwd() && g.getOuder2() != null
+                && (g.getOuder2().equals(andereOuder) 
+                    || g.getOuder1().equals(andereOuder))) {
+            result = g;
+            return result;  
             }
         }
-        return null;
+        return result;
     }
 
     /**
@@ -319,7 +300,19 @@ public class Persoon {
      */
     public boolean isGescheidenOp(Calendar datum) {
         //todo opgave 1
-        return false;
+        boolean result = false;
+        
+        for (Gezin g : this.getAlsOuderBetrokkenIn())
+        {
+            Calendar calendar = g.getScheidingsdatum();
+            
+            if (g.getScheidingsdatum() != null && calendar.before(datum))
+            {
+                result = true;
+                return result;
+            }
+        }
+        return result;
     }
 
     /**
