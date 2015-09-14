@@ -5,8 +5,14 @@
 package stamboom.storage;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import stamboom.domain.Administratie;
 
 public class SerializationMediator implements IStorageMediator {
@@ -30,9 +36,22 @@ public class SerializationMediator implements IStorageMediator {
     public Administratie load() throws IOException {
         if (!isCorrectlyConfigured()) {
             throw new RuntimeException("Serialization mediator isn't initialized correctly.");
-        }
-        
+        }       
         // todo opgave 2
+        //return null;
+        try {
+            FileInputStream stream = new FileInputStream(props.getProperty("file"));
+            ObjectInputStream in = new ObjectInputStream(stream);
+            
+            Administratie administratie = (Administratie) in.readObject();
+            in.close();
+            
+            return administratie;
+        } catch (IOException e) {
+            e.printStackTrace();          
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SerializationMediator.class.getName()).log(Level.SEVERE, null, ex);
+        }            
         return null;
     }
 
@@ -41,9 +60,17 @@ public class SerializationMediator implements IStorageMediator {
         if (!isCorrectlyConfigured()) {
             throw new RuntimeException("Serialization mediator isn't initialized correctly.");
         }
-
         // todo opgave 2
-  
+        try {
+            FileOutputStream stream = new FileOutputStream(props.getProperty("file"));
+            ObjectOutputStream out = new ObjectOutputStream(stream);
+            
+            out.writeObject(admin);
+            out.close();
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
