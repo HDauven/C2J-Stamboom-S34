@@ -162,7 +162,7 @@ public class StamboomConsole {
     
     // Slaat de stamboom op
     void slaStamboomOp() {
-        String filePath = "";
+        String filePath = "";      
         do 
         {
             System.out.println("Opslag locatie invoeren:");       
@@ -172,6 +172,9 @@ public class StamboomConsole {
                 filePath = filePath + "\\";
         } while (filePath.equals(""));
         
+        File maakDir = new File(filePath);
+        if (maakDir.exists() == false)
+            maakDir.mkdirs();
 
         String fileName = "";
         do 
@@ -191,14 +194,14 @@ public class StamboomConsole {
     
     // Opent een stamboom
     void openStamboom() {
-        String filePath = "";
+        String filePath = "";      
         do 
         {
             System.out.println("bestands locatie invoeren:");       
             filePath = input.next().trim();  
             
             if (!"\\".equals(filePath.substring(filePath.length() - 1)))
-                filePath = filePath + "\\";
+                filePath = filePath + "\\";            
         } while (filePath.equals(""));
 
         String fileName = "";
@@ -208,7 +211,7 @@ public class StamboomConsole {
             fileName = input.next().trim();  
         } while (fileName.equals(""));       
         
-        File file = new File(filePath + fileName + ".ser");
+        File file = new File(filePath + fileName + ".ser");        
         try {
             controller.deserialize(file);
         } catch (IOException e) {
