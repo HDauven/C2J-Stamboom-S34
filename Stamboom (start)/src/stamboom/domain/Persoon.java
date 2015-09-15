@@ -326,7 +326,17 @@ public class Persoon implements Serializable {
      */
     public int afmetingStamboom() {
         //todo opgave 2
-        return -1;
+        int aantal = 1;
+        
+        if (ouderlijkGezin != null) {
+            if (ouderlijkGezin.getOuder1() != null) {
+                aantal += ouderlijkGezin.getOuder1().afmetingStamboom();
+            }
+            if (ouderlijkGezin.getOuder2() != null) {
+                aantal += ouderlijkGezin.getOuder2().afmetingStamboom();
+            }
+        }        
+        return aantal;
     }
 
     /**
@@ -343,6 +353,7 @@ public class Persoon implements Serializable {
      */
     void voegJouwStamboomToe(ArrayList<PersoonMetGeneratie> lijst, int g) {
         //todo opgave 2
+
     }
 
     /**
@@ -370,8 +381,8 @@ public class Persoon implements Serializable {
      */
     public String stamboomAlsString() {
         StringBuilder builder = new StringBuilder();
-        //todo opgave 2
-
+        //todo opgave 2     
+        
         return builder.toString();
     }
 }
