@@ -1,6 +1,8 @@
 package stamboom.console;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import stamboom.domain.*;
 import java.util.*;
 import stamboom.util.StringUtilities;
@@ -12,15 +14,11 @@ public class StamboomConsole {
     // **********datavelden**********************************************
     private final Scanner input;
     private final StamboomController controller;
-    private final SerializationMediator mediator;
 
     // **********constructoren*******************************************
     public StamboomConsole(StamboomController controller) {
         input = new Scanner(System.in);
         this.controller = controller;
-        // Maakt een serialization mediator aan om de administratie
-        // op te slaan en in te laden
-        this.mediator = new SerializationMediator();
         this.startMenu();
     }
 
@@ -164,20 +162,59 @@ public class StamboomConsole {
     
     // Slaat de stamboom op
     void slaStamboomOp() {
+        String filePath = "";
+        do 
+        {
+            System.out.println("Opslag locatie invoeren:");       
+            filePath = input.next().trim();  
+            
+            if (!"\\".equals(filePath.substring(filePath.length() - 1)))
+                filePath = filePath + "\\";
+        } while (filePath.equals(""));
+        
+
+        String fileName = "";
+        do 
+        {
+            System.out.println("Bestands naam invoeren:");       
+            fileName = input.next().trim();  
+        } while (fileName.equals(""));       
+        
+        File file = new File(filePath + fileName + ".ser");
         try {
-            mediator.save(getAdmin());
+            controller.serialize(file);
         } catch (IOException e) {
             System.out.println("opslaan van administratie mislukt!");
+            e.printStackTrace();
         }
     }
     
     // Opent een stamboom
     void openStamboom() {
+        String filePath = "";
+        do 
+        {
+            System.out.println("bestands locatie invoeren:");       
+            filePath = input.next().trim();  
+            
+            if (!"\\".equals(filePath.substring(filePath.length() - 1)))
+                filePath = filePath + "\\";
+        } while (filePath.equals(""));
+
+        String fileName = "";
+        do 
+        {
+            System.out.println("Bestands naam invoeren:");       
+            fileName = input.next().trim();  
+        } while (fileName.equals(""));       
+        
+        File file = new File(filePath + fileName + ".ser");
         try {
-            mediator.load();
+            controller.deserialize(file);
         } catch (IOException e) {
-            System.out.println("Openen van administratie mislukt!");
-        }
+            System.out.println("Openen van administratie bestand mislukt!");
+            e.printStackTrace();
+        }        
     }
 
     Persoon selecteerPersoon() {
