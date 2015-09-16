@@ -156,8 +156,14 @@ public class StamboomConsole {
     }
     
     // toont de gemaakte stamboom
-    void toonStamboomgegevens() {
-        
+    void toonStamboomgegevens() { 
+        Persoon persoon = null;
+        do
+        {
+            persoon = selecteerPersoon();          
+        } 
+        while (persoon == null);        
+        System.out.println(persoon.stamboomAlsString());
     }
     
     // Slaat de stamboom op

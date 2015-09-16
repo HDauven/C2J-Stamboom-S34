@@ -326,6 +326,13 @@ public class Persoon implements Serializable {
      */
     public int afmetingStamboom() {
         //todo opgave 2
+        // recursie implementatie:
+        // Als het ouderlijkGezin van de desbetreffende instantie van
+        // het object niet null is, dan wordt er gekeken of de ouders
+        // van het object bekend zijn. Als deze bekend zijn, wordt de
+        // afmetingStamboom methode weer aangeroepen op de ouders van
+        // dit object. 
+        // De stopconditie is als er geen ouderlijkgezin gevonden wordt.
         int aantal = 1;
         
         if (ouderlijkGezin != null) {
@@ -353,7 +360,20 @@ public class Persoon implements Serializable {
      */
     void voegJouwStamboomToe(ArrayList<PersoonMetGeneratie> lijst, int g) {
         //todo opgave 2
-
+        lijst.add(new PersoonMetGeneratie(this.standaardgegevens(), g));
+        
+        Persoon ouder1 = null, ouder2 = null;
+        if (this.getOuderlijkGezin() != null)
+        {
+            ouder1 = this.getOuderlijkGezin().getOuder1();
+            ouder2 = this.getOuderlijkGezin().getOuder2();
+        }
+        
+        if (ouder1 != null)
+            ouder1.voegJouwStamboomToe(lijst, g + 1);
+        
+        if (ouder2 != null)
+            ouder2.voegJouwStamboomToe(lijst, g + 1);
     }
 
     /**
@@ -381,8 +401,23 @@ public class Persoon implements Serializable {
      */
     public String stamboomAlsString() {
         StringBuilder builder = new StringBuilder();
-        //todo opgave 2     
+        //todo opgave 2    
+        ArrayList<PersoonMetGeneratie> lijst = new ArrayList<>();
+        voegJouwStamboomToe(lijst, 0);
         
+        for (PersoonMetGeneratie persoon : lijst) 
+        {
+            for (int i = 0; i < persoon.getGeneratie(); i++)
+            {
+                builder.append("  ");
+            }
+            // niet grappige implementatie binnen de test, voor windows
+            // moet er "\r\n" gebruikt worden om deze methode fatsoenlijk
+            // te laten werken doordat Strings gesplit worden door een
+            // line.separator
+            String p = persoon.getPersoonsgegevens().trim() + "\r\n";
+            builder.append(p);
+        }       
         return builder.toString();
     }
 }
