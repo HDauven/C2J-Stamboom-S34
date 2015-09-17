@@ -2,12 +2,12 @@ package stamboom.console;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+//import java.nio.file.Path;
 import stamboom.domain.*;
 import java.util.*;
 import stamboom.util.StringUtilities;
 import stamboom.controller.StamboomController;
-import stamboom.storage.SerializationMediator;
+//import stamboom.storage.SerializationMediator;
 
 public class StamboomConsole {
 
@@ -209,6 +209,10 @@ public class StamboomConsole {
             if (!"\\".equals(filePath.substring(filePath.length() - 1)))
                 filePath = filePath + "\\";            
         } while (filePath.equals(""));
+        
+        // uitvoering van een recursieve methode
+        System.out.println("De volgende bestanden zijn aanwezig:");
+        toonDirectoryInhoud(filePath);
 
         String fileName = "";
         do 
@@ -224,6 +228,25 @@ public class StamboomConsole {
             System.out.println("Openen van administratie bestand mislukt!");
             e.printStackTrace();
         }        
+    }
+    
+    // extra recursieve toevoeging
+    void toonDirectoryInhoud(String filePath)
+    {
+        File root = new File(filePath);
+        File[] list = root.listFiles();
+
+        if (list == null) return;
+
+        for (File f : list) {
+            if (f.isDirectory()) {
+                toonDirectoryInhoud(f.getAbsolutePath());
+                System.out.println("Dir:" + f.getAbsoluteFile());
+            }
+            else {
+                System.out.println("File:" + f.getAbsoluteFile());
+            }
+        }
     }
 
     Persoon selecteerPersoon() {
