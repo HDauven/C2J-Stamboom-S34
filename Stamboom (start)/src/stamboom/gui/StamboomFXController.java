@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import stamboom.controller.StamboomController;
+import stamboom.domain.Geslacht;
 import stamboom.domain.Gezin;
 import stamboom.domain.Persoon;
 import stamboom.util.StringUtilities;
@@ -63,12 +64,18 @@ public class StamboomFXController extends StamboomController implements Initiali
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initComboboxes();
+        String[] vnamen = new String[1];
+        vnamen[0] = "Stef";
+        getAdministratie().addPersoon(Geslacht.MAN, vnamen, "Philipsen", "", Calendar.getInstance(), "Ysselsteyn", null);
         withDatabase = false;
     }
 
     private void initComboboxes() {
-        //todo opgave 3 
-
+        //todo opgave 3
+        cbPersonen.setItems(getAdministratie().getPersonen());
+        cbOuder1Invoer.setItems(getAdministratie().getPersonen());
+        cbOuder2Invoer.setItems(getAdministratie().getPersonen());
+        cbOuderlijkGezin.setItems(getAdministratie().getGezinnen());
     }
 
     public void selectPersoon(Event evt) {

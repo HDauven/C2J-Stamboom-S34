@@ -2,6 +2,8 @@ package stamboom.domain;
 
 import java.io.Serializable;
 import java.util.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Administratie implements Serializable{
 
@@ -10,6 +12,8 @@ public class Administratie implements Serializable{
     private int nextPersNr;
     private final List<Persoon> personen;
     private final List<Gezin> gezinnen;
+    private ObservableList<Persoon> observablePersonen;
+    private ObservableList<Gezin> observableGezinnen;
 
     //***********************constructoren***********************************
     /**
@@ -25,6 +29,8 @@ public class Administratie implements Serializable{
         // Initialiseert de persoon en gezinnen lijst.
         this.personen = new ArrayList<>();
         this.gezinnen = new ArrayList<>();
+        observablePersonen = FXCollections.observableList(personen);
+        observableGezinnen = FXCollections.observableList(gezinnen);
     }
 
     //**********************methoden****************************************
@@ -351,9 +357,9 @@ public class Administratie implements Serializable{
      *
      * @return de geregistreerde personen
      */
-    public List<Persoon> getPersonen() {
+    public ObservableList<Persoon> getPersonen() {
         // todo opgave 1
-        return Collections.unmodifiableList(this.personen);
+        return FXCollections.unmodifiableObservableList(observablePersonen);
     }
 
     /**
@@ -404,8 +410,8 @@ public class Administratie implements Serializable{
      *
      * @return de geregistreerde gezinnen
      */
-    public List<Gezin> getGezinnen() {
-        return null;
+    public ObservableList<Gezin> getGezinnen() {
+        return FXCollections.unmodifiableObservableList(observableGezinnen);
     }
 
     /**
