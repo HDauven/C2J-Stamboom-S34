@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Administratie.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;StamboomProject&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">stamboom.domain</a> &gt; <span class="el_source">Administratie.java</span></div><h1>Administratie.java</h1><pre class="source lang-java linenums">package stamboom.domain;
+
+import java.io.Serializable;
+import java.util.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+public class Administratie implements Serializable{
+
+    //************************datavelden*************************************
+    private int nextGezinsNr;
+    private int nextPersNr;
+    private final List&lt;Persoon&gt; personen;
+    private final List&lt;Gezin&gt; gezinnen;
+    private ObservableList&lt;Persoon&gt; observablePersonen;
+    private ObservableList&lt;Gezin&gt; observableGezinnen;
+
+    //***********************constructoren***********************************
+    /**
+     * er wordt een lege administratie aangemaakt.
+     * personen en gezinnen die in de toekomst zullen worden gecreeerd, worden
+     * (apart) opvolgend genummerd vanaf 1
+     */
+<span class="fc" id="L24">    public Administratie() {</span>
+        //todo opgave 1
+        // zet beide integer variabelen op de waarde 1
+<span class="fc" id="L27">        nextGezinsNr = 1;</span>
+<span class="fc" id="L28">        nextPersNr = 1;</span>
+        // Initialiseert de persoon en gezinnen lijst.
+<span class="fc" id="L30">        this.personen = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L31">        this.gezinnen = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L32">        observablePersonen = FXCollections.observableList(personen);</span>
+<span class="fc" id="L33">        observableGezinnen = FXCollections.observableList(gezinnen);</span>
+<span class="fc" id="L34">    }</span>
+
+    //**********************methoden****************************************
+    /**
+     * er wordt een persoon met de gegeven parameters aangemaakt; de persoon
+     * krijgt een uniek nummer toegewezen, en de persoon is voortaan ook bij het
+     * (eventuele) ouderlijk gezin bekend. Voor de voornamen, achternaam en
+     * gebplaats geldt dat de eerste letter naar een hoofdletter en de resterende
+     * letters naar kleine letters zijn geconverteerd; het tussenvoegsel is in
+     * zijn geheel geconverteerd naar kleine letters; overbodige spaties zijn
+     * verwijderd
+     *
+     * @param geslacht
+     * @param vnamen vnamen.length&gt;0; alle strings zijn niet leeg
+     * @param anaam niet leeg
+     * @param tvoegsel mag leeg zijn
+     * @param gebdat
+     * @param gebplaats niet leeg
+     * @param ouderlijkGezin mag de waarde null (=onbekend) hebben
+     *
+     * @return de nieuwe persoon.
+     * Als de persoon al bekend was (op basis van combinatie van getNaam(),
+     * geboorteplaats en geboortedatum), wordt er null geretourneerd.
+     */
+    public Persoon addPersoon(Geslacht geslacht, String[] vnamen, String anaam,
+            String tvoegsel, Calendar gebdat,
+            String gebplaats, Gezin ouderlijkGezin) {
+        //todo opgave 1
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (vnamen.length == 0) {</span>
+<span class="nc" id="L63">            throw new IllegalArgumentException(&quot;ten minste 1 voornaam&quot;);</span>
+        }
+        
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (geslacht == null) {</span>
+<span class="nc" id="L67">            throw new IllegalArgumentException(&quot;voer geslacht in&quot;);</span>
+        }
+
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (gebdat == null) {</span>
+<span class="nc" id="L71">            throw new IllegalArgumentException(&quot;geboortedatum mag niet leeg zijn&quot;);</span>
+        }        
+        
+        //for (String voornaam : vnamen) {
+        //    if (voornaam.trim().isEmpty()) {
+        //        throw new IllegalArgumentException(&quot;lege voornaam is niet toegestaan&quot;);
+        //    } else {
+        //        // Format de voornamen
+        //        voornaam = voornaam.substring(0,1).toUpperCase() + voornaam.substring(1).toLowerCase();
+        //    }
+        //}
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (int i = 0; i &lt; vnamen.length; i++) {</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            if (vnamen[i].trim().isEmpty()) {</span>
+<span class="nc" id="L84">                throw new IllegalArgumentException(&quot;lege voornaam is niet toegestaan&quot;);</span>
+            } else {
+                // Format de voornamen
+<span class="fc" id="L87">                vnamen[i] = vnamen[i].trim();</span>
+<span class="fc" id="L88">                vnamen[i] = vnamen[i].substring(0,1).toUpperCase() + vnamen[i].substring(1).toLowerCase();</span>
+            }
+        }
+
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (anaam.trim().isEmpty()) {</span>
+<span class="nc" id="L93">            throw new IllegalArgumentException(&quot;lege achternaam is niet toegestaan&quot;);</span>
+        } else {
+            // format de achternaam
+<span class="fc" id="L96">            anaam = anaam.trim();</span>
+<span class="fc" id="L97">            anaam = anaam.substring(0,1).toUpperCase() + anaam.substring(1).toLowerCase();</span>
+        }
+
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (gebplaats.trim().isEmpty()) {</span>
+<span class="nc" id="L101">            throw new IllegalArgumentException(&quot;lege geboorteplaats is niet toegestaan&quot;);</span>
+        } else  {
+            // format de geboorteplaats
+<span class="fc" id="L104">            gebplaats = gebplaats.trim();</span>
+<span class="fc" id="L105">            gebplaats = gebplaats.substring(0,1).toUpperCase() + gebplaats.substring(1).toLowerCase();</span>
+        }       
+       
+<span class="fc" id="L108">        Persoon persoon = new Persoon(nextPersNr, vnamen, anaam, tvoegsel.toLowerCase(),</span>
+                                    gebdat, gebplaats, geslacht, ouderlijkGezin);
+        
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        for (Persoon p : this.personen) {</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">            if (p.getNaam().equals(persoon.getNaam())</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">                    &amp;&amp; p.getGebDat().get(Calendar.DATE) == persoon.getGebDat().get(Calendar.DATE)</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">                    &amp;&amp; p.getGebDat().get(Calendar.MONTH) == persoon.getGebDat().get(Calendar.MONTH)</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">                    &amp;&amp; p.getGebDat().get(Calendar.YEAR) == persoon.getGebDat().get(Calendar.YEAR)</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">                    &amp;&amp; p.getGebPlaats().equals(persoon.getGebPlaats())) {</span>
+<span class="fc" id="L117">                return null;</span>
+            }
+<span class="fc" id="L119">        }        </span>
+        
+        
+<span class="fc" id="L122">        this.personen.add(persoon); </span>
+<span class="fc" id="L123">        nextPersNr++;</span>
+        
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (ouderlijkGezin != null)</span>
+<span class="fc" id="L126">            ouderlijkGezin.breidUitMet(persoon);</span>
+        
+<span class="fc" id="L128">        return persoon;</span>
+    }
+
+    /**
+     * er wordt, zo mogelijk (zie return) een (kinderloos) ongehuwd gezin met
+     * ouder1 en ouder2 als ouders gecreeerd; de huwelijks- en scheidingsdatum
+     * zijn onbekend (null); het gezin krijgt een uniek nummer toegewezen; dit
+     * gezin wordt ook bij de afzonderlijke ouders geregistreerd;
+     *
+     * @param ouder1
+     * @param ouder2 mag null zijn
+     *
+     * @return het nieuwe gezin. null als ouder1 = ouder2 of als een van de volgende
+     * voorwaarden wordt overtreden:
+     * 1) een van de ouders is op dit moment getrouwd
+     * 2) het koppel vormt al een ander gezin
+     */
+    public Gezin addOngehuwdGezin(Persoon ouder1, Persoon ouder2) {
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (ouder1 == ouder2) {</span>
+<span class="fc" id="L147">            return null;</span>
+        }
+
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (ouder1.getGebDat().compareTo(Calendar.getInstance()) &gt; 0) {</span>
+<span class="nc" id="L151">            return null;</span>
+        }
+<span class="fc bfc" id="L153" title="All 4 branches covered.">        if (ouder2 != null &amp;&amp; ouder2.getGebDat().compareTo(Calendar.getInstance()) &gt; 0) {</span>
+<span class="fc" id="L154">            return null;</span>
+        }
+
+<span class="fc" id="L157">        Calendar nu = Calendar.getInstance();</span>
+<span class="fc bfc" id="L158" title="All 4 branches covered.">        if (ouder1.isGetrouwdOp(nu) || (ouder2 != null</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">                &amp;&amp; ouder2.isGetrouwdOp(nu))</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                || ongehuwdGezinBestaat(ouder1, ouder2)) {</span>
+<span class="fc" id="L161">            return null;</span>
+        }
+
+<span class="fc" id="L164">        Gezin gezin = new Gezin(nextGezinsNr++, ouder1, ouder2);</span>
+<span class="fc" id="L165">        gezinnen.add(gezin);</span>
+
+<span class="fc" id="L167">        ouder1.wordtOuderIn(gezin);</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        if (ouder2 != null) {</span>
+<span class="fc" id="L169">            ouder2.wordtOuderIn(gezin);</span>
+        }
+
+<span class="fc" id="L172">        return gezin;</span>
+    }
+
+    /**
+     * Als het ouderlijk gezin van persoon nog onbekend is dan wordt
+     * persoon een kind van ouderlijkGezin, en tevens wordt persoon als kind
+     * in dat gezin geregistreerd. Als de ouders bij aanroep al bekend zijn,
+     * verandert er niets
+     *
+     * @param persoon
+     * @param ouderlijkGezin
+     * @return of ouderlijk gezin kon worden toegevoegd.
+     */
+    public boolean setOuders(Persoon persoon, Gezin ouderlijkGezin) {
+<span class="nc" id="L186">        return persoon.setOuders(ouderlijkGezin);</span>
+    }
+
+    /**
+     * als de ouders van dit gezin gehuwd zijn en nog niet gescheiden en datum
+     * na de huwelijksdatum ligt, wordt dit de scheidingsdatum. Anders gebeurt
+     * er niets.
+     *
+     * @param gezin
+     * @param datum
+     * @return true als scheiding geaccepteerd, anders false
+     */
+    public boolean setScheiding(Gezin gezin, Calendar datum) {
+<span class="fc" id="L199">        return gezin.setScheiding(datum);</span>
+    }
+
+    /**
+     * registreert het huwelijk, mits gezin nog geen huwelijk is en beide
+     * ouders op deze datum mogen trouwen (pas op: het is niet toegestaan dat een
+     * ouder met een toekomstige (andere) trouwdatum trouwt.)
+     *
+     * @param gezin
+     * @param datum de huwelijksdatum
+     * @return false als huwelijk niet mocht worden voltrokken, anders true
+     */
+    public boolean setHuwelijk(Gezin gezin, Calendar datum) {
+<span class="fc" id="L212">        return gezin.setHuwelijk(datum);</span>
+    }
+
+    /**
+     *
+     * @param ouder1
+     * @param ouder2
+     * @return true als dit koppel (ouder1,ouder2) al een ongehuwd gezin vormt
+     */
+    boolean ongehuwdGezinBestaat(Persoon ouder1, Persoon ouder2) {
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        return ouder1.heeftOngehuwdGezinMet(ouder2) != null;</span>
+    }
+
+    /**
+     * als er al een ongehuwd gezin voor dit koppel bestaat, wordt het huwelijk
+     * voltrokken, anders wordt er zo mogelijk (zie return) een (kinderloos)
+     * gehuwd gezin met ouder1 en ouder2 als ouders gecreeerd; de
+     * scheidingsdatum is onbekend (null); het gezin krijgt een uniek nummer
+     * toegewezen; dit gezin wordt ook bij de afzonderlijke ouders
+     * geregistreerd;
+     *
+     * @param ouder1
+     * @param ouder2
+     * @param huwdatum
+     * @return null als ouder1 = ouder2 of als een van de ouders getrouwd is
+     * anders het gehuwde gezin
+     */
+    public Gezin addHuwelijk(Persoon ouder1, Persoon ouder2, Calendar huwdatum) {
+        //todo opgave 1
+        //Calendar now = Calendar.getInstance();       
+<span class="fc" id="L242">        Gezin nieuwGezin = null;</span>
+        
+        // Controleert of de ouders gelijk aan elkaar zijn en of ze 18+ zijn op
+        // de datum dat het huwelijk wordt voltrokken
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        if (ouder1 == ouder2 </span>
+                //|| (now.get(Calendar.YEAR) - ouder1.getGebDat().get(Calendar.YEAR) &lt; 18)
+                //|| (now.get(Calendar.YEAR) - ouder2.getGebDat().get(Calendar.YEAR) &lt; 18)
+<span class="fc bfc" id="L249" title="All 2 branches covered.">                || (huwdatum.get(Calendar.YEAR) - ouder1.getGebDat().get(Calendar.YEAR) &lt; 18)</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">                || (huwdatum.get(Calendar.YEAR) - ouder2.getGebDat().get(Calendar.YEAR) &lt; 18)) {</span>
+<span class="fc" id="L251">            return null;</span>
+        }
+        
+        // Gaat de lijst met gezinnen af en controleert of een van de ouders al
+        // gehuwd is op de meegegeven datum
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        for (Gezin g : this.gezinnen) {</span>
+            // Controle voor ouder 1
+<span class="fc bfc" id="L258" title="All 2 branches covered.">            if (g.getOuder1() == ouder1 </span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">                    || g.getOuder2() == ouder1){</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">                if (g.getHuwelijksdatum() != null </span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">                        &amp;&amp; (g.getScheidingsdatum() == null </span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">                        || huwdatum.before(g.getScheidingsdatum()))) {</span>
+<span class="fc" id="L263">                    return null;</span>
+                }
+            }
+            // Controle voor ouder 2
+<span class="fc bfc" id="L267" title="All 2 branches covered.">            if (g.getOuder1() == ouder2 </span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">                    || g.getOuder2() == ouder2){</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">                if (g.getHuwelijksdatum() != null </span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">                        &amp;&amp; (g.getScheidingsdatum() == null </span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">                        || huwdatum.before(g.getScheidingsdatum()))) {</span>
+<span class="fc" id="L272">                    return null;</span>
+                }
+            }
+<span class="fc" id="L275">        }</span>
+        
+        // Gaat de lijst met personen af om te kijken of een van de ouders al een
+        // ongehuwd gezin heeft met de ander, anders wordt er een nieuw gezin 
+        // aangemaakt
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        for (Persoon p : this.personen) {</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">            if (p.equals(ouder1)) {</span>
+<span class="fc" id="L282">                nieuwGezin = ouder1.heeftOngehuwdGezinMet(ouder2);</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">                if (nieuwGezin != null) {</span>
+<span class="fc" id="L284">                    ouder1.heeftOngehuwdGezinMet(ouder2).setHuwelijk(huwdatum);</span>
+                } else {
+<span class="fc" id="L286">                    nieuwGezin = new Gezin(this.nextGezinsNr, ouder1, ouder2);</span>
+<span class="fc" id="L287">                    nieuwGezin.setHuwelijk(huwdatum);</span>
+<span class="fc" id="L288">                    this.nextGezinsNr++;</span>
+<span class="fc" id="L289">                    ouder1.wordtOuderIn(nieuwGezin);</span>
+<span class="fc" id="L290">                    ouder2.wordtOuderIn(nieuwGezin);</span>
+<span class="fc" id="L291">                    this.gezinnen.add(nieuwGezin);</span>
+                }                
+            }
+<span class="fc" id="L294">        }</span>
+<span class="fc" id="L295">        return nieuwGezin;</span>
+    }
+
+    /**
+     *
+     * @return het aantal geregistreerde personen
+     */
+    public int aantalGeregistreerdePersonen() {
+<span class="fc" id="L303">        return nextPersNr - 1;</span>
+    }
+
+    /**
+     *
+     * @return het aantal geregistreerde gezinnen
+     */
+    public int aantalGeregistreerdeGezinnen() {
+<span class="fc" id="L311">        return nextGezinsNr - 1;</span>
+    }
+
+    /**
+     *
+     * @param nr
+     * @return de persoon met nummer nr, als die niet bekend is wordt er null
+     * geretourneerd
+     */
+    public Persoon getPersoon(int nr) {
+        //todo opgave 1
+        //aanname: er worden geen personen verwijderd
+<span class="fc" id="L323">        Persoon result = null;</span>
+        
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">        for (Persoon persoon : this.personen)</span>
+        {
+<span class="nc bnc" id="L327" title="All 2 branches missed.">            if (persoon.getNr() == nr)</span>
+            {
+<span class="nc" id="L329">                result = persoon;</span>
+<span class="nc" id="L330">                return result;</span>
+            }
+<span class="nc" id="L332">        }</span>
+<span class="fc" id="L333">        return result;</span>
+    }
+
+    /**
+     * @param achternaam
+     * @return alle personen met een achternaam gelijk aan de meegegeven
+     * achternaam (ongeacht hoofd- en kleine letters)
+     */
+    public ArrayList&lt;Persoon&gt; getPersonenMetAchternaam(String achternaam) {
+        //todo opgave 1
+<span class="fc" id="L343">        List&lt;Persoon&gt; result = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc bfc" id="L345" title="All 2 branches covered.">        for (Persoon persoon : this.personen) {</span>
+<span class="pc bpc" id="L346" title="1 of 2 branches missed.">            if (persoon.getAchternaam().toLowerCase() == null </span>
+<span class="pc bnc" id="L347" title="All 2 branches missed.">                    ? achternaam.toLowerCase() == null </span>
+<span class="fc" id="L348">                    : persoon.getAchternaam()</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">                            .toLowerCase().equals(achternaam.toLowerCase())) {</span>
+<span class="fc" id="L350">                result.add(persoon);</span>
+            }
+<span class="fc" id="L352">        }</span>
+<span class="fc" id="L353">        return (ArrayList) result;</span>
+    }
+
+    /**
+     *
+     * @return de geregistreerde personen
+     */
+    public ObservableList&lt;Persoon&gt; getPersonen() {
+        // todo opgave 1
+<span class="fc" id="L362">        return FXCollections.unmodifiableObservableList(observablePersonen);</span>
+    }
+
+    /**
+     *
+     * @param vnamen
+     * @param anaam
+     * @param tvoegsel
+     * @param gebdat
+     * @param gebplaats
+     * @return de persoon met dezelfde initialen, tussenvoegsel, achternaam,
+     * geboortedatum en -plaats mits bekend (ongeacht hoofd- en kleine letters),
+     * anders null
+     */
+    public Persoon getPersoon(String[] vnamen, String anaam, String tvoegsel,
+            Calendar gebdat, String gebplaats) {
+        //todo opgave 1
+<span class="fc" id="L379">        Persoon result = null;</span>
+
+<span class="fc bfc" id="L381" title="All 2 branches covered.">        for (Persoon persoon : this.personen) {</span>
+<span class="fc" id="L382">            String initialen = &quot;&quot;;</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">            for (String s : vnamen) {</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">                if (s.length() &gt;= 1) {</span>
+<span class="fc" id="L385">                    initialen += s.substring(0, 1).toUpperCase() + &quot;.&quot;;</span>
+                }
+            }
+
+            //Beginnen met hoofdletters
+<span class="fc" id="L390">            anaam = anaam.substring(0, 1).toUpperCase() + anaam.substring(1);</span>
+<span class="fc" id="L391">            gebplaats = gebplaats.substring(0, 1).toUpperCase() + gebplaats.substring(1);</span>
+
+<span class="fc bfc" id="L393" title="All 2 branches covered.">            if (persoon.getInitialen().equals(initialen.trim())</span>
+<span class="fc bfc" id="L394" title="All 2 branches covered.">                    &amp;&amp; persoon.getAchternaam().equals(anaam)</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">                    &amp;&amp; persoon.getTussenvoegsel().equals(tvoegsel)</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">                    &amp;&amp; persoon.getGebDat().get(Calendar.DATE) == gebdat.get(Calendar.DATE)</span>
+<span class="pc bpc" id="L397" title="1 of 2 branches missed.">                    &amp;&amp; persoon.getGebDat().get(Calendar.MONTH) == gebdat.get(Calendar.MONTH)</span>
+<span class="pc bpc" id="L398" title="1 of 2 branches missed.">                    &amp;&amp; persoon.getGebDat().get(Calendar.YEAR) == gebdat.get(Calendar.YEAR)</span>
+<span class="fc bfc" id="L399" title="All 2 branches covered.">                    &amp;&amp; persoon.getGebPlaats().equals(gebplaats)) {</span>
+
+<span class="fc" id="L401">                result = persoon;</span>
+<span class="fc" id="L402">                return result;</span>
+            }
+<span class="fc" id="L404">        }</span>
+
+<span class="fc" id="L406">        return result;</span>
+    }
+
+    /**
+     *
+     * @return de geregistreerde gezinnen
+     */
+    public ObservableList&lt;Gezin&gt; getGezinnen() {
+<span class="nc" id="L414">        return FXCollections.unmodifiableObservableList(observableGezinnen);</span>
+    }
+
+    /**
+     *
+     * @param gezinsNr
+     * @return het gezin met nummer nr. Als dat niet bekend is wordt er null
+     * geretourneerd
+     */
+    public Gezin getGezin(int gezinsNr) {
+        // aanname: er worden geen gezinnen verwijderd
+        // Logica fout, 1 &lt;= gezinnen.size werd gezinsNr &lt;= gezinnen.size
+<span class="pc bpc" id="L426" title="3 of 6 branches missed.">        if (gezinnen != null &amp;&amp; 1 &lt;= gezinsNr &amp;&amp; gezinsNr &lt;= gezinnen.size()) {</span>
+<span class="fc" id="L427">            return gezinnen.get(gezinsNr - 1);</span>
+        }
+<span class="nc" id="L429">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

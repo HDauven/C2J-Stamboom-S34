@@ -16,7 +16,7 @@ public class Gezin implements Serializable {
     private final Persoon ouder1;
     private final Persoon ouder2;
     private final List<Persoon> kinderen;
-    private final ObservableList<Persoon> observableKinderen;
+    private final transient ObservableList<Persoon> observableKinderen;
     /**
      * kan onbekend zijn (dan is het een ongehuwd gezin):
      */

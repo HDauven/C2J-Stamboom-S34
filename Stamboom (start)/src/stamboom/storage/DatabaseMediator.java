@@ -6,6 +6,7 @@ package stamboom.storage;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 import stamboom.domain.Administratie;
@@ -15,6 +16,10 @@ public class DatabaseMediator implements IStorageMediator {
     private Properties props;
     private Connection conn;
 
+    public DatabaseMediator(Properties props) {
+        this.props = props;
+    }
+
     @Override
     public Administratie load() throws IOException {
         //todo opgave 4
@@ -23,7 +28,8 @@ public class DatabaseMediator implements IStorageMediator {
 
     @Override
     public void save(Administratie admin) throws IOException {
-        //todo opgave 4     
+        //todo opgave 4
+        
     }
 
     /**
@@ -80,6 +86,17 @@ public class DatabaseMediator implements IStorageMediator {
 
     private void initConnection() throws SQLException {
         //opgave 4
+        try
+        {
+            Class.forName(props.getProperty("driver"));
+            //conn = DriverManager.getConnection ("jdbc:mysql://athena.fhict.nl/dbi282758", "i282758_Stef", "Stef82,.");
+            //conn = DriverManager.getConnection("jdbc:mysql://stefp.nl/philips1_db?noAccessToProcedureBodies=true", "philips1_user", "Hallo123");
+            conn = DriverManager.getConnection(props.getProperty("url"), props.getProperty("username"), props.getProperty("password"));
+
+        } catch (ClassNotFoundException | SQLException ex)
+        {
+            System.out.println(ex.toString());
+        }
     }
 
     private void closeConnection() {

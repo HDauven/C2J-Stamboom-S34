@@ -10,7 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 import stamboom.domain.Administratie;
+import stamboom.storage.DatabaseMediator;
 import stamboom.storage.IStorageMediator;
 
 public class StamboomController {
@@ -85,13 +88,21 @@ public class StamboomController {
     
     // opgave 4
     private void initDatabaseMedium() throws IOException {
-//        if (!(storageMediator instanceof DatabaseMediator)) {
-//            Properties props = new Properties();
-//            try (FileInputStream in = new FileInputStream("database.properties")) {
-//                props.load(in);
-//            }
-//            storageMediator = new DatabaseMediator(props);
-//        }
+        if (!(storageMediator instanceof DatabaseMediator)) {
+            ////driver, url, username, password opslaan in properties attribuut
+            Properties props = new Properties();
+            OutputStream output = new FileOutputStream("database.properties");
+            props.setProperty("driver", "com.mysql.jdbc.Driver");
+            props.setProperty("url", "jdbc:mysql://stefp.nl/philips1_db?noAccessToProcedureBodies=true");
+            props.setProperty("username", "philips1_user");
+            props.setProperty("password", "Hallo123");
+            //store properties in file
+            props.store(output, null);
+            try (FileInputStream in = new FileInputStream("database.properties")) {
+                props.load(in);
+            }
+            storageMediator = new DatabaseMediator(props);
+        }
     }
     
     /**

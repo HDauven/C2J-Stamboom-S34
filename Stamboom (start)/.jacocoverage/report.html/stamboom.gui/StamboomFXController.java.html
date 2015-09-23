@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StamboomFXController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;StamboomProject&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">stamboom.gui</a> &gt; <span class="el_source">StamboomFXController.java</span></div><h1>StamboomFXController.java</h1><pre class="source lang-java linenums">/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package stamboom.gui;
+
+import java.net.URL;
+import java.util.Calendar;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import stamboom.controller.StamboomController;
+import stamboom.domain.Geslacht;
+import stamboom.domain.Gezin;
+import stamboom.domain.Persoon;
+import stamboom.util.StringUtilities;
+
+/**
+ *
+ * @author frankpeeters
+ */
+<span class="nc" id="L26">public class StamboomFXController extends StamboomController implements Initializable {</span>
+
+    //MENUs en TABs
+    @FXML MenuBar menuBar;
+    @FXML MenuItem miNew;
+    @FXML MenuItem miOpen;
+    @FXML MenuItem miSave;
+    @FXML CheckMenuItem cmDatabase;
+    @FXML MenuItem miClose;
+    @FXML Tab tabPersoon;
+    @FXML Tab tabGezin;
+    @FXML Tab tabPersoonInvoer;
+    @FXML Tab tabGezinInvoer;
+
+    //PERSOON
+    @FXML ComboBox cbPersonen;
+    @FXML TextField tfPersoonNr;
+    @FXML TextField tfVoornamen;
+    @FXML TextField tfTussenvoegsel;
+    @FXML TextField tfAchternaam;
+    @FXML TextField tfGeslacht;
+    @FXML TextField tfGebDatum;
+    @FXML TextField tfGebPlaats;
+    @FXML ComboBox cbOuderlijkGezin;
+    @FXML ListView lvAlsOuderBetrokkenBij;
+    @FXML Button btStamboom;
+
+    //INVOER GEZIN
+    @FXML ComboBox cbOuder1Invoer;
+    @FXML ComboBox cbOuder2Invoer;
+    @FXML TextField tfHuwelijkInvoer;
+    @FXML TextField tfScheidingInvoer;
+    @FXML Button btOKGezinInvoer;
+    @FXML Button btCancelGezinInvoer;
+
+    //opgave 4
+    private boolean withDatabase;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+<span class="nc" id="L66">        initComboboxes();</span>
+<span class="nc" id="L67">        String[] vnamen = new String[1];</span>
+<span class="nc" id="L68">        vnamen[0] = &quot;Stef&quot;;</span>
+<span class="nc" id="L69">        getAdministratie().addPersoon(Geslacht.MAN, vnamen, &quot;Philipsen&quot;, &quot;&quot;, Calendar.getInstance(), &quot;Ysselsteyn&quot;, null);</span>
+<span class="nc" id="L70">        withDatabase = false;</span>
+<span class="nc" id="L71">    }</span>
+
+    private void initComboboxes() {
+        //todo opgave 3
+<span class="nc" id="L75">        cbPersonen.setItems(getAdministratie().getPersonen());</span>
+<span class="nc" id="L76">        cbOuder1Invoer.setItems(getAdministratie().getPersonen());</span>
+<span class="nc" id="L77">        cbOuder2Invoer.setItems(getAdministratie().getPersonen());</span>
+<span class="nc" id="L78">        cbOuderlijkGezin.setItems(getAdministratie().getGezinnen());</span>
+<span class="nc" id="L79">    }</span>
+
+    public void selectPersoon(Event evt) {
+<span class="nc" id="L82">        Persoon persoon = (Persoon) cbPersonen.getSelectionModel().getSelectedItem();</span>
+<span class="nc" id="L83">        showPersoon(persoon);</span>
+<span class="nc" id="L84">    }</span>
+
+    private void showPersoon(Persoon persoon) {
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (persoon == null) {</span>
+<span class="nc" id="L88">            clearTabPersoon();</span>
+        } else {
+<span class="nc" id="L90">            tfPersoonNr.setText(persoon.getNr() + &quot;&quot;);</span>
+<span class="nc" id="L91">            tfVoornamen.setText(persoon.getVoornamen());</span>
+<span class="nc" id="L92">            tfTussenvoegsel.setText(persoon.getTussenvoegsel());</span>
+<span class="nc" id="L93">            tfAchternaam.setText(persoon.getAchternaam());</span>
+<span class="nc" id="L94">            tfGeslacht.setText(persoon.getGeslacht().toString());</span>
+<span class="nc" id="L95">            tfGebDatum.setText(StringUtilities.datumString(persoon.getGebDat()));</span>
+<span class="nc" id="L96">            tfGebPlaats.setText(persoon.getGebPlaats());</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (persoon.getOuderlijkGezin() != null) {</span>
+<span class="nc" id="L98">                cbOuderlijkGezin.getSelectionModel().select(persoon.getOuderlijkGezin());</span>
+            } else {
+<span class="nc" id="L100">                cbOuderlijkGezin.getSelectionModel().clearSelection();</span>
+            }
+
+            //todo opgave 3
+            //lvAlsOuderBetrokkenBij.setItems(persoon.getAlsOuderBetrokkenIn());
+        }
+<span class="nc" id="L106">    }</span>
+
+    public void setOuders(Event evt) {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (tfPersoonNr.getText().isEmpty()) {</span>
+<span class="nc" id="L110">            return;</span>
+        }
+<span class="nc" id="L112">        Gezin ouderlijkGezin = (Gezin) cbOuderlijkGezin.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (ouderlijkGezin == null) {</span>
+<span class="nc" id="L114">            return;</span>
+        }
+
+<span class="nc" id="L117">        int nr = Integer.parseInt(tfPersoonNr.getText());</span>
+<span class="nc" id="L118">        Persoon p = getAdministratie().getPersoon(nr);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if(getAdministratie().setOuders(p, ouderlijkGezin)){</span>
+<span class="nc" id="L120">            showDialog(&quot;Success&quot;, ouderlijkGezin.toString()</span>
+<span class="nc" id="L121">                + &quot; is nu het ouderlijk gezin van &quot; + p.getNaam());</span>
+        }
+        
+<span class="nc" id="L124">    }</span>
+
+    public void selectGezin(Event evt) {
+        // todo opgave 3
+
+<span class="nc" id="L129">    }</span>
+
+    private void showGezin(Gezin gezin) {
+        // todo opgave 3
+
+<span class="nc" id="L134">    }</span>
+
+    public void setHuwdatum(Event evt) {
+        // todo opgave 3
+
+<span class="nc" id="L139">    }</span>
+
+    public void setScheidingsdatum(Event evt) {
+        // todo opgave 3
+
+<span class="nc" id="L144">    }</span>
+
+    public void cancelPersoonInvoer(Event evt) {
+        // todo opgave 3
+
+<span class="nc" id="L149">    }</span>
+
+    public void okPersoonInvoer(Event evt) {
+        // todo opgave 3
+
+<span class="nc" id="L154">    }</span>
+
+    public void okGezinInvoer(Event evt) {
+<span class="nc" id="L157">        Persoon ouder1 = (Persoon) cbOuder1Invoer.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        if (ouder1 == null) {</span>
+<span class="nc" id="L159">            showDialog(&quot;Warning&quot;, &quot;eerste ouder is niet ingevoerd&quot;);</span>
+<span class="nc" id="L160">            return;</span>
+        }
+<span class="nc" id="L162">        Persoon ouder2 = (Persoon) cbOuder2Invoer.getSelectionModel().getSelectedItem();</span>
+        Calendar huwdatum;
+        try {
+<span class="nc" id="L165">            huwdatum = StringUtilities.datum(tfHuwelijkInvoer.getText());</span>
+<span class="nc" id="L166">        } catch (IllegalArgumentException exc) {</span>
+<span class="nc" id="L167">            showDialog(&quot;Warning&quot;, &quot;huwelijksdatum :&quot; + exc.getMessage());</span>
+<span class="nc" id="L168">            return;</span>
+<span class="nc" id="L169">        }</span>
+        Gezin g;
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (huwdatum != null) {</span>
+<span class="nc" id="L172">            g = getAdministratie().addHuwelijk(ouder1, ouder2, huwdatum);</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            if (g == null) {</span>
+<span class="nc" id="L174">                showDialog(&quot;Warning&quot;, &quot;Invoer huwelijk is niet geaccepteerd&quot;);</span>
+            } else {
+                Calendar scheidingsdatum;
+                try {
+<span class="nc" id="L178">                    scheidingsdatum = StringUtilities.datum(tfScheidingInvoer.getText());</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                    if(scheidingsdatum != null){</span>
+<span class="nc" id="L180">                        getAdministratie().setScheiding(g, scheidingsdatum);</span>
+                    }
+<span class="nc" id="L182">                } catch (IllegalArgumentException exc) {</span>
+<span class="nc" id="L183">                    showDialog(&quot;Warning&quot;, &quot;scheidingsdatum :&quot; + exc.getMessage());</span>
+<span class="nc" id="L184">                }</span>
+            }
+        } else {
+<span class="nc" id="L187">            g = getAdministratie().addOngehuwdGezin(ouder1, ouder2);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            if (g == null) {</span>
+<span class="nc" id="L189">                showDialog(&quot;Warning&quot;, &quot;Invoer ongehuwd gezin is niet geaccepteerd&quot;);</span>
+            }
+        }
+
+<span class="nc" id="L193">        clearTabGezinInvoer();</span>
+<span class="nc" id="L194">    }</span>
+
+    public void cancelGezinInvoer(Event evt) {
+<span class="nc" id="L197">        clearTabGezinInvoer();</span>
+<span class="nc" id="L198">    }</span>
+
+    
+    public void showStamboom(Event evt) {
+        // todo opgave 3
+        
+<span class="nc" id="L204">    }</span>
+
+    public void createEmptyStamboom(Event evt) {
+<span class="nc" id="L207">        this.clearAdministratie();</span>
+<span class="nc" id="L208">        clearTabs();</span>
+<span class="nc" id="L209">        initComboboxes();</span>
+<span class="nc" id="L210">    }</span>
+
+    
+    public void openStamboom(Event evt) {
+        // todo opgave 3
+       
+<span class="nc" id="L216">    }</span>
+
+    
+    public void saveStamboom(Event evt) {
+        // todo opgave 3
+       
+<span class="nc" id="L222">    }</span>
+
+    
+    public void closeApplication(Event evt) {
+<span class="nc" id="L226">        saveStamboom(evt);</span>
+<span class="nc" id="L227">        getStage().close();</span>
+<span class="nc" id="L228">    }</span>
+
+   
+    public void configureStorage(Event evt) {
+<span class="nc" id="L232">        withDatabase = cmDatabase.isSelected();</span>
+<span class="nc" id="L233">    }</span>
+
+ 
+    public void selectTab(Event evt) {
+<span class="nc" id="L237">        Object source = evt.getSource();</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        if (source == tabPersoon) {</span>
+<span class="nc" id="L239">            clearTabPersoon();</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">        } else if (source == tabGezin) {</span>
+<span class="nc" id="L241">            clearTabGezin();</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        } else if (source == tabPersoonInvoer) {</span>
+<span class="nc" id="L243">            clearTabPersoonInvoer();</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        } else if (source == tabGezinInvoer) {</span>
+<span class="nc" id="L245">            clearTabGezinInvoer();</span>
+        }
+<span class="nc" id="L247">    }</span>
+
+    private void clearTabs() {
+<span class="nc" id="L250">        clearTabPersoon();</span>
+<span class="nc" id="L251">        clearTabPersoonInvoer();</span>
+<span class="nc" id="L252">        clearTabGezin();</span>
+<span class="nc" id="L253">        clearTabGezinInvoer();</span>
+<span class="nc" id="L254">    }</span>
+
+    
+    private void clearTabPersoonInvoer() {
+        //todo opgave 3
+        
+<span class="nc" id="L260">    }</span>
+
+    
+    private void clearTabGezinInvoer() {
+        //todo opgave 3
+    
+<span class="nc" id="L266">    }</span>
+
+    private void clearTabPersoon() {
+<span class="nc" id="L269">        cbPersonen.getSelectionModel().clearSelection();</span>
+<span class="nc" id="L270">        tfPersoonNr.clear();</span>
+<span class="nc" id="L271">        tfVoornamen.clear();</span>
+<span class="nc" id="L272">        tfTussenvoegsel.clear();</span>
+<span class="nc" id="L273">        tfAchternaam.clear();</span>
+<span class="nc" id="L274">        tfGeslacht.clear();</span>
+<span class="nc" id="L275">        tfGebDatum.clear();</span>
+<span class="nc" id="L276">        tfGebPlaats.clear();</span>
+<span class="nc" id="L277">        cbOuderlijkGezin.getSelectionModel().clearSelection();</span>
+<span class="nc" id="L278">        lvAlsOuderBetrokkenBij.setItems(FXCollections.emptyObservableList());</span>
+<span class="nc" id="L279">    }</span>
+
+    
+    private void clearTabGezin() {
+        // todo opgave 3
+       
+<span class="nc" id="L285">    }</span>
+
+    private void showDialog(String type, String message) {
+<span class="nc" id="L288">        Stage myDialog = new Dialog(getStage(), type, message);</span>
+<span class="nc" id="L289">        myDialog.show();</span>
+<span class="nc" id="L290">    }</span>
+
+    private Stage getStage() {
+<span class="nc" id="L293">        return (Stage) menuBar.getScene().getWindow();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

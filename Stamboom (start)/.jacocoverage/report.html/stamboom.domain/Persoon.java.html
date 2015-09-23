@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Persoon.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;StamboomProject&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">stamboom.domain</a> &gt; <span class="el_source">Persoon.java</span></div><h1>Persoon.java</h1><pre class="source lang-java linenums">package stamboom.domain;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import stamboom.util.StringUtilities;
+
+public class Persoon implements Serializable {
+
+    // ********datavelden**************************************
+    private final int nr;
+    private final String[] voornamen;
+    private final String achternaam;
+    private final String tussenvoegsel;
+    private final Calendar gebDat;
+    private final String gebPlaats;
+    private Gezin ouderlijkGezin;
+    private final List&lt;Gezin&gt; alsOuderBetrokkenIn;
+    private final Geslacht geslacht;
+    
+    private final ObservableList&lt;Gezin&gt; observableAlsOuderBetrokkenIn;
+
+    // ********constructoren***********************************
+    /**
+     * er wordt een persoon gecreeerd met persoonsnummer persNr en met als
+     * voornamen vnamen, achternaam anaam, tussenvoegsel tvoegsel, geboortedatum
+     * gebdat, gebplaats, geslacht g en een gegeven ouderlijk gezin (mag null
+     * (=onbekend) zijn); NB. de eerste letter van een voornaam, achternaam en
+     * gebplaats wordt naar een hoofdletter omgezet, alle andere letters zijn
+     * kleine letters; het tussenvoegsel is zo nodig in zijn geheel
+     * geconverteerd naar kleine letters.
+     *
+     */
+    Persoon(int persNr, String[] vnamen, String anaam, String tvoegsel,
+<span class="fc" id="L40">            Calendar gebdat, String gebplaats, Geslacht g, Gezin ouderlijkGezin) {</span>
+        //todo opgave 1
+        //throw new UnsupportedOperationException();
+<span class="fc" id="L43">        this.nr = persNr;</span>
+<span class="fc" id="L44">        this.voornamen = vnamen;</span>
+<span class="fc" id="L45">        this.achternaam = anaam;</span>
+<span class="fc" id="L46">        this.tussenvoegsel = tvoegsel;</span>
+<span class="fc" id="L47">        this.gebDat = gebdat;</span>
+<span class="fc" id="L48">        this.gebPlaats = gebplaats;</span>
+<span class="fc" id="L49">        this.geslacht = g;</span>
+<span class="fc" id="L50">        this.ouderlijkGezin = ouderlijkGezin;       </span>
+<span class="fc" id="L51">        this.alsOuderBetrokkenIn = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L52">        this.observableAlsOuderBetrokkenIn = FXCollections.observableList(alsOuderBetrokkenIn);</span>
+<span class="fc" id="L53">    }</span>
+
+    // ********methoden****************************************
+    /**
+     * @return de achternaam van deze persoon
+     */
+    public String getAchternaam() {
+<span class="fc" id="L60">        return achternaam;</span>
+    }
+
+    /**
+     * @return de geboortedatum van deze persoon
+     */
+    public Calendar getGebDat() {
+<span class="fc" id="L67">        return gebDat;</span>
+    }
+
+    /**
+     *
+     * @return de geboorteplaats van deze persoon
+     */
+    public String getGebPlaats() {
+<span class="fc" id="L75">        return gebPlaats;</span>
+    }
+
+    /**
+     *
+     * @return het geslacht van deze persoon
+     */
+    public Geslacht getGeslacht() {
+<span class="fc" id="L83">        return geslacht;</span>
+    }
+
+    /**
+     *
+     * @return de voorletters van de voornamen; elke voorletter wordt gevolgd
+     * door een punt
+     */
+    public String getInitialen() {
+        //todo opgave 1
+        // initialiseert een StringBuilder class.
+<span class="fc" id="L94">        StringBuilder initialen = new StringBuilder();</span>
+        // Gaat door de array met voornamen.
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        for (String vnaam : this.voornamen)</span>
+        {
+            // Pakt de eerste letter van de voornaam en voegt een punt eraan toe
+            // en voegt deze vervolgens toe aan de StringBuilder class.
+<span class="fc" id="L100">            initialen.append(vnaam.substring(0,1)).append(&quot;.&quot;);</span>
+        }
+        // Zet de opgebouwde string in stringBuilder om naar een string.
+<span class="fc" id="L103">        return initialen.toString();</span>
+    }
+
+    /**
+     *
+     * @return de initialen gevolgd door een eventueel tussenvoegsel en
+     * afgesloten door de achternaam; initialen, voorzetsel en achternaam zijn
+     * gescheiden door een spatie
+     */
+    public String getNaam() {
+        //todo opgave 1
+        // Controleert of het tussenvoegsel leeg is of niet.
+<span class="fc" id="L115">        String result = &quot;&quot;;</span>
+        
+<span class="pc bpc" id="L117" title="1 of 4 branches missed.">        if (this.tussenvoegsel.equals(&quot;&quot;) || this.tussenvoegsel.equals(&quot; &quot;)) {</span>
+<span class="fc" id="L118">            result = this.getInitialen() + &quot; &quot; + this.achternaam;</span>
+        } else {
+<span class="fc" id="L120">            result = this.getInitialen() + &quot; &quot; + this.tussenvoegsel + &quot; &quot; + this.achternaam;</span>
+        }       
+<span class="fc" id="L122">        return result;</span>
+    }
+
+    /**
+     * @return het nummer van deze persoon
+     */
+    public int getNr() {
+<span class="fc" id="L129">        return nr;</span>
+    }
+
+    /**
+     * @return het ouderlijk gezin van deze persoon, indien bekend, anders null
+     */
+    public Gezin getOuderlijkGezin() {
+<span class="fc" id="L136">        return ouderlijkGezin;</span>
+    }
+
+    /**
+     * @return het tussenvoegsel van de naam van deze persoon (kan een lege
+     * string zijn)
+     */
+    public String getTussenvoegsel() {
+<span class="fc" id="L144">        return tussenvoegsel;</span>
+    }
+
+    /**
+     * @return alle voornamen onderling gescheiden door een spatie
+     */
+    public String getVoornamen() {
+<span class="fc" id="L151">        StringBuilder init = new StringBuilder();</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        for (String s : voornamen) {</span>
+<span class="fc" id="L153">            init.append(s).append(' ');</span>
+        }
+<span class="fc" id="L155">        return init.toString().trim();</span>
+    }
+
+    /**
+     * @return de standaardgegevens van deze mens: naam (geslacht) geboortedatum
+     */
+    public String standaardgegevens() {
+<span class="fc" id="L162">        return getNaam() + &quot; (&quot; + getGeslacht() + &quot;) &quot; + StringUtilities.datumString(gebDat);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L167">        return standaardgegevens();</span>
+    }
+
+    /**
+     * @return de gezinnen waar deze persoon bij betrokken is
+     */
+    public List&lt;Gezin&gt; getAlsOuderBetrokkenIn() {
+<span class="fc" id="L174">        return FXCollections.unmodifiableObservableList(observableAlsOuderBetrokkenIn);</span>
+    }
+
+    /**
+     * Als het ouderlijk gezin van deze persoon nog onbekend is dan wordt deze
+     * persoon een kind van ouderlijkGezin en tevens wordt deze persoon als kind
+     * in dat gezin geregistreerd Als de ouders bij aanroep al bekend zijn,
+     * verandert er niets
+     *
+     * @param ouderlijkGezin
+     * @return of ouderlijk gezin kon worden toegevoegd
+     */
+    boolean setOuders(Gezin ouderlijkGezin) {
+        //todo opgave 1
+<span class="fc" id="L188">        boolean result = false;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (this.ouderlijkGezin == null)</span>
+        {
+<span class="fc" id="L191">            this.ouderlijkGezin = ouderlijkGezin;</span>
+<span class="fc" id="L192">            ouderlijkGezin.breidUitMet(this);</span>
+<span class="fc" id="L193">            result = true;</span>
+        }
+<span class="fc" id="L195">        return result;</span>
+    }
+
+    /**
+     * @return voornamen, eventueel tussenvoegsel en achternaam, geslacht,
+     * geboortedatum, namen van de ouders, mits bekend, en nummers van de
+     * gezinnen waarbij deze persoon betrokken is (geweest)
+     */
+    public String beschrijving() {
+<span class="nc" id="L204">        StringBuilder sb = new StringBuilder();</span>
+
+<span class="nc" id="L206">        sb.append(standaardgegevens());</span>
+
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        if (ouderlijkGezin != null) {</span>
+<span class="nc" id="L209">            sb.append(&quot;; 1e ouder: &quot;).append(ouderlijkGezin.getOuder1().getNaam());</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">            if (ouderlijkGezin.getOuder2() != null) {</span>
+<span class="nc" id="L211">                sb.append(&quot;; 2e ouder: &quot;).append(ouderlijkGezin.getOuder2().getNaam());</span>
+            }
+        }
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (!alsOuderBetrokkenIn.isEmpty()) {</span>
+<span class="nc" id="L215">            sb.append(&quot;; is ouder in gezin &quot;);</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">            for (Gezin g : alsOuderBetrokkenIn) {</span>
+<span class="nc" id="L218">                sb.append(g.getNr()).append(&quot; &quot;);</span>
+<span class="nc" id="L219">            }</span>
+        }
+
+<span class="nc" id="L222">        return sb.toString();</span>
+    }
+
+    /**
+     * als g nog niet bij deze persoon staat geregistreerd wordt g bij deze
+     * persoon geregistreerd en anders verandert er niets
+     *
+     * @param g een nieuw gezin waarin deze persoon een ouder is
+     *
+     */
+    void wordtOuderIn(Gezin g) {
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">        if (!alsOuderBetrokkenIn.contains(g)) {</span>
+<span class="fc" id="L234">            alsOuderBetrokkenIn.add(g);</span>
+        }
+<span class="fc" id="L236">    }</span>
+
+    /**
+     *
+     *
+     * @param andereOuder mag null zijn
+     * @return het ongehuwde gezin met de andere ouder ; mits bestaand anders
+     * null
+     */
+    public Gezin heeftOngehuwdGezinMet(Persoon andereOuder) {
+        //todo opgave 1
+<span class="fc" id="L247">        Gezin result = null;</span>
+        
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        for (Gezin g : this.alsOuderBetrokkenIn)</span>
+        {
+<span class="fc bfc" id="L251" title="All 4 branches covered.">            if (g.isOngehuwd() &amp;&amp; g.getOuder2() != null</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">                &amp;&amp; (g.getOuder2().equals(andereOuder) </span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">                    || g.getOuder1().equals(andereOuder))) {</span>
+<span class="fc" id="L254">            result = g;</span>
+<span class="fc" id="L255">            return result;  </span>
+            }
+<span class="fc" id="L257">        }</span>
+<span class="fc" id="L258">        return result;</span>
+    }
+
+    /**
+     *
+     * @param datum
+     * @return true als persoon op datum getrouwd is, anders false
+     */
+    public boolean isGetrouwdOp(Calendar datum) {
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        for (Gezin gezin : alsOuderBetrokkenIn) {</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">            if (gezin.heeftGetrouwdeOudersOp(datum)) {</span>
+<span class="fc" id="L269">                return true;</span>
+            }
+<span class="fc" id="L271">        }</span>
+<span class="fc" id="L272">        return false;</span>
+    }
+
+    /**
+     *
+     * @param datum
+     * @return true als de persoon kan trouwen op datum, hierbij wordt rekening
+     * gehouden met huwelijken in het verleden en in de toekomst
+     * Alleen meerderjarige (18+) personen kunnen trouwen.
+     */
+    public boolean kanTrouwenOp(Calendar datum) {
+<span class="nc" id="L283">        Calendar meerderjarigDatum = ((GregorianCalendar)this.gebDat.clone());</span>
+<span class="nc" id="L284">        meerderjarigDatum.add(Calendar.YEAR, 18);</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">        if(datum.compareTo(meerderjarigDatum) &lt; 1){</span>
+<span class="nc" id="L286">            return false;</span>
+        }
+
+<span class="nc bnc" id="L289" title="All 2 branches missed.">        for (Gezin gezin : alsOuderBetrokkenIn) {</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">            if (gezin.heeftGetrouwdeOudersOp(datum)) {</span>
+<span class="nc" id="L291">                return false;</span>
+            } else {
+<span class="nc" id="L293">                Calendar huwdatum = gezin.getHuwelijksdatum();</span>
+<span class="nc bnc" id="L294" title="All 4 branches missed.">                if (huwdatum != null &amp;&amp; huwdatum.after(datum)) {</span>
+<span class="nc" id="L295">                    return false;</span>
+                }
+            }
+<span class="nc" id="L298">        }</span>
+<span class="nc" id="L299">        return true;</span>
+    }
+
+    /**
+     *
+     * @param datum
+     * @return true als persoon op datum gescheiden is, anders false
+     */
+    public boolean isGescheidenOp(Calendar datum) {
+        //todo opgave 1
+<span class="fc" id="L309">        boolean result = false;</span>
+        
+<span class="fc bfc" id="L311" title="All 2 branches covered.">        for (Gezin g : this.getAlsOuderBetrokkenIn())</span>
+        {
+<span class="fc" id="L313">            Calendar calendar = g.getScheidingsdatum();</span>
+            
+<span class="fc bfc" id="L315" title="All 4 branches covered.">            if (g.getScheidingsdatum() != null &amp;&amp; calendar.before(datum))</span>
+            {
+<span class="fc" id="L317">                result = true;</span>
+<span class="fc" id="L318">                return result;</span>
+            }
+<span class="fc" id="L320">        }</span>
+<span class="fc" id="L321">        return result;</span>
+    }
+
+    /**
+     * ********* de rest wordt in opgave 2 verwerkt ****************
+     */
+    /**
+     *
+     * @return het aantal personen in de stamboom van deze persoon (ouders,
+     * grootouders etc); de persoon zelf telt ook mee
+     */
+    public int afmetingStamboom() {
+        //todo opgave 2
+        // recursie implementatie:
+        // Als het ouderlijkGezin van de desbetreffende instantie van
+        // het object niet null is, dan wordt er gekeken of de ouders
+        // van het object bekend zijn. Als deze bekend zijn, wordt de
+        // afmetingStamboom methode weer aangeroepen op de ouders van
+        // dit object. 
+        // De stopconditie is als er geen ouderlijkgezin gevonden wordt.
+<span class="fc" id="L341">        int aantal = 1;</span>
+        
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        if (ouderlijkGezin != null) {</span>
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">            if (ouderlijkGezin.getOuder1() != null) {</span>
+<span class="fc" id="L345">                aantal += ouderlijkGezin.getOuder1().afmetingStamboom();</span>
+            }
+<span class="fc bfc" id="L347" title="All 2 branches covered.">            if (ouderlijkGezin.getOuder2() != null) {</span>
+<span class="fc" id="L348">                aantal += ouderlijkGezin.getOuder2().afmetingStamboom();</span>
+            }
+        }        
+<span class="fc" id="L351">        return aantal;</span>
+    }
+
+    /**
+     * de lijst met de items uit de stamboom van deze persoon wordt toegevoegd
+     * aan lijst, dat wil zeggen dat begint met de toevoeging van de
+     * standaardgegevens van deze persoon behorende bij generatie g gevolgd door
+     * de items uit de lijst met de stamboom van de eerste ouder (mits bekend)
+     * en gevolgd door de items uit de lijst met de stamboom van de tweede ouder
+     * (mits bekend) (het generatienummer van de ouders is steeds 1 hoger)
+     *
+     * @param lijst
+     * @param g &gt;=0, het nummer van de generatie waaraan deze persoon is
+     * toegewezen;
+     */
+    void voegJouwStamboomToe(ArrayList&lt;PersoonMetGeneratie&gt; lijst, int g) {
+        //todo opgave 2
+<span class="fc" id="L368">        lijst.add(new PersoonMetGeneratie(this.standaardgegevens(), g));</span>
+        
+<span class="fc" id="L370">        Persoon ouder1 = null, ouder2 = null;</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">        if (this.getOuderlijkGezin() != null)</span>
+        {
+<span class="fc" id="L373">            ouder1 = this.getOuderlijkGezin().getOuder1();</span>
+<span class="fc" id="L374">            ouder2 = this.getOuderlijkGezin().getOuder2();</span>
+        }
+        
+<span class="fc bfc" id="L377" title="All 2 branches covered.">        if (ouder1 != null)</span>
+<span class="fc" id="L378">            ouder1.voegJouwStamboomToe(lijst, g + 1);</span>
+        
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        if (ouder2 != null)</span>
+<span class="fc" id="L381">            ouder2.voegJouwStamboomToe(lijst, g + 1);</span>
+<span class="fc" id="L382">    }</span>
+
+    /**
+     *
+     * @return de stamboomgegevens van deze persoon in de vorm van een String:
+     * op de eerste regel de standaardgegevens van deze persoon, gevolgd door de
+     * stamboomgegevens van de eerste ouder (mits bekend) en gevolgd door de
+     * stamboomgegevens van de tweede ouder (mits bekend); formattering: iedere
+     * persoon staat op een aparte regel en afhankelijk van het
+     * generatieverschil worden er per persoon 2*generatieverschil spaties
+     * ingesprongen;
+     *
+     * bijv voor M.G. Pieterse met ouders, grootouders en overgrootouders,
+     * inspringen is in dit geval met underscore gemarkeerd: &lt;br&gt;
+     *
+     * M.G. Pieterse (VROUW) 5-5-2004&lt;br&gt;
+     * __L. van Maestricht (MAN) 27-6-1953&lt;br&gt;
+     * ____A.G. von Bisterfeld (VROUW) 13-4-1911&lt;br&gt;
+     * ______I.T.M.A. Goldsmid (VROUW) 22-12-1876&lt;br&gt;
+     * ______F.A.I. von Bisterfeld (MAN) 27-6-1874&lt;br&gt;
+     * ____H.C. van Maestricht (MAN) 17-2-1909&lt;br&gt;
+     * __J.A. Pieterse (MAN) 23-6-1964&lt;br&gt;
+     * ____M.A.C. Hagel (VROUW) 12-0-1943&lt;br&gt;
+     * ____J.A. Pieterse (MAN) 4-8-1923&lt;br&gt;
+     */
+    public String stamboomAlsString() {
+<span class="fc" id="L408">        StringBuilder builder = new StringBuilder();</span>
+        //todo opgave 2    
+<span class="fc" id="L410">        ArrayList&lt;PersoonMetGeneratie&gt; lijst = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L411">        voegJouwStamboomToe(lijst, 0);</span>
+        
+<span class="fc bfc" id="L413" title="All 2 branches covered.">        for (PersoonMetGeneratie persoon : lijst) </span>
+        {
+<span class="fc bfc" id="L415" title="All 2 branches covered.">            for (int i = 0; i &lt; persoon.getGeneratie(); i++)</span>
+            {
+<span class="fc" id="L417">                builder.append(&quot;  &quot;);</span>
+            }
+            // niet grappige implementatie binnen de test, voor windows
+            // moet er &quot;\r\n&quot; gebruikt worden om deze methode fatsoenlijk
+            // te laten werken doordat Strings gesplit worden door een
+            // line.separator
+<span class="fc" id="L423">            String p = persoon.getPersoonsgegevens().trim() + &quot;\r\n&quot;;</span>
+<span class="fc" id="L424">            builder.append(p);</span>
+<span class="fc" id="L425">        }       </span>
+<span class="fc" id="L426">        return builder.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -23,7 +23,7 @@ public class Persoon implements Serializable {
     private final List<Gezin> alsOuderBetrokkenIn;
     private final Geslacht geslacht;
     
-    private final ObservableList<Gezin> observableAlsOuderBetrokkenIn;
+    private final transient ObservableList<Gezin> observableAlsOuderBetrokkenIn;
 
     // ********constructoren***********************************
     /**

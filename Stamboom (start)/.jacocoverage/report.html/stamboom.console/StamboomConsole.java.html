@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StamboomConsole.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;StamboomProject&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">stamboom.console</a> &gt; <span class="el_source">StamboomConsole.java</span></div><h1>StamboomConsole.java</h1><pre class="source lang-java linenums">package stamboom.console;
+
+import java.io.File;
+import java.io.IOException;
+//import java.nio.file.Path;
+import stamboom.domain.*;
+import java.util.*;
+import stamboom.util.StringUtilities;
+import stamboom.controller.StamboomController;
+//import stamboom.storage.SerializationMediator;
+
+public class StamboomConsole {
+
+    // **********datavelden**********************************************
+    private final Scanner input;
+    private final StamboomController controller;
+
+    // **********constructoren*******************************************
+<span class="nc" id="L19">    public StamboomConsole(StamboomController controller) {</span>
+<span class="nc" id="L20">        input = new Scanner(System.in);</span>
+<span class="nc" id="L21">        this.controller = controller;</span>
+<span class="nc" id="L22">        this.startMenu();</span>
+<span class="nc" id="L23">    }</span>
+
+    // ***********methoden***********************************************
+    public void startMenu() {
+<span class="nc" id="L27">        MenuItem choice = kiesMenuItem();</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        while (choice != MenuItem.EXIT) {</span>
+<span class="nc bnc" id="L29" title="All 10 branches missed.">            switch (choice) {</span>
+                case NEW_PERS:
+<span class="nc" id="L31">                    invoerNieuwePersoon();</span>
+<span class="nc" id="L32">                    break;</span>
+                case NEW_ONGEHUWD_GEZIN:
+<span class="nc" id="L34">                    invoerNieuwGezin();</span>
+<span class="nc" id="L35">                    break;</span>
+                case NEW_HUWELIJK:
+<span class="nc" id="L37">                    invoerHuwelijk();</span>
+<span class="nc" id="L38">                    break;</span>
+                case SCHEIDING:
+<span class="nc" id="L40">                    invoerScheiding();</span>
+<span class="nc" id="L41">                    break;</span>
+                case SHOW_PERS:
+<span class="nc" id="L43">                    toonPersoonsgegevens();</span>
+<span class="nc" id="L44">                    break;</span>
+                case SHOW_GEZIN:
+<span class="nc" id="L46">                    toonGezinsgegevens();</span>
+<span class="nc" id="L47">                    break;</span>
+                // Toegevoegde menu items
+                case SHOW_STAMBOOM:
+<span class="nc" id="L50">                    toonStamboomgegevens();</span>
+<span class="nc" id="L51">                    break;</span>
+                case SAVE_STAMBOOM:
+<span class="nc" id="L53">                    slaStamboomOp();</span>
+<span class="nc" id="L54">                    break;</span>
+                case OPEN_STAMBOOM:
+<span class="nc" id="L56">                    openStamboom();</span>
+                    break;
+            }
+<span class="nc" id="L59">            choice = kiesMenuItem();</span>
+        }
+<span class="nc" id="L61">    }</span>
+
+    Administratie getAdmin() {
+<span class="nc" id="L64">        return controller.getAdministratie();</span>
+    }
+
+    void invoerNieuwePersoon() {
+<span class="nc" id="L68">        Geslacht geslacht = null;</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        while (geslacht == null) {</span>
+<span class="nc" id="L70">            String g = readString(&quot;wat is het geslacht (m/v)&quot;);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (g.toLowerCase().charAt(0) == 'm') {</span>
+<span class="nc" id="L72">                geslacht = Geslacht.MAN;</span>
+            }
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (g.toLowerCase().charAt(0) == 'v') {</span>
+<span class="nc" id="L75">                geslacht = Geslacht.VROUW;</span>
+            }
+<span class="nc" id="L77">        }</span>
+
+        String[] vnamen;
+<span class="nc" id="L80">        vnamen = readString(&quot;voornamen gescheiden door spatie&quot;).split(&quot; &quot;);</span>
+
+        String tvoegsel;
+<span class="nc" id="L83">        tvoegsel = readString(&quot;tussenvoegsel&quot;);</span>
+
+        String anaam;
+<span class="nc" id="L86">        anaam = readString(&quot;achternaam&quot;);</span>
+
+        Calendar gebdat;
+<span class="nc" id="L89">        gebdat = readDate(&quot;geboortedatum&quot;);</span>
+
+        String gebplaats;
+<span class="nc" id="L92">        gebplaats = readString(&quot;geboorteplaats&quot;);</span>
+
+        Gezin ouders;
+<span class="nc" id="L95">        toonGezinnen();</span>
+<span class="nc" id="L96">        String gezinsString = readString(&quot;gezinsnummer van eventueel ouderlijk gezin&quot;);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (gezinsString.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L98">            ouders = null;</span>
+        } else {
+<span class="nc" id="L100">            ouders = getAdmin().getGezin(Integer.parseInt(gezinsString));</span>
+        }
+
+<span class="nc" id="L103">        getAdmin().addPersoon(geslacht, vnamen, anaam, tvoegsel, gebdat,</span>
+                gebplaats, ouders);
+<span class="nc" id="L105">    }</span>
+
+    void invoerNieuwGezin() {
+<span class="nc" id="L108">        System.out.println(&quot;wie is de eerste partner?&quot;);</span>
+<span class="nc" id="L109">        Persoon partner1 = selecteerPersoon();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (partner1 == null) {</span>
+<span class="nc" id="L111">            System.out.println(&quot;onjuiste invoer eerste partner&quot;);</span>
+<span class="nc" id="L112">            return;</span>
+        }
+<span class="nc" id="L114">        System.out.println(&quot;wie is de tweede partner?&quot;);</span>
+<span class="nc" id="L115">        Persoon partner2 = selecteerPersoon();</span>
+<span class="nc" id="L116">        Gezin gezin = getAdmin().addOngehuwdGezin(partner1, partner2);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (gezin == null) {</span>
+<span class="nc" id="L118">            System.out.println(&quot;gezin is niet geaccepteerd&quot;);</span>
+        }
+<span class="nc" id="L120">    }</span>
+
+    void invoerHuwelijk() {
+<span class="nc" id="L123">        System.out.println(&quot;wie is de eerste partner?&quot;);</span>
+<span class="nc" id="L124">        Persoon partner1 = selecteerPersoon();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (partner1 == null) {</span>
+<span class="nc" id="L126">            System.out.println(&quot;onjuiste invoer eerste partner&quot;);</span>
+<span class="nc" id="L127">            return;</span>
+        }
+<span class="nc" id="L129">        System.out.println(&quot;wie is de tweede partner?&quot;);</span>
+<span class="nc" id="L130">        Persoon partner2 = selecteerPersoon();</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (partner2 == null) {</span>
+<span class="nc" id="L132">            System.out.println(&quot;onjuiste invoer tweede partner&quot;);</span>
+<span class="nc" id="L133">            return;</span>
+        }
+<span class="nc" id="L135">        Calendar datum = readDate(&quot;datum van huwelijk&quot;);</span>
+<span class="nc" id="L136">        Gezin g = getAdmin().addHuwelijk(partner1, partner2, datum);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (g == null) {</span>
+<span class="nc" id="L138">            System.out.println(&quot;huwelijk niet voltrokken&quot;);</span>
+        }
+<span class="nc" id="L140">    }</span>
+
+    void invoerScheiding() {
+<span class="nc" id="L143">        selecteerGezin();</span>
+<span class="nc" id="L144">        int gezinsNr = readInt(&quot;kies gezinsnummer&quot;);</span>
+<span class="nc" id="L145">        input.nextLine();</span>
+<span class="nc" id="L146">        Calendar datum = readDate(&quot;datum van scheiding&quot;);</span>
+<span class="nc" id="L147">        Gezin g = getAdmin().getGezin(gezinsNr);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (g != null) {</span>
+<span class="nc" id="L149">            boolean gelukt = getAdmin().setScheiding(g,datum);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">            if (!gelukt) {</span>
+<span class="nc" id="L151">                System.out.println(&quot;scheiding niet geaccepteerd&quot;);</span>
+            }
+<span class="nc" id="L153">        } else {</span>
+<span class="nc" id="L154">            System.out.println(&quot;gezin onbekend&quot;);</span>
+        }
+<span class="nc" id="L156">    }</span>
+    
+    // toont de gemaakte stamboom
+    void toonStamboomgegevens() { 
+<span class="nc" id="L160">        Persoon persoon = null;</span>
+        do
+        {
+<span class="nc" id="L163">            persoon = selecteerPersoon();          </span>
+        } 
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        while (persoon == null);        </span>
+<span class="nc" id="L166">        System.out.println(persoon.stamboomAlsString());</span>
+<span class="nc" id="L167">    }</span>
+    
+    // Slaat de stamboom op
+    void slaStamboomOp() {
+<span class="nc" id="L171">        String filePath = &quot;&quot;;      </span>
+        do 
+        {
+<span class="nc" id="L174">            System.out.println(&quot;Opslag locatie invoeren:&quot;);       </span>
+<span class="nc" id="L175">            filePath = input.next().trim();  </span>
+            
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            if (!&quot;\\&quot;.equals(filePath.substring(filePath.length() - 1)))</span>
+<span class="nc" id="L178">                filePath = filePath + &quot;\\&quot;;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        } while (filePath.equals(&quot;&quot;));</span>
+        
+<span class="nc" id="L181">        File maakDir = new File(filePath);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (maakDir.exists() == false)</span>
+<span class="nc" id="L183">            maakDir.mkdirs();</span>
+
+<span class="nc" id="L185">        String fileName = &quot;&quot;;</span>
+        do 
+        {
+<span class="nc" id="L188">            System.out.println(&quot;Bestands naam invoeren:&quot;);       </span>
+<span class="nc" id="L189">            fileName = input.next().trim();  </span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        } while (fileName.equals(&quot;&quot;));       </span>
+        
+<span class="nc" id="L192">        File file = new File(filePath + fileName + &quot;.ser&quot;);</span>
+        try {
+<span class="nc" id="L194">            controller.serialize(file);</span>
+<span class="nc" id="L195">        } catch (IOException e) {</span>
+<span class="nc" id="L196">            System.out.println(&quot;opslaan van administratie mislukt!&quot;);</span>
+<span class="nc" id="L197">            e.printStackTrace();</span>
+<span class="nc" id="L198">        }</span>
+<span class="nc" id="L199">    }</span>
+    
+    // Opent een stamboom
+    void openStamboom() {
+<span class="nc" id="L203">        String filePath = &quot;&quot;;      </span>
+        do 
+        {
+<span class="nc" id="L206">            System.out.println(&quot;bestands locatie invoeren:&quot;);       </span>
+<span class="nc" id="L207">            filePath = input.next().trim();  </span>
+            
+<span class="nc bnc" id="L209" title="All 2 branches missed.">            if (!&quot;\\&quot;.equals(filePath.substring(filePath.length() - 1)))</span>
+<span class="nc" id="L210">                filePath = filePath + &quot;\\&quot;;            </span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        } while (filePath.equals(&quot;&quot;));</span>
+        
+        // uitvoering van een recursieve methode
+<span class="nc" id="L214">        System.out.println(&quot;De volgende bestanden zijn aanwezig:&quot;);</span>
+<span class="nc" id="L215">        toonDirectoryInhoud(filePath);</span>
+
+<span class="nc" id="L217">        String fileName = &quot;&quot;;</span>
+        do 
+        {
+<span class="nc" id="L220">            System.out.println(&quot;Bestands naam invoeren:&quot;);       </span>
+<span class="nc" id="L221">            fileName = input.next().trim();  </span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">        } while (fileName.equals(&quot;&quot;));       </span>
+        
+<span class="nc" id="L224">        File file = new File(filePath + fileName + &quot;.ser&quot;);        </span>
+        try {
+<span class="nc" id="L226">            controller.deserialize(file);</span>
+<span class="nc" id="L227">        } catch (IOException e) {</span>
+<span class="nc" id="L228">            System.out.println(&quot;Openen van administratie bestand mislukt!&quot;);</span>
+<span class="nc" id="L229">            e.printStackTrace();</span>
+<span class="nc" id="L230">        }        </span>
+<span class="nc" id="L231">    }</span>
+    
+    // extra recursieve toevoeging
+    void toonDirectoryInhoud(String filePath)
+    {
+<span class="nc" id="L236">        File root = new File(filePath);</span>
+<span class="nc" id="L237">        File[] list = root.listFiles();</span>
+
+<span class="nc bnc" id="L239" title="All 2 branches missed.">        if (list == null) return;</span>
+
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        for (File f : list) {</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">            if (f.isDirectory()) {</span>
+<span class="nc" id="L243">                toonDirectoryInhoud(f.getAbsolutePath());</span>
+<span class="nc" id="L244">                System.out.println(&quot;Dir:&quot; + f.getAbsoluteFile());</span>
+            }
+            else {
+<span class="nc" id="L247">                System.out.println(&quot;File:&quot; + f.getAbsoluteFile());</span>
+            }
+        }
+<span class="nc" id="L250">    }</span>
+
+    Persoon selecteerPersoon() {
+<span class="nc" id="L253">        String naam = readString(&quot;wat is de achternaam&quot;);</span>
+<span class="nc" id="L254">        ArrayList&lt;Persoon&gt; personen = getAdmin().getPersonenMetAchternaam(naam);</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        for (Persoon p : personen) {</span>
+<span class="nc" id="L256">            System.out.println(p.getNr() + &quot;\t&quot; + p.getNaam() + &quot; &quot; + datumString(p.getGebDat()));</span>
+<span class="nc" id="L257">        }</span>
+<span class="nc" id="L258">        int invoer = readInt(&quot;selecteer persoonsnummer&quot;);</span>
+<span class="nc" id="L259">        input.nextLine();</span>
+<span class="nc" id="L260">        Persoon p = getAdmin().getPersoon(invoer);</span>
+<span class="nc" id="L261">        return p;</span>
+    }
+
+    Gezin selecteerGezin() {
+<span class="nc" id="L265">        String naam = readString(&quot;gezin van persoon met welke achternaam&quot;);</span>
+<span class="nc" id="L266">        ArrayList&lt;Persoon&gt; kandidaten = getAdmin().getPersonenMetAchternaam(naam);</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">        for (Persoon p : kandidaten) {</span>
+<span class="nc" id="L268">            List&lt;Gezin&gt; gezinnen = p.getAlsOuderBetrokkenIn();</span>
+<span class="nc" id="L269">            System.out.print(p.getNr() + &quot;\t&quot; + p.getNaam() + &quot; &quot; + datumString(p.getGebDat()));</span>
+<span class="nc" id="L270">            System.out.print(&quot; gezinnen: &quot;);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            for (Gezin gezin : gezinnen){</span>
+<span class="nc" id="L272">                System.out.print(&quot; &quot; + gezin.getNr());</span>
+<span class="nc" id="L273">            }</span>
+<span class="nc" id="L274">            System.out.println();</span>
+<span class="nc" id="L275">        }</span>
+<span class="nc" id="L276">        int invoer = readInt(&quot;selecteer gezinsnummer&quot;);</span>
+<span class="nc" id="L277">        input.nextLine();</span>
+<span class="nc" id="L278">        return getAdmin().getGezin(invoer);</span>
+    }
+
+    MenuItem kiesMenuItem() {
+<span class="nc" id="L282">        System.out.println();</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">        for (MenuItem m : MenuItem.values()) {</span>
+<span class="nc" id="L284">            System.out.println(m.ordinal() + &quot;\t&quot; + m.getOmschr());</span>
+        }
+<span class="nc" id="L286">        System.out.println();</span>
+<span class="nc" id="L287">        int maxNr = MenuItem.values().length - 1;</span>
+<span class="nc" id="L288">        int nr = readInt(&quot;maak een keuze uit 0 t/m &quot; + maxNr);</span>
+<span class="nc bnc" id="L289" title="All 4 branches missed.">        while (nr &lt; 0 || nr &gt; maxNr) {</span>
+<span class="nc" id="L290">            nr = readInt(&quot;maak een keuze uit 0 t/m &quot; + maxNr);</span>
+        }
+<span class="nc" id="L292">        input.nextLine();</span>
+<span class="nc" id="L293">        return MenuItem.values()[nr];</span>
+    }
+
+    void toonPersoonsgegevens() {
+<span class="nc" id="L297">        Persoon p = selecteerPersoon();</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">        if (p == null) {</span>
+<span class="nc" id="L299">            System.out.println(&quot;persoon onbekend&quot;);</span>
+        } else {
+<span class="nc" id="L301">            System.out.println(p.beschrijving());</span>
+        }
+<span class="nc" id="L303">    }</span>
+
+    void toonGezinsgegevens() {
+<span class="nc" id="L306">        Gezin g = selecteerGezin();</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">        if (g == null) {</span>
+<span class="nc" id="L308">            System.out.println(&quot;gezin onbekend&quot;);</span>
+        } else {
+<span class="nc" id="L310">            System.out.println(g.beschrijving());</span>
+        }
+<span class="nc" id="L312">    }</span>
+
+    void toonGezinnen() {
+<span class="nc" id="L315">        int nr = 1;</span>
+<span class="nc" id="L316">        Gezin r = getAdmin().getGezin(nr);</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        while (r != null) {</span>
+<span class="nc" id="L318">            System.out.println(r.toString());</span>
+<span class="nc" id="L319">            nr++;</span>
+<span class="nc" id="L320">            r = getAdmin().getGezin(nr);</span>
+        }
+<span class="nc" id="L322">    }</span>
+
+    static void printSpaties(int n) {
+<span class="nc" id="L325">        System.out.print(StringUtilities.spaties(n));</span>
+<span class="nc" id="L326">    }</span>
+
+    Calendar readDate(String helptekst) {
+<span class="nc" id="L329">        String datumString = readString(helptekst + &quot;; voer datum in (dd-mm-jjjj)&quot;);</span>
+        try {
+<span class="nc" id="L331">            return StringUtilities.datum(datumString);</span>
+<span class="nc" id="L332">        } catch (IllegalArgumentException exc) {</span>
+<span class="nc" id="L333">            System.out.println(exc.getMessage());</span>
+<span class="nc" id="L334">            return readDate(helptekst);</span>
+        }
+    }
+
+    int readInt(String helptekst) {
+<span class="nc" id="L339">        boolean invoerOk = false;</span>
+<span class="nc" id="L340">        int invoer = -1;</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">        while (!invoerOk) {</span>
+            try {
+<span class="nc" id="L343">                System.out.print(helptekst + &quot; &quot;);</span>
+<span class="nc" id="L344">                invoer = input.nextInt();</span>
+<span class="nc" id="L345">                invoerOk = true;</span>
+<span class="nc" id="L346">            } catch (InputMismatchException exc) {</span>
+<span class="nc" id="L347">                System.out.println(&quot;Let op, invoer moet een getal zijn!&quot;);</span>
+<span class="nc" id="L348">                input.nextLine();</span>
+<span class="nc" id="L349">            }</span>
+
+        }
+<span class="nc" id="L352">        return invoer;</span>
+    }
+
+    String readString(String helptekst) {
+<span class="nc" id="L356">        System.out.print(helptekst + &quot; &quot;);</span>
+<span class="nc" id="L357">        String invoer = input.nextLine();</span>
+<span class="nc" id="L358">        return invoer;</span>
+    }
+
+    String datumString(Calendar datum) {
+<span class="nc" id="L362">        return StringUtilities.datumString(datum);</span>
+    }
+
+    public static void main(String[] arg) {
+<span class="nc" id="L366">        StamboomController controller = new StamboomController();</span>
+
+<span class="nc" id="L368">        StamboomConsole console = new StamboomConsole(controller);</span>
+        //console.startMenu();
+<span class="nc" id="L370">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

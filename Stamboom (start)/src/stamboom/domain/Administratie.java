@@ -12,8 +12,8 @@ public class Administratie implements Serializable{
     private int nextPersNr;
     private final List<Persoon> personen;
     private final List<Gezin> gezinnen;
-    private ObservableList<Persoon> observablePersonen;
-    private ObservableList<Gezin> observableGezinnen;
+    private transient ObservableList<Persoon> observablePersonen;
+    private transient ObservableList<Gezin> observableGezinnen;
 
     //***********************constructoren***********************************
     /**
