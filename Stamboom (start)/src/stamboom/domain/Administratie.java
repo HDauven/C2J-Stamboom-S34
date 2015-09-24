@@ -119,7 +119,7 @@ public class Administratie implements Serializable{
         }        
         
         
-        this.personen.add(persoon); 
+        this.observablePersonen.add(persoon); 
         nextPersNr++;
         
         if (ouderlijkGezin != null)
@@ -162,7 +162,7 @@ public class Administratie implements Serializable{
         }
 
         Gezin gezin = new Gezin(nextGezinsNr++, ouder1, ouder2);
-        gezinnen.add(gezin);
+        this.observableGezinnen.add(gezin);
 
         ouder1.wordtOuderIn(gezin);
         if (ouder2 != null) {
@@ -288,7 +288,7 @@ public class Administratie implements Serializable{
                     this.nextGezinsNr++;
                     ouder1.wordtOuderIn(nieuwGezin);
                     ouder2.wordtOuderIn(nieuwGezin);
-                    this.gezinnen.add(nieuwGezin);
+                    this.observableGezinnen.add(nieuwGezin);
                 }                
             }
         }

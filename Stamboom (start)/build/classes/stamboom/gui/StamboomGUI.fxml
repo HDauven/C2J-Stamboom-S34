@@ -111,7 +111,7 @@
               <content>
                 <AnchorPane>
                   <children>
-                    <SplitPane dividerPositions="0.8028169014084507" focusTraversable="true" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <SplitPane dividerPositions="0.8307692307692308" focusTraversable="true" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                       <items>
                         <AnchorPane>
                           <children>
@@ -231,7 +231,7 @@
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="218.0">
                               <children>
-                                <ComboBox layoutX="14.0" layoutY="15.0" prefHeight="21.0" prefWidth="118.0" promptText="kies gezin">
+                                <ComboBox id="cb_" fx:id="cbGezinnen" layoutX="14.0" layoutY="15.0" onAction="#selectGezin" prefHeight="21.0" prefWidth="118.0" promptText="kies gezin">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Item 1" />
@@ -249,16 +249,32 @@
                                     <Insets right="5.0" fx:id="x3" />
                                   </GridPane.margin>
                                 </Label>
-                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Ouder 2" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="2" />
-                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Huwelijk" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="3" />
-                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="-1.0" text="Scheiding" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="4" />
-                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Kinderen" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="5" />
+                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Ouder 2" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                  <GridPane.margin>
+                                    <Insets right="5.0" fx:id="x3" />
+                                  </GridPane.margin>
+                                </Label>
+                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Huwelijk" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                  <GridPane.margin>
+                                    <Insets right="5.0" fx:id="x3" />
+                                  </GridPane.margin>
+                                </Label>
+                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="-1.0" text="Scheiding" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                                  <GridPane.margin>
+                                    <Insets right="5.0" fx:id="x3" />
+                                  </GridPane.margin>
+                                </Label>
+                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Kinderen" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                                  <GridPane.margin>
+                                    <Insets right="5.0" fx:id="x3" />
+                                  </GridPane.margin>
+                                </Label>
                                 <TextField id="tfVoornamen" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <TextField id="tfTussenvoegsel" fx:id="tbOuder2" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <TextField id="tfAchternaam" fx:id="tbHuwelijkOp" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                <TextField id="tfGeslacht" fx:id="tb_scheiding" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <TextField id="tfGeslacht" fx:id="tbScheidingOp" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <TextField id="tfPersoonNr" fx:id="tbOuder1" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Ouder 1" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="162.0" text="Ouder 1" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                 <TextField fx:id="tbGezinsNr" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                               </children>
                               <columnConstraints>

@@ -91,24 +91,34 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML
     private TextField tbHuwelijkOp;
     @FXML
-    private TextField tb_scheiding;
-    @FXML
     private TextField tbOuder1;
     @FXML
     private TextField tbGezinsNr;
+    @FXML
+    private ComboBox<Gezin> cbGezinnen;
+    @FXML
+    private TextField tbScheidingOp;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initComboboxes();
+        //Testwaarden
         String[] vnamen = new String[1];
         vnamen[0] = "Stef";
         Calendar c = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
         try {
             c.setTime(sdf.parse("02-01-1994"));
+            c2.setTime(sdf.parse("03-03-1995"));
+            
         } catch (ParseException ex) {
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
         getAdministratie().addPersoon(Geslacht.MAN, vnamen, "Philipsen", "", c, "Ysselsteyn", null);
+        vnamen[0] = "Henkie";
+        getAdministratie().addPersoon(Geslacht.VROUW, vnamen, "Janssen", "", c, "Ysselsteyn", null);
+        getAdministratie().addOngehuwdGezin(getAdministratie().getPersoon(1), getAdministratie().getPersoon(0));
+        
         withDatabase = false;
     }
 
@@ -122,6 +132,18 @@ public class StamboomFXController extends StamboomController implements Initiali
         cbNewGeslacht.getItems().add(Geslacht.MAN);
         cbNewGeslacht.getItems().add(Geslacht.VROUW);
         cbNewOuderlijkGezin.setItems(getAdministratie().getGezinnen());
+        cbGezinnen.getItems().clear();
+        cbGezinnen.setItems(getAdministratie().getGezinnen());
+        setTestwaarden();
+    }
+
+    //Methode kan weg na het testen.
+    public void setTestwaarden() {
+        //Testwaarden
+        tbNewVoornamen.setText("abc def");
+        tbNewAchternaam.setText("ghi");
+        tbNewGebDat.setText("01-01-1960");
+        tbNewGebPlaats.setText("Nederland");
     }
 
     @FXML
@@ -173,12 +195,21 @@ public class StamboomFXController extends StamboomController implements Initiali
 
     public void selectGezin(Event evt) {
         // todo opgave 3
-
+        Gezin g = cbGezinnen.getSelectionModel().getSelectedItem();
+        this.showGezin(g);
     }
 
     private void showGezin(Gezin gezin) {
         // todo opgave 3
-
+        tbGezinsNr.setText(String.valueOf(gezin.getNr()));
+        tbOuder1.setText(gezin.getOuder1().toString());
+        if(gezin.getOuder2() != null)
+            tbOuder2.setText(gezin.getOuder2().toString());
+        if(gezin.getHuwelijksdatum() != null)
+            tbHuwelijkOp.setText(gezin.getHuwelijksdatum().getTime().toString());
+        if(gezin.getScheidingsdatum() != null)
+            tbScheidingOp.setText(sdf.format(gezin.getScheidingsdatum().getTime().toString()));
+        //Kinderen nog
     }
 
     public void setHuwdatum(Event evt) {
@@ -329,6 +360,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         tbNewGebDat.setText("");
         tbNewGebPlaats.setText("");
         cbNewOuderlijkGezin.getSelectionModel().clearSelection();
+        setTestwaarden();
     }
 
     private void clearTabGezinInvoer() {
