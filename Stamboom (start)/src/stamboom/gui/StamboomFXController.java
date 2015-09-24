@@ -98,6 +98,8 @@ public class StamboomFXController extends StamboomController implements Initiali
     private ComboBox<Gezin> cbGezinnen;
     @FXML
     private TextField tbScheidingOp;
+    @FXML
+    private ListView<Persoon> lvKinderen;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -118,6 +120,8 @@ public class StamboomFXController extends StamboomController implements Initiali
         vnamen[0] = "Henkie";
         getAdministratie().addPersoon(Geslacht.VROUW, vnamen, "Janssen", "", c, "Ysselsteyn", null);
         getAdministratie().addOngehuwdGezin(getAdministratie().getPersoon(1), getAdministratie().getPersoon(0));
+        getAdministratie().addPersoon(Geslacht.MAN, vnamen, "Philipsen", "", c2, "Ysselsteyn", getAdministratie().getGezin(1));
+        //getAdministratie().getGezin(1).
         
         withDatabase = false;
     }
@@ -170,7 +174,7 @@ public class StamboomFXController extends StamboomController implements Initiali
             }
 
             //todo opgave 3
-            //lvAlsOuderBetrokkenBij.setItems(persoon.getAlsOuderBetrokkenIn());
+            lvAlsOuderBetrokkenBij.setItems(persoon.getAlsOuderBetrokkenIn());
         }
     }
 
@@ -193,9 +197,10 @@ public class StamboomFXController extends StamboomController implements Initiali
 
     }
 
+    @FXML
     public void selectGezin(Event evt) {
         // todo opgave 3
-        Gezin g = cbGezinnen.getSelectionModel().getSelectedItem();
+        Gezin g = (Gezin) cbGezinnen.getSelectionModel().getSelectedItem();
         this.showGezin(g);
     }
 
@@ -209,7 +214,8 @@ public class StamboomFXController extends StamboomController implements Initiali
             tbHuwelijkOp.setText(gezin.getHuwelijksdatum().getTime().toString());
         if(gezin.getScheidingsdatum() != null)
             tbScheidingOp.setText(sdf.format(gezin.getScheidingsdatum().getTime().toString()));
-        //Kinderen nog
+        
+        lvKinderen.setItems(gezin.getKinderen());
     }
 
     public void setHuwdatum(Event evt) {
@@ -353,7 +359,7 @@ public class StamboomFXController extends StamboomController implements Initiali
 
     private void clearTabPersoonInvoer() {
         //todo opgave 3
-        cbNewGeslacht.getSelectionModel().clearSelection();
+        cbNewGeslacht.getSelectionModel().selectFirst();
         tbNewVoornamen.setText("");
         tbNewAchternaam.setText("");
         tbNewTussenvoegsel.setText("");
@@ -394,5 +400,4 @@ public class StamboomFXController extends StamboomController implements Initiali
     private Stage getStage() {
         return (Stage) menuBar.getScene().getWindow();
     }
-
 }

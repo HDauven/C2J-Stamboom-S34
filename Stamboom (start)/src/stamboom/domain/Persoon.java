@@ -170,7 +170,7 @@ public class Persoon implements Serializable {
     /**
      * @return de gezinnen waar deze persoon bij betrokken is
      */
-    public List<Gezin> getAlsOuderBetrokkenIn() {
+    public ObservableList<Gezin> getAlsOuderBetrokkenIn() {
         return FXCollections.unmodifiableObservableList(observableAlsOuderBetrokkenIn);
     }
 
