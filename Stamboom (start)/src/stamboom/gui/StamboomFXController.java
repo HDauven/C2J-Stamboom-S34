@@ -9,6 +9,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,6 +106,18 @@ public class StamboomFXController extends StamboomController implements Initiali
     private TextField tbScheidingOp;
     @FXML
     private ListView<Persoon> lvKinderen;
+    @FXML
+    private TextField tbGrootouder1a;
+    @FXML
+    private TextField tbGrootouder2a;
+    @FXML
+    private TextField tbGrootouder1b;
+    @FXML
+    private TextField tbGrootouder2b;
+    @FXML
+    private TextField tbOuder1a;
+    @FXML
+    private TextField tbOuder2a;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -117,7 +130,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         try {
             c.setTime(sdf.parse("02-01-1994"));
             c2.setTime(sdf.parse("03-03-1995"));
-            
+
         } catch (ParseException ex) {
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -127,7 +140,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         getAdministratie().addOngehuwdGezin(getAdministratie().getPersoon(1), getAdministratie().getPersoon(0));
         getAdministratie().addPersoon(Geslacht.MAN, vnamen, "Philipsen", "", c2, "Ysselsteyn", getAdministratie().getGezin(1));
         //getAdministratie().getGezin(1).
-        
+
         withDatabase = false;
     }
 
@@ -213,25 +226,45 @@ public class StamboomFXController extends StamboomController implements Initiali
         // todo opgave 3
         tbGezinsNr.setText(String.valueOf(gezin.getNr()));
         tbOuder1.setText(gezin.getOuder1().toString());
-        if(gezin.getOuder2() != null)
+        if (gezin.getOuder2() != null) {
             tbOuder2.setText(gezin.getOuder2().toString());
-        if(gezin.getHuwelijksdatum() != null)
+        }
+        if (gezin.getHuwelijksdatum() != null) {
             tbHuwelijkOp.setText(gezin.getHuwelijksdatum().getTime().toString());
-        if(gezin.getScheidingsdatum() != null)
+        }
+        if (gezin.getScheidingsdatum() != null) {
             tbScheidingOp.setText(sdf.format(gezin.getScheidingsdatum().getTime().toString()));
-        
+        }
+
         lvKinderen.setItems(gezin.getKinderen());
     }
 
+    @FXML
     public void setHuwdatum(Event evt) {
-        // todo opgave 3
+        try {
+            Calendar c = Calendar.getInstance();
+            c.setTime(sdf.parse(tbHuwelijkOp.getText()));
+            Gezin g = cbGezinnen.getSelectionModel().getSelectedItem();
+            g.setHuwelijk(c);
+            System.out.println("Huwelijk voltrokken.");
+        } catch (ParseException ex) {
+            Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
     @FXML
     public void setScheidingsdatum(Event evt) {
         // todo opgave 3
-
+        try {
+            Calendar c = Calendar.getInstance();
+            c.setTime(sdf.parse(tbScheidingOp.getText()));
+            Gezin g = cbGezinnen.getSelectionModel().getSelectedItem();
+            g.setScheiding(c);
+            System.out.println("Gescheiden");
+        } catch (ParseException ex) {
+            Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -308,25 +341,39 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML
     public void showStamboom(Event evt) {
         // todo opgave 3
+        this.clearStamboom();
         Persoon p = cbPersonen.getSelectionModel().getSelectedItem();
-        
-        Parent root;
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("showStamboom.fxml"));
-            root = (Parent) loader.load();
-            ShowStamboomController ssc = (ShowStamboomController) loader.getController();
-            ssc.setMyData(p, getAdministratie());
-            
-            Stage stage = new Stage();
-            stage.setTitle("My New Stage Title");
-            stage.setScene(new Scene(root, 450, 450));  
-            stage.show();
+        if (p == null) {
+            System.out.println("Selecteer een persoon.");
+            return;
+        }
 
-            //hide this current window (if this is whant you want
-            //((Node)(evt.getSource())).getScene().getWindow().hide();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (p.getOuderlijkGezin() == null) {
+            System.out.println("Geen ouderlijk gezin.");
+            return;
+        }
+        Persoon o1 = p.getOuderlijkGezin().getOuder1();
+        Persoon o2 = p.getOuderlijkGezin().getOuder2();
+        //Ouder.setText() als de ouder niet null is
+        if (o1 != null) {
+            tbOuder1a.setText(o1.toString());
+            if (o1.getOuderlijkGezin() != null) {
+                //Ouder 1 kan niet null zijn, dus geen if-statement
+                tbGrootouder1a.setText(o1.getOuderlijkGezin().getOuder1().toString());
+                if (o1.getOuderlijkGezin().getOuder2() != null) {
+                    tbGrootouder1b.setText(o1.getOuderlijkGezin().getOuder2().toString());
+                }
+            }
+        }
+        if (o2 != null) {
+            tbOuder2a.setText(o2.toString());
+            if (o2.getOuderlijkGezin() != null) //Ouder 1 kan niet null zijn, dus geen if-statement
+            {
+                tbGrootouder2a.setText(o2.getOuderlijkGezin().getOuder1().toString());
+            }
+            if (o2.getOuderlijkGezin().getOuder2() != null) {
+                tbGrootouder2b.setText(o2.getOuderlijkGezin().getOuder2().toString());
+            }
         }
     }
 
@@ -423,5 +470,14 @@ public class StamboomFXController extends StamboomController implements Initiali
 
     private Stage getStage() {
         return (Stage) menuBar.getScene().getWindow();
+    }
+
+    private void clearStamboom() {
+        tbOuder1a.clear();
+        tbOuder2a.clear();
+        tbGrootouder1a.clear();
+        tbGrootouder1b.clear();
+        tbGrootouder2a.clear();
+        tbGrootouder2b.clear();
     }
 }
