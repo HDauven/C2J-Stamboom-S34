@@ -4,6 +4,7 @@
  */
 package stamboom.gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,8 +15,12 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import stamboom.controller.StamboomController;
@@ -44,7 +49,7 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML Tab tabGezinInvoer;
 
     //PERSOON
-    @FXML ComboBox cbPersonen;
+    @FXML ComboBox<Persoon> cbPersonen;
     @FXML TextField tfPersoonNr;
     @FXML TextField tfVoornamen;
     @FXML TextField tfTussenvoegsel;
@@ -52,7 +57,7 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML TextField tfGeslacht;
     @FXML TextField tfGebDatum;
     @FXML TextField tfGebPlaats;
-    @FXML ComboBox cbOuderlijkGezin;
+    @FXML ComboBox<Gezin> cbOuderlijkGezin;
     @FXML ListView lvAlsOuderBetrokkenBij;
     @FXML Button btStamboom;
 
@@ -303,7 +308,26 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML
     public void showStamboom(Event evt) {
         // todo opgave 3
+        Persoon p = cbPersonen.getSelectionModel().getSelectedItem();
+        
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("showStamboom.fxml"));
+            root = (Parent) loader.load();
+            ShowStamboomController ssc = (ShowStamboomController) loader.getController();
+            ssc.setMyData(p, getAdministratie());
+            
+            Stage stage = new Stage();
+            stage.setTitle("My New Stage Title");
+            stage.setScene(new Scene(root, 450, 450));  
+            stage.show();
 
+            //hide this current window (if this is whant you want
+            //((Node)(evt.getSource())).getScene().getWindow().hide();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

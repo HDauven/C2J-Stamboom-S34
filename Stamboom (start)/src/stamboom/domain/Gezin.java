@@ -218,8 +218,8 @@ public class Gezin implements Serializable {
      * @param kind
      */
     void breidUitMet(Persoon kind) {
-        if (!kinderen.contains(kind) && !this.isFamilieVan(kind)) {
-            kinderen.add(kind);
+        if (!observableKinderen.contains(kind) && !this.isFamilieVan(kind)) {
+            observableKinderen.add(kind);
         }
     }
 

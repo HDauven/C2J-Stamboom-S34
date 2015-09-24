@@ -107,7 +107,6 @@ public class Administratie implements Serializable{
        
         Persoon persoon = new Persoon(nextPersNr, vnamen, anaam, tvoegsel.toLowerCase(),
                                     gebdat, gebplaats, geslacht, ouderlijkGezin);
-        
         for (Persoon p : this.personen) {
             if (p.getNaam().equals(persoon.getNaam())
                     && p.getGebDat().get(Calendar.DATE) == persoon.getGebDat().get(Calendar.DATE)
