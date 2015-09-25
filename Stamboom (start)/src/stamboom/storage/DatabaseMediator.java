@@ -8,13 +8,18 @@ import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import stamboom.domain.Administratie;
+import stamboom.domain.Geslacht;
 import stamboom.domain.Gezin;
 import stamboom.domain.Persoon;
 
@@ -23,6 +28,8 @@ public class DatabaseMediator implements IStorageMediator {
     private Properties props;
     private Connection conn;
     private SortedMap<Statement, CallableStatement> statements = new TreeMap<>();
+    private SortedMap<Integer, Integer> persoonsGezin = new TreeMap<>();
+    
 
     public DatabaseMediator(Properties props) {
         this.props = props;
@@ -36,118 +43,207 @@ public class DatabaseMediator implements IStorageMediator {
     @Override
     public Administratie load() throws IOException {
         //todo opgave 4
-        return null;
+        {
+            Administratie admin = new Administratie();
+            admin = this.getPersonenFromDatabase(admin);
+            admin = this.getGezinnenFromDatabase(admin);
+            admin = this.addGezinToPersoon(admin);
+            return admin;
+        }
     }
 
-    @Override
-    public void save(Administratie admin) throws IOException {
-        //todo opgave 4
-        
+    private Administratie getPersonenFromDatabase(Administratie admin) {
+        CallableStatement cStmt = statements.get(Statement.GET_PERSONEN);
         try {
-            //Maak alle tabellen leeg
-            CallableStatement dStmt = statements.get(Statement.DELETE_ENTRIES);
-            dStmt.execute();
-            
-            //Zet alle personen in de database zonder ouderlijk gezin, omdat er nog geen gezinnen in de database staan.
-            for (Persoon p : admin.getPersonen()) {
-                CallableStatement cStmt = statements.get(Statement.CREATE_PERSOON);
-                cStmt.setInt(1, p.getNr());
-                cStmt.setString(2, p.getAchternaam());
-                cStmt.setString(3, p.getVoornamen());
-                cStmt.setString(4, p.getTussenvoegsel());
-                cStmt.setDate(5, new java.sql.Date(p.getGebDat().getTime().getTime()));
-                cStmt.setString(6, p.getGebPlaats());
-                cStmt.setString(7, p.getGeslacht().toString());
-                cStmt.setInt(8, 0);
-                cStmt.execute();
+            cStmt.executeQuery();
+
+            ResultSet rs = cStmt.getResultSet();
+            //Personen ophalen
+            while (rs.next()) {
+                int persNr = rs.getInt("persoonsNummer");
+                String achternaam = rs.getString("achternaam");
+                String[] vnamen = rs.getString("voornamen").split(" ");
+                String tVoegsel = rs.getString("tussenvoegsel");
+                Date d = rs.getDate("geboortedatum");
+                String geboorteplaats = rs.getString("geboorteplaats");
+                Geslacht g = null;
+                String geslacht = rs.getString("geslacht");
+                int gezinsNr = rs.getInt("ouders");
+                if (geslacht.equals("MAN")) {
+                    g = Geslacht.MAN;
+                }
+                if (geslacht.equals("VROUW")) {
+                    g = Geslacht.VROUW;
+                }
+                if(gezinsNr > 0)
+                    persoonsGezin.put(persNr, gezinsNr);
+                //ouders kan pas na gezinnen toevoegen
+                //Nr zal hetzelfde blijven? moet getest worden
+                //Persoon toevoegen aan de nieuwe admin
+                admin.addPersoon(g, vnamen, achternaam, tVoegsel, null, geslacht, null);
             }
-            
-            //Voeg alle gezinnen toe
-            for (Gezin g : admin.getGezinnen()) {
-                CallableStatement cStmt = statements.get(Statement.CREATE_GEZIN);
-                cStmt.setInt(1, g.getNr());
-                cStmt.setInt(2, g.getOuder1().getNr());
-                if(g.getOuder2() != null)
-                    cStmt.setInt(3, g.getOuder2().getNr());
-                else
-                    cStmt.setInt(3, -1);
-                if(g.getHuwelijksdatum() != null)
-                    cStmt.setDate(4, new java.sql.Date(g.getHuwelijksdatum().getTime().getTime()));
-                else
-                    cStmt.setDate(4, null);
-                if(g.getScheidingsdatum() != null)
-                    cStmt.setDate(5, new java.sql.Date(g.getScheidingsdatum().getTime().getTime()));
-                else
-                    cStmt.setDate(5, null);
-                cStmt.execute();
-            }
-            
-            //Zet de gezinsnummers van het ouderlijke gezin bij de personen
-            for (Persoon p : admin.getPersonen()) {
-                if (p.getOuderlijkGezin() != null) {
-                    CallableStatement cStmt = statements.get(Statement.ADD_OUDERLIJK_GEZIN);
-                    cStmt.setInt(1, p.getNr());
-                    cStmt.setInt(2, p.getOuderlijkGezin().getNr());
-                    cStmt.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseMediator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return admin;
+    }
+
+    private Administratie getGezinnenFromDatabase(Administratie admin){
+        CallableStatement cStmt = statements.get(Statement.GET_GEZINNEN);
+        try {
+            //Gezinnen ophalen
+            cStmt.executeQuery();
+
+            ResultSet rs = cStmt.getResultSet();
+
+            while (rs.next()) {
+                int gezinsNr = rs.getInt("gezinsNummer");
+                int o1 = rs.getInt("ouder1");
+                int o2 = rs.getInt("ouder2");
+                Date huwelijksdatum = rs.getDate("huwelijksdatum");
+                Date scheidingsdatum = rs.getDate("scheidingsdatum");
+                Gezin g = admin.addOngehuwdGezin(admin.getPersoon(o1), admin.getPersoon(o2));
+                Calendar cal = Calendar.getInstance();
+                
+                if(huwelijksdatum != null)
+                {
+                    cal.setTime(huwelijksdatum);
+                    g.setHuwelijk(cal);
+                }
+                if(scheidingsdatum != null)
+                {
+                    cal.setTime(scheidingsdatum);
+                    g.setScheiding(cal);
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseMediator.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return admin;
     }
 
-    /**
-     * Laadt de instellingen, in de vorm van een Properties bestand, en
-     * controleert of deze in de correcte vorm is, en er verbinding gemaakt kan
-     * worden met de database.
-     *
-     * @param props
-     * @return
-     */
-    @Override
-    public final boolean configure(Properties props) {
+            @Override
+            public void save
+            (Administratie admin) throws IOException {
+                //todo opgave 4
+
+                try {
+                    //Maak alle tabellen leeg
+                    CallableStatement dStmt = statements.get(Statement.DELETE_ENTRIES);
+                    dStmt.execute();
+
+                    //Zet alle personen in de database zonder ouderlijk gezin, omdat er nog geen gezinnen in de database staan.
+                    for (Persoon p : admin.getPersonen()) {
+                        CallableStatement cStmt = statements.get(Statement.CREATE_PERSOON);
+                        cStmt.setInt(1, p.getNr());
+                        cStmt.setString(2, p.getAchternaam());
+                        cStmt.setString(3, p.getVoornamen());
+                        cStmt.setString(4, p.getTussenvoegsel());
+                        cStmt.setDate(5, new java.sql.Date(p.getGebDat().getTime().getTime()));
+                        cStmt.setString(6, p.getGebPlaats());
+                        cStmt.setString(7, p.getGeslacht().toString());
+                        cStmt.setInt(8, 0);
+                        cStmt.execute();
+                    }
+
+                    //Voeg alle gezinnen toe
+                    for (Gezin g : admin.getGezinnen()) {
+                        CallableStatement cStmt = statements.get(Statement.CREATE_GEZIN);
+                        cStmt.setInt(1, g.getNr());
+                        cStmt.setInt(2, g.getOuder1().getNr());
+                        if (g.getOuder2() != null) {
+                            cStmt.setInt(3, g.getOuder2().getNr());
+                        } else {
+                            cStmt.setInt(3, -1);
+                        }
+                        if (g.getHuwelijksdatum() != null) {
+                            cStmt.setDate(4, new java.sql.Date(g.getHuwelijksdatum().getTime().getTime()));
+                        } else {
+                            cStmt.setDate(4, null);
+                        }
+                        if (g.getScheidingsdatum() != null) {
+                            cStmt.setDate(5, new java.sql.Date(g.getScheidingsdatum().getTime().getTime()));
+                        } else {
+                            cStmt.setDate(5, null);
+                        }
+                        cStmt.execute();
+                    }
+
+                    //Zet de gezinsnummers van het ouderlijke gezin bij de personen
+                    for (Persoon p : admin.getPersonen()) {
+                        if (p.getOuderlijkGezin() != null) {
+                            CallableStatement cStmt = statements.get(Statement.ADD_OUDERLIJK_GEZIN);
+                            cStmt.setInt(1, p.getNr());
+                            cStmt.setInt(2, p.getOuderlijkGezin().getNr());
+                            cStmt.execute();
+                        }
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(DatabaseMediator.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            /**
+             * Laadt de instellingen, in de vorm van een Properties bestand, en
+             * controleert of deze in de correcte vorm is, en er verbinding
+             * gemaakt kan worden met de database.
+             *
+             * @param props
+             * @return
+             */
+            @Override
+            public final boolean configure
+            (Properties props
+            
+                ) {
         this.props = props;
-        if (!isCorrectlyConfigured()) {
-            System.err.println("props mist een of meer keys");
-            return false;
-        }
+                if (!isCorrectlyConfigured()) {
+                    System.err.println("props mist een of meer keys");
+                    return false;
+                }
 
-        try {
-            initConnection();
-            return true;
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-            this.props = null;
-            return false;
-        } finally {
-            closeConnection();
-        }
-    }
+                try {
+                    initConnection();
+                    return true;
+                } catch (SQLException ex) {
+                    System.err.println(ex.getMessage());
+                    this.props = null;
+                    return false;
+                } finally {
+                    closeConnection();
+                }
+            }
 
-    @Override
-    public Properties config() {
+            @Override
+            public Properties config
+            
+                () {
         return props;
-    }
+            }
 
-    @Override
-    public boolean isCorrectlyConfigured() {
+            @Override
+            public boolean isCorrectlyConfigured
+            
+                () {
         if (props == null) {
-            return false;
-        }
-        if (!props.containsKey("driver")) {
-            return false;
-        }
-        if (!props.containsKey("url")) {
-            return false;
-        }
-        if (!props.containsKey("username")) {
-            return false;
-        }
-        if (!props.containsKey("password")) {
-            return false;
-        }
-        return true;
-    }
+                    return false;
+                }
+                if (!props.containsKey("driver")) {
+                    return false;
+                }
+                if (!props.containsKey("url")) {
+                    return false;
+                }
+                if (!props.containsKey("username")) {
+                    return false;
+                }
+                if (!props.containsKey("password")) {
+                    return false;
+                }
+                return true;
+            }
+
+    
 
     private void initConnection() throws SQLException {
         //opgave 4
@@ -173,5 +269,13 @@ public class DatabaseMediator implements IStorageMediator {
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
+    }
+
+    private Administratie addGezinToPersoon(Administratie admin) {
+        for(Map.Entry<Integer, Integer> entry : this.persoonsGezin.entrySet())
+        {
+            admin.setOuders(admin.getPersoon(entry.getKey()), admin.getGezin(entry.getValue()));
+        }
+        return admin;
     }
 }

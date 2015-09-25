@@ -429,6 +429,7 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML
     public void configureStorage(Event evt) {
             withDatabase = cmDatabase.isSelected();
+            
     }
 
     @FXML
