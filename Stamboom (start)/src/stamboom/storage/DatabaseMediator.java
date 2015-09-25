@@ -29,7 +29,6 @@ public class DatabaseMediator implements IStorageMediator {
     @Override
     public void save(Administratie admin) throws IOException {
         //todo opgave 4
-        
     }
 
     /**

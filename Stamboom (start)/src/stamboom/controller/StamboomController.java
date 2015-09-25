@@ -112,6 +112,7 @@ public class StamboomController {
      */
     public void loadFromDatabase() throws IOException {
         //todo opgave 4
+        
     }
 
     /**
@@ -121,6 +122,8 @@ public class StamboomController {
      */
     public void saveToDatabase() throws IOException {
         //todo opgave 4
+        this.initDatabaseMedium();
+        this.storageMediator.save(admin);
     }
 
 }

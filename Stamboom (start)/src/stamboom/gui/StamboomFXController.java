@@ -4,12 +4,14 @@
  */
 package stamboom.gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +31,8 @@ import stamboom.domain.Geslacht;
 import stamboom.domain.Gezin;
 import stamboom.domain.Persoon;
 import stamboom.domain.PersoonMetGeneratie;
+import stamboom.storage.DatabaseMediator;
+import stamboom.storage.SerializationMediator;
 import stamboom.util.StringUtilities;
 
 /**
@@ -69,10 +73,6 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML TextField tfScheidingInvoer;
     @FXML Button btOKGezinInvoer;
     @FXML Button btCancelGezinInvoer;
-
-    //opgave 4
-    private boolean withDatabase;
-    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
     @FXML
     private Insets x1;
@@ -118,7 +118,12 @@ public class StamboomFXController extends StamboomController implements Initiali
     private TextField tbOuder1a;
     @FXML
     private TextField tbOuder2a;
-
+    
+        //opgave 4
+    private boolean withDatabase;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+    private static final String FILE = "admin.data";
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initComboboxes();
@@ -154,7 +159,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         cbNewGeslacht.getItems().add(Geslacht.MAN);
         cbNewGeslacht.getItems().add(Geslacht.VROUW);
         cbNewOuderlijkGezin.setItems(getAdministratie().getGezinnen());
-        cbGezinnen.getItems().clear();
+        //cbGezinnen.getItems().clear();
         cbGezinnen.setItems(getAdministratie().getGezinnen());
         setTestwaarden();
     }
@@ -387,13 +392,35 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML
     public void openStamboom(Event evt) {
         // todo opgave 3
-
+        try{
+            if(withDatabase == true)
+            {
+                this.createEmptyStamboom(evt);
+                this.loadFromDatabase();
+            }
+            else
+            {
+                this.createEmptyStamboom(evt);
+                this.deserialize(new File(FILE));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.initComboboxes();
     }
 
     @FXML
     public void saveStamboom(Event evt) {
         // todo opgave 3
-
+        try {
+            if (withDatabase == true) {
+                this.saveToDatabase();
+            }
+            else
+                this.serialize(new File(FILE));
+        } catch (IOException ex) {
+            Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

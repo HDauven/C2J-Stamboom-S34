@@ -5,7 +5,7 @@ import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Administratie implements Serializable{
+public class Administratie implements Serializable {
 
     //************************datavelden*************************************
     private int nextGezinsNr;
@@ -17,9 +17,9 @@ public class Administratie implements Serializable{
 
     //***********************constructoren***********************************
     /**
-     * er wordt een lege administratie aangemaakt.
-     * personen en gezinnen die in de toekomst zullen worden gecreeerd, worden
-     * (apart) opvolgend genummerd vanaf 1
+     * er wordt een lege administratie aangemaakt. personen en gezinnen die in
+     * de toekomst zullen worden gecreeerd, worden (apart) opvolgend genummerd
+     * vanaf 1
      */
     public Administratie() {
         //todo opgave 1
@@ -38,10 +38,10 @@ public class Administratie implements Serializable{
      * er wordt een persoon met de gegeven parameters aangemaakt; de persoon
      * krijgt een uniek nummer toegewezen, en de persoon is voortaan ook bij het
      * (eventuele) ouderlijk gezin bekend. Voor de voornamen, achternaam en
-     * gebplaats geldt dat de eerste letter naar een hoofdletter en de resterende
-     * letters naar kleine letters zijn geconverteerd; het tussenvoegsel is in
-     * zijn geheel geconverteerd naar kleine letters; overbodige spaties zijn
-     * verwijderd
+     * gebplaats geldt dat de eerste letter naar een hoofdletter en de
+     * resterende letters naar kleine letters zijn geconverteerd; het
+     * tussenvoegsel is in zijn geheel geconverteerd naar kleine letters;
+     * overbodige spaties zijn verwijderd
      *
      * @param geslacht
      * @param vnamen vnamen.length>0; alle strings zijn niet leeg
@@ -51,9 +51,9 @@ public class Administratie implements Serializable{
      * @param gebplaats niet leeg
      * @param ouderlijkGezin mag de waarde null (=onbekend) hebben
      *
-     * @return de nieuwe persoon.
-     * Als de persoon al bekend was (op basis van combinatie van getNaam(),
-     * geboorteplaats en geboortedatum), wordt er null geretourneerd.
+     * @return de nieuwe persoon. Als de persoon al bekend was (op basis van
+     * combinatie van getNaam(), geboorteplaats en geboortedatum), wordt er null
+     * geretourneerd.
      */
     public Persoon addPersoon(Geslacht geslacht, String[] vnamen, String anaam,
             String tvoegsel, Calendar gebdat,
@@ -62,15 +62,15 @@ public class Administratie implements Serializable{
         if (vnamen.length == 0) {
             throw new IllegalArgumentException("ten minste 1 voornaam");
         }
-        
+
         if (geslacht == null) {
             throw new IllegalArgumentException("voer geslacht in");
         }
 
         if (gebdat == null) {
             throw new IllegalArgumentException("geboortedatum mag niet leeg zijn");
-        }        
-        
+        }
+
         //for (String voornaam : vnamen) {
         //    if (voornaam.trim().isEmpty()) {
         //        throw new IllegalArgumentException("lege voornaam is niet toegestaan");
@@ -85,7 +85,7 @@ public class Administratie implements Serializable{
             } else {
                 // Format de voornamen
                 vnamen[i] = vnamen[i].trim();
-                vnamen[i] = vnamen[i].substring(0,1).toUpperCase() + vnamen[i].substring(1).toLowerCase();
+                vnamen[i] = vnamen[i].substring(0, 1).toUpperCase() + vnamen[i].substring(1).toLowerCase();
             }
         }
 
@@ -94,19 +94,19 @@ public class Administratie implements Serializable{
         } else {
             // format de achternaam
             anaam = anaam.trim();
-            anaam = anaam.substring(0,1).toUpperCase() + anaam.substring(1).toLowerCase();
+            anaam = anaam.substring(0, 1).toUpperCase() + anaam.substring(1).toLowerCase();
         }
 
         if (gebplaats.trim().isEmpty()) {
             throw new IllegalArgumentException("lege geboorteplaats is niet toegestaan");
-        } else  {
+        } else {
             // format de geboorteplaats
             gebplaats = gebplaats.trim();
-            gebplaats = gebplaats.substring(0,1).toUpperCase() + gebplaats.substring(1).toLowerCase();
-        }       
-       
+            gebplaats = gebplaats.substring(0, 1).toUpperCase() + gebplaats.substring(1).toLowerCase();
+        }
+
         Persoon persoon = new Persoon(nextPersNr, vnamen, anaam, tvoegsel.toLowerCase(),
-                                    gebdat, gebplaats, geslacht, ouderlijkGezin);
+                gebdat, gebplaats, geslacht, ouderlijkGezin);
         for (Persoon p : this.personen) {
             if (p.getNaam().equals(persoon.getNaam())
                     && p.getGebDat().get(Calendar.DATE) == persoon.getGebDat().get(Calendar.DATE)
@@ -115,15 +115,15 @@ public class Administratie implements Serializable{
                     && p.getGebPlaats().equals(persoon.getGebPlaats())) {
                 return null;
             }
-        }        
-        
-        
-        this.observablePersonen.add(persoon); 
+        }
+
+        this.observablePersonen.add(persoon);
         nextPersNr++;
-        
-        if (ouderlijkGezin != null)
+
+        if (ouderlijkGezin != null) {
             ouderlijkGezin.breidUitMet(persoon);
-        
+        }
+
         return persoon;
     }
 
@@ -136,10 +136,9 @@ public class Administratie implements Serializable{
      * @param ouder1
      * @param ouder2 mag null zijn
      *
-     * @return het nieuwe gezin. null als ouder1 = ouder2 of als een van de volgende
-     * voorwaarden wordt overtreden:
-     * 1) een van de ouders is op dit moment getrouwd
-     * 2) het koppel vormt al een ander gezin
+     * @return het nieuwe gezin. null als ouder1 = ouder2 of als een van de
+     * volgende voorwaarden wordt overtreden: 1) een van de ouders is op dit
+     * moment getrouwd 2) het koppel vormt al een ander gezin
      */
     public Gezin addOngehuwdGezin(Persoon ouder1, Persoon ouder2) {
         if (ouder1 == ouder2) {
@@ -172,10 +171,10 @@ public class Administratie implements Serializable{
     }
 
     /**
-     * Als het ouderlijk gezin van persoon nog onbekend is dan wordt
-     * persoon een kind van ouderlijkGezin, en tevens wordt persoon als kind
-     * in dat gezin geregistreerd. Als de ouders bij aanroep al bekend zijn,
-     * verandert er niets
+     * Als het ouderlijk gezin van persoon nog onbekend is dan wordt persoon een
+     * kind van ouderlijkGezin, en tevens wordt persoon als kind in dat gezin
+     * geregistreerd. Als de ouders bij aanroep al bekend zijn, verandert er
+     * niets
      *
      * @param persoon
      * @param ouderlijkGezin
@@ -199,9 +198,9 @@ public class Administratie implements Serializable{
     }
 
     /**
-     * registreert het huwelijk, mits gezin nog geen huwelijk is en beide
-     * ouders op deze datum mogen trouwen (pas op: het is niet toegestaan dat een
-     * ouder met een toekomstige (andere) trouwdatum trouwt.)
+     * registreert het huwelijk, mits gezin nog geen huwelijk is en beide ouders
+     * op deze datum mogen trouwen (pas op: het is niet toegestaan dat een ouder
+     * met een toekomstige (andere) trouwdatum trouwt.)
      *
      * @param gezin
      * @param datum de huwelijksdatum
@@ -239,40 +238,40 @@ public class Administratie implements Serializable{
         //todo opgave 1
         //Calendar now = Calendar.getInstance();       
         Gezin nieuwGezin = null;
-        
+
         // Controleert of de ouders gelijk aan elkaar zijn en of ze 18+ zijn op
         // de datum dat het huwelijk wordt voltrokken
-        if (ouder1 == ouder2 
+        if (ouder1 == ouder2
                 //|| (now.get(Calendar.YEAR) - ouder1.getGebDat().get(Calendar.YEAR) < 18)
                 //|| (now.get(Calendar.YEAR) - ouder2.getGebDat().get(Calendar.YEAR) < 18)
                 || (huwdatum.get(Calendar.YEAR) - ouder1.getGebDat().get(Calendar.YEAR) < 18)
                 || (huwdatum.get(Calendar.YEAR) - ouder2.getGebDat().get(Calendar.YEAR) < 18)) {
             return null;
         }
-        
+
         // Gaat de lijst met gezinnen af en controleert of een van de ouders al
         // gehuwd is op de meegegeven datum
         for (Gezin g : this.gezinnen) {
             // Controle voor ouder 1
-            if (g.getOuder1() == ouder1 
-                    || g.getOuder2() == ouder1){
-                if (g.getHuwelijksdatum() != null 
-                        && (g.getScheidingsdatum() == null 
+            if (g.getOuder1() == ouder1
+                    || g.getOuder2() == ouder1) {
+                if (g.getHuwelijksdatum() != null
+                        && (g.getScheidingsdatum() == null
                         || huwdatum.before(g.getScheidingsdatum()))) {
                     return null;
                 }
             }
             // Controle voor ouder 2
-            if (g.getOuder1() == ouder2 
-                    || g.getOuder2() == ouder2){
-                if (g.getHuwelijksdatum() != null 
-                        && (g.getScheidingsdatum() == null 
+            if (g.getOuder1() == ouder2
+                    || g.getOuder2() == ouder2) {
+                if (g.getHuwelijksdatum() != null
+                        && (g.getScheidingsdatum() == null
                         || huwdatum.before(g.getScheidingsdatum()))) {
                     return null;
                 }
             }
         }
-        
+
         // Gaat de lijst met personen af om te kijken of een van de ouders al een
         // ongehuwd gezin heeft met de ander, anders wordt er een nieuw gezin 
         // aangemaakt
@@ -288,7 +287,7 @@ public class Administratie implements Serializable{
                     ouder1.wordtOuderIn(nieuwGezin);
                     ouder2.wordtOuderIn(nieuwGezin);
                     this.observableGezinnen.add(nieuwGezin);
-                }                
+                }
             }
         }
         return nieuwGezin;
@@ -320,11 +319,9 @@ public class Administratie implements Serializable{
         //todo opgave 1
         //aanname: er worden geen personen verwijderd
         Persoon result = null;
-        
-        for (Persoon persoon : this.personen)
-        {
-            if (persoon.getNr() == nr)
-            {
+
+        for (Persoon persoon : this.personen) {
+            if (persoon.getNr() == nr) {
                 result = persoon;
                 return result;
             }
@@ -340,12 +337,12 @@ public class Administratie implements Serializable{
     public ArrayList<Persoon> getPersonenMetAchternaam(String achternaam) {
         //todo opgave 1
         List<Persoon> result = new ArrayList<>();
-        
+
         for (Persoon persoon : this.personen) {
-            if (persoon.getAchternaam().toLowerCase() == null 
-                    ? achternaam.toLowerCase() == null 
+            if (persoon.getAchternaam().toLowerCase() == null
+                    ? achternaam.toLowerCase() == null
                     : persoon.getAchternaam()
-                            .toLowerCase().equals(achternaam.toLowerCase())) {
+                    .toLowerCase().equals(achternaam.toLowerCase())) {
                 result.add(persoon);
             }
         }
@@ -358,6 +355,7 @@ public class Administratie implements Serializable{
      */
     public ObservableList<Persoon> getPersonen() {
         // todo opgave 1
+        observablePersonen = FXCollections.observableList(personen);
         return FXCollections.unmodifiableObservableList(observablePersonen);
     }
 
@@ -410,6 +408,7 @@ public class Administratie implements Serializable{
      * @return de geregistreerde gezinnen
      */
     public ObservableList<Gezin> getGezinnen() {
+        observableGezinnen = FXCollections.observableList(gezinnen);
         return FXCollections.unmodifiableObservableList(observableGezinnen);
     }
 
