@@ -118,12 +118,12 @@ public class StamboomFXController extends StamboomController implements Initiali
     private TextField tbOuder1a;
     @FXML
     private TextField tbOuder2a;
-    
-        //opgave 4
+
+    //opgave 4
     private boolean withDatabase;
     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private static final String FILE = "admin.data";
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initComboboxes();
@@ -392,14 +392,11 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML
     public void openStamboom(Event evt) {
         // todo opgave 3
-        try{
-            if(withDatabase == true)
-            {
+        try {
+            if (withDatabase == true) {
                 this.createEmptyStamboom(evt);
                 this.loadFromDatabase();
-            }
-            else
-            {
+            } else {
                 this.createEmptyStamboom(evt);
                 this.deserialize(new File(FILE));
             }
@@ -415,9 +412,9 @@ public class StamboomFXController extends StamboomController implements Initiali
         try {
             if (withDatabase == true) {
                 this.saveToDatabase();
-            }
-            else
+            } else {
                 this.serialize(new File(FILE));
+            }
         } catch (IOException ex) {
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -431,7 +428,7 @@ public class StamboomFXController extends StamboomController implements Initiali
 
     @FXML
     public void configureStorage(Event evt) {
-        withDatabase = cmDatabase.isSelected();
+            withDatabase = cmDatabase.isSelected();
     }
 
     @FXML

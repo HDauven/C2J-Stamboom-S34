@@ -133,7 +133,7 @@
               <content>
                 <AnchorPane>
                   <children>
-                    <SplitPane dividerPositions="0.8028169014084507" focusTraversable="true" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <SplitPane dividerPositions="0.8307692307692308" focusTraversable="true" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                       <items>
                         <AnchorPane>
                           <children>
@@ -346,7 +346,7 @@
                 <MenuItem mnemonicParsing="false" onAction="#openStamboom" text="Open" fx:id="miOpen" />
                 <MenuItem mnemonicParsing="false" onAction="#saveStamboom" text="Save" fx:id="miSave" />
                 <SeparatorMenuItem mnemonicParsing="false" />
-                <CheckMenuItem disable="true" mnemonicParsing="false" onAction="#configureStorage" text="Database" fx:id="cmDatabase" />
+                <CheckMenuItem disable="false" mnemonicParsing="false" onAction="#configureStorage" text="Database" fx:id="cmDatabase" />
                 <SeparatorMenuItem mnemonicParsing="false" />
                 <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Close" fx:id="miClose" />
               </items>

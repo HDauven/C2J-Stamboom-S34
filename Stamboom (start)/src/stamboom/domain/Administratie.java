@@ -1,5 +1,7 @@
 package stamboom.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.*;
 import javafx.collections.FXCollections;
@@ -355,7 +357,6 @@ public class Administratie implements Serializable {
      */
     public ObservableList<Persoon> getPersonen() {
         // todo opgave 1
-        observablePersonen = FXCollections.observableList(personen);
         return FXCollections.unmodifiableObservableList(observablePersonen);
     }
 
@@ -408,7 +409,6 @@ public class Administratie implements Serializable {
      * @return de geregistreerde gezinnen
      */
     public ObservableList<Gezin> getGezinnen() {
-        observableGezinnen = FXCollections.observableList(gezinnen);
         return FXCollections.unmodifiableObservableList(observableGezinnen);
     }
 
@@ -425,5 +425,11 @@ public class Administratie implements Serializable {
             return gezinnen.get(gezinsNr - 1);
         }
         return null;
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        observablePersonen = FXCollections.observableList(personen);
+        observableGezinnen = FXCollections.observableList(gezinnen);
     }
 }
