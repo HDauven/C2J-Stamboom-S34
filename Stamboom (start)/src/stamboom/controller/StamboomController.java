@@ -20,6 +20,7 @@ public class StamboomController {
 
     private Administratie admin;
     private IStorageMediator storageMediator;
+    private static String PATH = "database.properties";
 
     /**
      * creatie van stamboomcontroller met lege administratie en onbekend
@@ -97,8 +98,8 @@ public class StamboomController {
             props.setProperty("username", "philips1_user");
             props.setProperty("password", "Hallo123");
             //store properties in file
-            props.store(output, null);
-            try (FileInputStream in = new FileInputStream("database.properties")) {
+            props.store(output, PATH);
+            try (FileInputStream in = new FileInputStream(PATH)) {
                 props.load(in);
             }
             storageMediator = new DatabaseMediator(props);
