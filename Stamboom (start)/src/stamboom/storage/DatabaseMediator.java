@@ -80,7 +80,10 @@ public class DatabaseMediator implements IStorageMediator {
                 //ouders kan pas na gezinnen toevoegen
                 //Nr zal hetzelfde blijven? moet getest worden
                 //Persoon toevoegen aan de nieuwe admin
-                admin.addPersoon(g, vnamen, achternaam, tVoegsel, null, geslacht, null);
+                Calendar c = Calendar.getInstance();
+                c.setTime(d);
+                //Geslacht geslacht, String[] vnamen, String anaam, String tvoegsel, Calendar gebdat, String gebplaats, Gezin ouderlijkGezin
+                admin.addPersoon(g, vnamen, achternaam, tVoegsel, c, geboorteplaats, null);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseMediator.class.getName()).log(Level.SEVERE, null, ex);
@@ -257,6 +260,8 @@ public class DatabaseMediator implements IStorageMediator {
             statements.put(Statement.CREATE_GEZIN, conn.prepareCall("{call createGezin(?, ?, ?, ?, ?)}"));
             statements.put(Statement.ADD_OUDERLIJK_GEZIN, conn.prepareCall("{call updatePersoon(?, ?)}"));
             statements.put(Statement.DELETE_ENTRIES, conn.prepareCall("{call deleteEntries()}"));
+            statements.put(Statement.GET_PERSONEN, conn.prepareCall("{call getPersonen()}"));
+            statements.put(Statement.GET_GEZINNEN, conn.prepareCall("{call getGezinnen()}"));
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex.toString());
         }

@@ -113,7 +113,8 @@ public class StamboomController {
      */
     public void loadFromDatabase() throws IOException {
         //todo opgave 4
-        
+        if(this.storageMediator == null)
+            initDatabaseMedium();
         admin = this.storageMediator.load();
     }
 
