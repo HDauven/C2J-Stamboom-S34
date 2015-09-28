@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -107,14 +108,17 @@ public class DatabaseMediator implements IStorageMediator {
                 Date scheidingsdatum = rs.getDate("scheidingsdatum");
                 Gezin g = admin.addOngehuwdGezin(admin.getPersoon(o1), admin.getPersoon(o2));
                 Calendar cal = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");             
                 
                 if(huwelijksdatum != null)
                 {
+                    System.out.println(sdf.format(huwelijksdatum));
                     cal.setTime(huwelijksdatum);
                     g.setHuwelijk(cal);
                 }
                 if(scheidingsdatum != null)
                 {
+                    System.out.println(sdf.format(scheidingsdatum));
                     cal.setTime(scheidingsdatum);
                     g.setScheiding(cal);
                 }

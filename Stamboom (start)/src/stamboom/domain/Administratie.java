@@ -155,8 +155,8 @@ public class Administratie implements Serializable {
         }
 
         Calendar nu = Calendar.getInstance();
-        if (ouder1.isGetrouwdOp(nu) || (ouder2 != null
-                && ouder2.isGetrouwdOp(nu))
+        if (ouder1.isGetrouwdOp(nu) || 
+                (ouder2 != null && ouder2.isGetrouwdOp(nu))
                 || ongehuwdGezinBestaat(ouder1, ouder2)) {
             return null;
         }
