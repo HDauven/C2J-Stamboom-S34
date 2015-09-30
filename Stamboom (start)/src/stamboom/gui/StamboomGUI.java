@@ -18,7 +18,7 @@ public class StamboomGUI extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-       
+       System.setProperty("glass.accessible.force", "false");
         Parent root = FXMLLoader.load(getClass().getResource("StamboomGUI.fxml"));
         
         Scene scene = new Scene(root);
