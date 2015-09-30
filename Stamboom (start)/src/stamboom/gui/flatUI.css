@@ -1,0 +1,85 @@
+/* 
+    Created on : Sep 30, 2015, 10:07:50 PM
+    Author     : Hein
+*/
+.combo-box {
+    -fx-background-color: #55606e;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 0;
+    -fx-cell-size: 1.66667em; 
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #000000;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #24afb2;
+    -fx-text-fill: #FFFFFF;
+}
+
+.combo-box .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-border-color: derive(gray,80%);
+}
+
+.combo-box .increment-button,.combo-box .decrement-button {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #55606e;
+    -fx-padding: 9px;
+}
+
+.combo-box .scroll-bar:vertical .track {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #55606e;
+    -fx-background-radius: 0;
+}
+
+.combo-box .scroll-bar:vertical .thumb {
+    -fx-background-color: #55606e;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0,0,0;
+}
+
+
+.button {
+    -fx-background-color: #55606e;
+    -fx-background-radius: 0;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.button:hover {
+    -fx-background-color: #24afb2;
+}
+
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 0;
+}
+
+.text-field:hover {
+    -fx-background-inset: 2;
+    -fx-border-color: #24afb2;
+    -fx-text-fill: #24afb2;
+}
+
+.tab {
+    -fx-background-color: #55606e;
+    -fx-background-radius: 0;
+}
+
+.tab:selected {
+    -fx-background-color: #24afb2;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;    
+}
+
+.tab-pane {
+    -fx-background-color: #FFFFFF;
+}
