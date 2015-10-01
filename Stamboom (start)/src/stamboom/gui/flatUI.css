@@ -4,17 +4,26 @@
 */
 .combo-box {
     -fx-background-color: #55606e;
-    -fx-text-fill: #FFFFFF;
     -fx-background-radius: 0;
     -fx-cell-size: 1.66667em; 
 }
 
+.combo-box .arrow-button .arrow {
+    -fx-background-color: #FFFFFF;
+}
+
 .combo-box .list-cell {
+    -fx-background-color: #55606e;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+.combo-box-popup .list-cell {
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #000000;
 }
 
-.combo-box .list-cell:hover {
+.combo-box-popup .list-cell:hover {
     -fx-background-color: #24afb2;
     -fx-text-fill: #FFFFFF;
 }
