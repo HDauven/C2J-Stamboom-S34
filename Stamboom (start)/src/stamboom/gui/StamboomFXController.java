@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import stamboom.controller.StamboomController;
 import stamboom.domain.Geslacht;
@@ -399,7 +400,14 @@ public class StamboomFXController extends StamboomController implements Initiali
                 this.loadFromDatabase();
             } else {
                 this.createEmptyStamboom(evt);
-                this.deserialize(new File(FILE));
+                FileChooser fc = new FileChooser();
+                fc.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("All admin", "*.*"),
+                        new FileChooser.ExtensionFilter("DATA", "*.data")
+                );
+                fc.setTitle("Open Resource File");
+                File f = fc.showOpenDialog(this.getStage());
+                this.deserialize(f);
             }
         } catch (IOException ex) {
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
@@ -414,7 +422,15 @@ public class StamboomFXController extends StamboomController implements Initiali
             if (withDatabase == true) {
                 this.saveToDatabase();
             } else {
-                this.serialize(new File(FILE));
+                FileChooser fc = new FileChooser();
+                fc.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("All admin", "*.*"),
+                        new FileChooser.ExtensionFilter("DATA", "*.data")
+                );
+                fc.setTitle("Open Resource File");
+                File f = fc.showOpenDialog(this.getStage());
+                //this.serialize(new File(FILE));
+                this.serialize(f);
             }
         } catch (IOException ex) {
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
