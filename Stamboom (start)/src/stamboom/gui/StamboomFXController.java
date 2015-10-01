@@ -402,7 +402,7 @@ public class StamboomFXController extends StamboomController implements Initiali
                 this.createEmptyStamboom(evt);
                 FileChooser fc = new FileChooser();
                 fc.getExtensionFilters().addAll(
-                        new FileChooser.ExtensionFilter("All admin", "*.*"),
+                        //new FileChooser.ExtensionFilter("All admin", "*.*"),
                         new FileChooser.ExtensionFilter("DATA", "*.data")
                 );
                 fc.setTitle("Open Resource File");
@@ -424,7 +424,7 @@ public class StamboomFXController extends StamboomController implements Initiali
             } else {
                 FileChooser fc = new FileChooser();
                 fc.getExtensionFilters().addAll(
-                        new FileChooser.ExtensionFilter("All admin", "*.*"),
+                        //new FileChooser.ExtensionFilter("All admin", "*.*"),
                         new FileChooser.ExtensionFilter("DATA", "*.data")
                 );
                 fc.setTitle("Open Resource File");
