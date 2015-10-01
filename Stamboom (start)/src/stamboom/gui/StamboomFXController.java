@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -428,8 +429,8 @@ public class StamboomFXController extends StamboomController implements Initiali
 
     @FXML
     public void configureStorage(Event evt) {
-            withDatabase = cmDatabase.isSelected();
-            
+        withDatabase = cmDatabase.isSelected();
+
     }
 
     @FXML
@@ -504,5 +505,22 @@ public class StamboomFXController extends StamboomController implements Initiali
         tbGrootouder1b.clear();
         tbGrootouder2a.clear();
         tbGrootouder2b.clear();
+    }
+
+    @FXML
+    private void showAbout(ActionEvent event) {
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Info.fxml"));
+            root = (Parent) loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("About");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
