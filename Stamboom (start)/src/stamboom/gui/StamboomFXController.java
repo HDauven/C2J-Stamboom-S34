@@ -428,7 +428,7 @@ public class StamboomFXController extends StamboomController implements Initiali
                         new FileChooser.ExtensionFilter("DATA", "*.data")
                 );
                 fc.setTitle("Open Resource File");
-                File f = fc.showOpenDialog(this.getStage());
+                File f = fc.showSaveDialog(this.getStage());
                 //this.serialize(new File(FILE));
                 this.serialize(f);
             }
