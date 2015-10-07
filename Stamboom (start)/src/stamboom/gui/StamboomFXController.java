@@ -10,8 +10,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +20,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -32,9 +29,6 @@ import stamboom.controller.StamboomController;
 import stamboom.domain.Geslacht;
 import stamboom.domain.Gezin;
 import stamboom.domain.Persoon;
-import stamboom.domain.PersoonMetGeneratie;
-import stamboom.storage.DatabaseMediator;
-import stamboom.storage.SerializationMediator;
 import stamboom.util.StringUtilities;
 
 /**
@@ -283,7 +277,13 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML
     public void okPersoonInvoer(Event evt) throws ParseException {
         // todo opgave 3
+        if(cbNewGeslacht.getSelectionModel().getSelectedItem() == null)
+        {
+            showDialog("Error", "Selecteer een geslacht.");
+            return;
+        }
         Geslacht g = cbNewGeslacht.getSelectionModel().getSelectedItem();
+        
         String[] vnamen = tbNewVoornamen.getText().split(" ");
         String anaam = tbNewAchternaam.getText();
         String tvoegsel = tbNewTussenvoegsel.getText();
