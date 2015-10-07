@@ -107,20 +107,21 @@ public class DatabaseMediator implements IStorageMediator {
                 Date huwelijksdatum = rs.getDate("huwelijksdatum");
                 Date scheidingsdatum = rs.getDate("scheidingsdatum");
                 Gezin g = admin.addOngehuwdGezin(admin.getPersoon(o1), admin.getPersoon(o2));
-                Calendar cal = Calendar.getInstance();
+                Calendar calHuwelijk = Calendar.getInstance();
+                Calendar calScheiding = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");             
                 
                 if(huwelijksdatum != null)
                 {
                     System.out.println(sdf.format(huwelijksdatum));
-                    cal.setTime(huwelijksdatum);
-                    g.setHuwelijk(cal);
+                    calHuwelijk.setTime(huwelijksdatum);
+                    g.setHuwelijk(calHuwelijk);
                 }
                 if(scheidingsdatum != null)
                 {
                     System.out.println(sdf.format(scheidingsdatum));
-                    cal.setTime(scheidingsdatum);
-                    g.setScheiding(cal);
+                    calScheiding.setTime(scheidingsdatum);
+                    g.setScheiding(calScheiding);
                 }
             }
         } catch (SQLException ex) {

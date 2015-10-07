@@ -47,7 +47,7 @@ public class DatabaseTest {
 
     @Test
     public void testSaveToDatabase() throws IOException {
-
+        System.out.println("testSaveToDatabase");
         Administratie adm = controller.getAdministratie();
         Persoon piet1, teuntje2;
         Gezin pietEnTeuntje;
@@ -81,7 +81,7 @@ public class DatabaseTest {
 
     @Test
     public void testLoadFromDataBase() throws IOException {
-
+        System.out.println("testLoadFromDatabase");
         controller.loadFromDatabase();
         Administratie adm = controller.getAdministratie();
 
