@@ -277,25 +277,45 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML
     public void okPersoonInvoer(Event evt) throws ParseException {
         // todo opgave 3
-        if(cbNewGeslacht.getSelectionModel().getSelectedItem() == null)
-        {
+        if (cbNewGeslacht.getSelectionModel().getSelectedItem() == null) {
             showDialog("Error", "Selecteer een geslacht.");
             return;
         }
         Geslacht g = cbNewGeslacht.getSelectionModel().getSelectedItem();
-        
+
         String[] vnamen = tbNewVoornamen.getText().split(" ");
+        if (tbNewVoornamen.getText().isEmpty()) {
+            showDialog("Error", "Voer een of meerdere voornamen in.");
+            return;
+        }
+
         String anaam = tbNewAchternaam.getText();
+        if (tbNewAchternaam.getText().isEmpty()) {
+            showDialog("Error", "Voer een achternaam in.");
+            return;
+        }
+
         String tvoegsel = tbNewTussenvoegsel.getText();
         Calendar gebDat = Calendar.getInstance();
-        gebDat.setTime(sdf.parse(tbNewGebDat.getText()));
+        try {
+            gebDat.setTime(sdf.parse(tbNewGebDat.getText()));
+        } catch (Exception e) {
+            showDialog("Error", "Voer een geldige geboortedatum in. (dd-MM-yyyy)");
+            return;
+        }
+        
+
+        if (tbNewGebPlaats.getText().isEmpty()) {
+            showDialog("Error", "Voer een geboorteplaats in.");
+            return;
+        }
         String gebPlaats = tbNewGebPlaats.getText();
         Gezin ouderlijkGezin = cbNewOuderlijkGezin.getSelectionModel().getSelectedItem();
 
         if (getAdministratie().addPersoon(g, vnamen, anaam, tvoegsel, gebDat, gebPlaats, ouderlijkGezin) != null) {
             clearTabPersoonInvoer();
         } else {
-            showDialog("Error", "Persoon kon niet worden toegevoegd. Controleer je ingevoerde gegevens.");
+            showDialog("Error", "Persoon kon niet worden toegevoegd. Persoon bestaat al");
         }
     }
 
