@@ -353,6 +353,13 @@
           </menus>
         </MenuBar>
       </top>
+         <bottom>
+            <ToolBar prefHeight="29.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+               <items>
+                  <Label text="Label" />
+               </items>
+            </ToolBar>
+         </bottom>
     </BorderPane>
   </children>
 </AnchorPane>
