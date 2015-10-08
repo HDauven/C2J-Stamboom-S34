@@ -92,6 +92,10 @@ public class userLogging {
      * @return The time when the log is logged.
      */
     private String timeFormatting() {
-        return null;
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        String time = "";
+        time = formatter.format(now);
+        return time;
     } 
 }
