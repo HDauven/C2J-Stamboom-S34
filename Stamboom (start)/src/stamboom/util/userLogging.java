@@ -1,5 +1,6 @@
 package stamboom.util;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -75,6 +76,12 @@ public class userLogging {
      * @return whether the folder exists or not.
      */
     private boolean checkIfFolderExists() {
+        String executionPath = System.getProperty("user.dir");
+        String logFolderPath = executionPath.replace("\\", "/") + "/logs";
+        File logFolder = new File(logFolderPath);
+        if (logFolder.exists() && logFolder.isDirectory()) {
+            return true;
+        }
         return false;
     }
     
