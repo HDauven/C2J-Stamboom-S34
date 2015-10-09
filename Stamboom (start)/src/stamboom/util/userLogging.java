@@ -1,8 +1,11 @@
 package stamboom.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * userLogging:
@@ -90,7 +93,18 @@ public class userLogging {
      * @return whether the new folder is created or not.
      */
     private boolean createNewLogFolder() {
-        return false;
+        String executionPath = System.getProperty("user.dir");
+        String logFolderPath = executionPath.replace("\\", "/") + "/logs";
+        File logFolder = new File(logFolderPath);
+        boolean result = false;
+        
+        try {
+            result = logFolder.createNewFile();
+        } catch (IOException ex) {
+            System.err.println("SEVERE ERROR: Log folder not created!");
+            ex.printStackTrace();
+        }        
+        return result;
     }
     
     /**
