@@ -30,12 +30,10 @@ public class userLogging {
         String result = header + ": " + message;
         
         if (!checkIfFolderExists()) {
-            // TODO: create log folder
             createNewLogFolder();
         }
         
         if (!checkIfFileExists()) {
-            // TODO: create log file
             createNewLogFile();
         }
         
@@ -77,7 +75,18 @@ public class userLogging {
      * @return whether the new file is created or not.
      */
     private boolean createNewLogFile() {
-        return false;
+        String executionPath = System.getProperty("user.dir");
+        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
+        File logFile = new File(logFilePath);
+        boolean result = false;
+        
+        try {
+            result = logFile.createNewFile();
+        } catch (IOException ex) {
+            System.err.println("SEVERE ERROR: Log file not created!");
+            ex.printStackTrace();
+        }        
+        return result;
     }   
     
     /**
@@ -102,14 +111,9 @@ public class userLogging {
         String executionPath = System.getProperty("user.dir");
         String logFolderPath = executionPath.replace("\\", "/") + "/logs";
         File logFolder = new File(logFolderPath);
-        boolean result = false;
         
-        try {
-            result = logFolder.createNewFile();
-        } catch (IOException ex) {
-            System.err.println("SEVERE ERROR: Log folder not created!");
-            ex.printStackTrace();
-        }        
+        boolean result = false;
+        result = logFolder.mkdirs();               
         return result;
     }
     
