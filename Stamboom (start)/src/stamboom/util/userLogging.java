@@ -1,10 +1,7 @@
 package stamboom.util;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -40,7 +37,11 @@ public class UserLogging {
             createNewLogFile();
         }
         
-        if (!writeLogActionToFile(result)) {            
+        // TODO: write action to file
+        if (writeLogActionToFile()) {            
+            result = timeFormatting("HH:mm:ss") + " " + result;
+            return result;
+        } else {
             result = "";
         }
         
@@ -51,6 +52,7 @@ public class UserLogging {
      * Saves the user action to an existing logging file.
      * @return whether the user action is stored or not.
      */
+<<<<<<< HEAD
     private static boolean writeLogActionToFile(String message) {
         String executionPath = System.getProperty("user.dir");
         String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
@@ -67,6 +69,10 @@ public class UserLogging {
             ex.printStackTrace();            
         }
         return result;
+=======
+    private boolean writeLogActionToFile() {
+        return false;
+>>>>>>> parent of 5c966d2... Implemented writeLogActionToFile
     }
     
     /**
