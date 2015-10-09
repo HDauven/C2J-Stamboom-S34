@@ -356,7 +356,7 @@
          <bottom>
             <ToolBar prefHeight="29.0" prefWidth="700.0" BorderPane.alignment="CENTER">
                <items>
-                  <Label text="Label" />
+                  <Label fx:id="loggingText" />
                </items>
             </ToolBar>
          </bottom>

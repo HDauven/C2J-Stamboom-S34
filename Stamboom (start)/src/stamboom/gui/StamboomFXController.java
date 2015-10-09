@@ -23,6 +23,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import stamboom.controller.StamboomController;
@@ -71,6 +72,8 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML Button btOKGezinInvoer;
     @FXML Button btCancelGezinInvoer;
 
+    @FXML Label loggingText;
+    
     @FXML
     private Insets x1;
     @FXML
@@ -279,23 +282,23 @@ public class StamboomFXController extends StamboomController implements Initiali
     public void okPersoonInvoer(Event evt) throws ParseException {
         // todo opgave 3
         if (cbNewGeslacht.getSelectionModel().getSelectedItem() == null) {
-            showDialog("Error", "Selecteer een geslacht.");
-            UserLogging.logAction("Error", "Selecteer een geslacht.");
+            //showDialog("Error", "Selecteer een geslacht.");
+            loggingText.setText(UserLogging.logAction("Input Error", "Selecteer een geslacht."));
             return;
         }
         Geslacht g = cbNewGeslacht.getSelectionModel().getSelectedItem();
 
         String[] vnamen = tbNewVoornamen.getText().split(" ");
         if (tbNewVoornamen.getText().isEmpty()) {
-            showDialog("Error", "Voer een of meerdere voornamen in.");
-            UserLogging.logAction("Error", "Voer een of meerdere voornamen in.");
+            //showDialog("Error", "Voer een of meerdere voornamen in.");
+            loggingText.setText(UserLogging.logAction("Input Error", "Voer een of meerdere voornamen in."));
             return;
         }
 
         String anaam = tbNewAchternaam.getText();
         if (tbNewAchternaam.getText().isEmpty()) {
-            showDialog("Error", "Voer een achternaam in.");
-            UserLogging.logAction("Error", "Voer een achternaam in.");
+            //showDialog("Error", "Voer een achternaam in.");
+            loggingText.setText(UserLogging.logAction("Input Error", "Voer een achternaam in."));
             return;
         }
 
@@ -304,13 +307,15 @@ public class StamboomFXController extends StamboomController implements Initiali
         try {
             gebDat.setTime(sdf.parse(tbNewGebDat.getText()));
         } catch (Exception e) {
-            showDialog("Error", "Voer een geldige geboortedatum in. (dd-MM-yyyy)");
+            //showDialog("Error", "Voer een geldige geboortedatum in. (dd-MM-yyyy)");
+            loggingText.setText(UserLogging.logAction("Input Error", "Voer een geldige geboortedatum in. (dd-MM-yyyy)"));
             return;
         }
         
 
         if (tbNewGebPlaats.getText().isEmpty()) {
-            showDialog("Error", "Voer een geboorteplaats in.");
+            //showDialog("Error", "Voer een geboorteplaats in.");
+            loggingText.setText(UserLogging.logAction("Input Error", "Voer een geboorteplaats in."));
             return;
         }
         String gebPlaats = tbNewGebPlaats.getText();
@@ -319,7 +324,8 @@ public class StamboomFXController extends StamboomController implements Initiali
         if (getAdministratie().addPersoon(g, vnamen, anaam, tvoegsel, gebDat, gebPlaats, ouderlijkGezin) != null) {
             clearTabPersoonInvoer();
         } else {
-            showDialog("Error", "Persoon kon niet worden toegevoegd. Persoon bestaat al");
+            //showDialog("Error", "Persoon kon niet worden toegevoegd. Persoon bestaat al");
+            loggingText.setText(UserLogging.logAction("Input Error", "Persoon kon niet worden toegevoegd. Persoon bestaat al"));
         }
     }
 
@@ -327,7 +333,8 @@ public class StamboomFXController extends StamboomController implements Initiali
     public void okGezinInvoer(Event evt) {
         Persoon ouder1 = (Persoon) cbOuder1Invoer.getSelectionModel().getSelectedItem();
         if (ouder1 == null) {
-            showDialog("Warning", "eerste ouder is niet ingevoerd");
+            //showDialog("Warning", "eerste ouder is niet ingevoerd");
+            loggingText.setText(UserLogging.logAction("Input Warning", "eerste ouder is niet ingevoerd"));
             return;
         }
         Persoon ouder2 = (Persoon) cbOuder2Invoer.getSelectionModel().getSelectedItem();
@@ -335,14 +342,16 @@ public class StamboomFXController extends StamboomController implements Initiali
         try {
             huwdatum = StringUtilities.datum(tfHuwelijkInvoer.getText());
         } catch (IllegalArgumentException exc) {
-            showDialog("Warning", "huwelijksdatum :" + exc.getMessage());
+            //showDialog("Warning", "huwelijksdatum :" + exc.getMessage());
+            loggingText.setText(UserLogging.logAction("Input Warning", "huwelijksdatum :" + exc.getMessage()));
             return;
         }
         Gezin g;
         if (huwdatum != null) {
             g = getAdministratie().addHuwelijk(ouder1, ouder2, huwdatum);
             if (g == null) {
-                showDialog("Warning", "Invoer huwelijk is niet geaccepteerd");
+                //showDialog("Warning", "Invoer huwelijk is niet geaccepteerd");
+                loggingText.setText(UserLogging.logAction("Input Warning", "Invoer huwelijk is niet geaccepteerd"));
             } else {
                 Calendar scheidingsdatum;
                 try {
@@ -351,13 +360,15 @@ public class StamboomFXController extends StamboomController implements Initiali
                         getAdministratie().setScheiding(g, scheidingsdatum);
                     }
                 } catch (IllegalArgumentException exc) {
-                    showDialog("Warning", "scheidingsdatum :" + exc.getMessage());
+                    //showDialog("Warning", "scheidingsdatum :" + exc.getMessage());
+                    loggingText.setText(UserLogging.logAction("Input Warning", "scheidingsdatum :" + exc.getMessage()));
                 }
             }
         } else {
             g = getAdministratie().addOngehuwdGezin(ouder1, ouder2);
             if (g == null) {
-                showDialog("Warning", "Invoer ongehuwd gezin is niet geaccepteerd");
+                //showDialog("Warning", "Invoer ongehuwd gezin is niet geaccepteerd");
+                loggingText.setText(UserLogging.logAction("Input Warning", "Invoer ongehuwd gezin is niet geaccepteerd"));
             }
         }
 

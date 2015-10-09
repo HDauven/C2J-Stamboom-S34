@@ -53,7 +53,7 @@ public class UserLogging {
      */
     private static boolean writeLogActionToFile(String message) {
         String executionPath = System.getProperty("user.dir");
-        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
+        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-MM-dd") + ".txt";
         boolean result = false;
         
         try (PrintWriter out = new PrintWriter(
@@ -75,7 +75,7 @@ public class UserLogging {
      */
     private static boolean checkIfFileExists() {
         String executionPath = System.getProperty("user.dir");
-        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
+        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-MM-dd") + ".txt";
         File logFile = new File(logFilePath);
         if (logFile.exists() && logFile.isFile()) {
             return true;
@@ -89,7 +89,7 @@ public class UserLogging {
      */
     private static boolean createNewLogFile() {
         String executionPath = System.getProperty("user.dir");
-        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
+        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-MM-dd") + ".txt";
         File logFile = new File(logFilePath);
         boolean result = false;
         
