@@ -41,7 +41,7 @@ public class userLogging {
         
         // TODO: write action to file
         if (writeLogActionToFile()) {            
-            result = timeFormatting() + " " + result;
+            result = timeFormatting("HH:mm:ss") + " " + result;
             return result;
         } else {
             result = "";
@@ -63,6 +63,12 @@ public class userLogging {
      * @return whether the file exists or not.
      */
     private boolean checkIfFileExists() {
+        String executionPath = System.getProperty("user.dir");
+        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
+        File logFile = new File(logFilePath);
+        if (logFile.exists() && logFile.isFile()) {
+            return true;
+        }
         return false;
     }
     
@@ -112,9 +118,9 @@ public class userLogging {
      * action is logged.
      * @return The time when the log is logged.
      */
-    private String timeFormatting() {
+    private String timeFormatting(String format) {
         Date now = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
         String time = "";
         time = formatter.format(now);
         return time;
