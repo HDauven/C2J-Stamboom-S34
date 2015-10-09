@@ -8,15 +8,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * UserLogging:
- Class that logs user actions and exceptions caused by invalid
- user actions.
+ * userLogging:
+ * Class that logs user actions and exceptions caused by invalid
+ * user actions.
  * 
  * @author Hein Dauven
  * @since 8-10-2015
  * @version 0.1
  */
-public class UserLogging {
+public class userLogging {
     
     /**
      * Umbrella method that handles the messages that should be 
