@@ -30,13 +30,14 @@ import stamboom.domain.Geslacht;
 import stamboom.domain.Gezin;
 import stamboom.domain.Persoon;
 import stamboom.util.StringUtilities;
+import stamboom.util.UserLogging;
 
 /**
  *
  * @author frankpeeters
  */
 public class StamboomFXController extends StamboomController implements Initializable {
-
+    
     //MENUs en TABs
     @FXML MenuBar menuBar;
     @FXML MenuItem miNew;
@@ -279,6 +280,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         // todo opgave 3
         if (cbNewGeslacht.getSelectionModel().getSelectedItem() == null) {
             showDialog("Error", "Selecteer een geslacht.");
+            UserLogging.logAction("Error", "Selecteer een geslacht.");
             return;
         }
         Geslacht g = cbNewGeslacht.getSelectionModel().getSelectedItem();
@@ -286,12 +288,14 @@ public class StamboomFXController extends StamboomController implements Initiali
         String[] vnamen = tbNewVoornamen.getText().split(" ");
         if (tbNewVoornamen.getText().isEmpty()) {
             showDialog("Error", "Voer een of meerdere voornamen in.");
+            UserLogging.logAction("Error", "Voer een of meerdere voornamen in.");
             return;
         }
 
         String anaam = tbNewAchternaam.getText();
         if (tbNewAchternaam.getText().isEmpty()) {
             showDialog("Error", "Voer een achternaam in.");
+            UserLogging.logAction("Error", "Voer een achternaam in.");
             return;
         }
 

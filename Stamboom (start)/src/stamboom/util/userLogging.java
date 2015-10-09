@@ -29,7 +29,7 @@ public class UserLogging {
      * @param header marks the type of the logged message
      * @param message containing information regarding user actions
      */
-    public String logAction(String header, String message) {
+    public static String logAction(String header, String message) {
         String result = header + ": " + message;
         
         if (!checkIfFolderExists()) {
@@ -51,7 +51,7 @@ public class UserLogging {
      * Saves the user action to an existing logging file.
      * @return whether the user action is stored or not.
      */
-    private boolean writeLogActionToFile(String message) {
+    private static boolean writeLogActionToFile(String message) {
         String executionPath = System.getProperty("user.dir");
         String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
         boolean result = false;
@@ -73,7 +73,7 @@ public class UserLogging {
      * Checks whether the log file for today actually exists.
      * @return whether the file exists or not.
      */
-    private boolean checkIfFileExists() {
+    private static boolean checkIfFileExists() {
         String executionPath = System.getProperty("user.dir");
         String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
         File logFile = new File(logFilePath);
@@ -87,7 +87,7 @@ public class UserLogging {
      * Creates a new log file based on todays date.
      * @return whether the new file is created or not.
      */
-    private boolean createNewLogFile() {
+    private static boolean createNewLogFile() {
         String executionPath = System.getProperty("user.dir");
         String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-mm-dd") + ".txt";
         File logFile = new File(logFilePath);
@@ -106,7 +106,7 @@ public class UserLogging {
      * Checks whether the log folder exists.
      * @return whether the folder exists or not.
      */
-    private boolean checkIfFolderExists() {
+    private static boolean checkIfFolderExists() {
         String executionPath = System.getProperty("user.dir");
         String logFolderPath = executionPath.replace("\\", "/") + "/logs";
         File logFolder = new File(logFolderPath);
@@ -120,7 +120,7 @@ public class UserLogging {
      * Creates a new log folder.
      * @return whether the new folder is created or not.
      */
-    private boolean createNewLogFolder() {
+    private static boolean createNewLogFolder() {
         String executionPath = System.getProperty("user.dir");
         String logFolderPath = executionPath.replace("\\", "/") + "/logs";
         File logFolder = new File(logFolderPath);
@@ -135,7 +135,7 @@ public class UserLogging {
      * action is logged.
      * @return The time when the log is logged.
      */
-    private String timeFormatting(String format) {
+    private static String timeFormatting(String format) {
         Date now = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat(format);
         String time = "";
