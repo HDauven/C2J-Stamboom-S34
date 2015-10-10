@@ -95,6 +95,7 @@ public class UserLogging {
         
         try {
             result = logFile.createNewFile();
+            writeLogFileHeader();
         } catch (IOException ex) {
             System.err.println("SEVERE ERROR: Log file not created!");
             ex.printStackTrace();
@@ -142,4 +143,27 @@ public class UserLogging {
         time = formatter.format(now);
         return time;
     } 
+    
+    /**
+     * Special method that is used to write log file headers to a log file.
+     */
+    private static void writeLogFileHeader() {
+        String executionPath = System.getProperty("user.dir");
+        String logFilePath = executionPath.replace("\\", "/") + "/logs/" + timeFormatting("yyyy-MM-dd") + ".txt";
+        
+        try (PrintWriter out = new PrintWriter(
+                               new BufferedWriter(
+                               new FileWriter(logFilePath, true)))) {
+            out.println("#Version: 0.1");
+            out.println("#Date: " + timeFormatting("yyyy-MM-dd HH:mm:ss"));
+            out.println("#Software: Stamboom Applicatie");
+            out.println("#Authors: Stef Philips & Hein Dauven");
+            out.println("#Remark: This is an automatically generated log file.");
+            out.println("#Remark: Customer-Care can request these files if necessary.");
+            out.close();
+        }catch (IOException ex) {
+            System.err.println("SEVERE ERROR: Log file not written to!");
+            ex.printStackTrace();            
+        }
+    }
 }
