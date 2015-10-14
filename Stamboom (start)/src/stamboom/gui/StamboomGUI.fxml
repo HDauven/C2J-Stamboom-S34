@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stamboom.gui.StamboomFXController">
+<AnchorPane minWidth="750.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stamboom.gui.StamboomFXController">
   <children>
     <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@flatUI.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <center>
@@ -33,18 +33,18 @@
                           <center>
                             <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #e9e9e9;">
                               <children>
-                                <Label id="lblGrootouder1" layoutX="33.0" layoutY="77.0" text="Grootouder 1a" />
-                                <Label id="lblGrootouder2" layoutX="32.0" layoutY="113.0" text="Grootouder 2a" />
-                                <Label layoutX="33.0" layoutY="49.0" text="Ouder 2" />
-                                <Label layoutX="33.0" layoutY="14.0" text="Ouder 1" />
-                                <TextField id="tbOuder1" fx:id="tbOuder1a" editable="false" layoutX="114.0" layoutY="10.0" prefWidth="200.0" promptText="Onbekend" />
-                                <TextField id="tbOuder2" fx:id="tbOuder2a" editable="false" layoutX="114.0" layoutY="40.0" prefWidth="200.0" promptText="Onbekend" />
-                                <TextField id="tbGrootouder1" fx:id="tbGrootouder1a" editable="false" layoutX="114.0" layoutY="67.0" prefWidth="200.0" promptText="Onbekend" />
-                                <TextField id="tbGrootouder2" fx:id="tbGrootouder2a" editable="false" layoutX="113.0" layoutY="103.0" prefWidth="200.0" promptText="Onbekend" />
-                                <Label id="lblGrootouder1" layoutX="32.0" layoutY="155.0" text="Grootouder 1b" />
-                                <Label id="lblGrootouder2" layoutX="32.0" layoutY="191.0" text="Grootouder 2b" />
-                                <TextField id="tbGrootouder1" fx:id="tbGrootouder1b" editable="false" layoutX="113.0" layoutY="145.0" prefWidth="200.0" promptText="Onbekend" />
-                                <TextField id="tbGrootouder2" fx:id="tbGrootouder2b" editable="false" layoutX="113.0" layoutY="181.0" prefWidth="200.0" promptText="Onbekend" />
+                                <Label id="lblGrootouder1" layoutX="33.0" layoutY="91.0" text="Grootouder 1a" />
+                                <Label id="lblGrootouder2" layoutX="32.0" layoutY="122.0" text="Grootouder 2a" />
+                                <Label layoutX="33.0" layoutY="50.0" text="Ouder 2" />
+                                <Label layoutX="33.0" layoutY="19.0" text="Ouder 1" />
+                                <TextField id="tbOuder1" fx:id="tbOuder1a" editable="false" layoutX="122.0" layoutY="15.0" prefWidth="200.0" promptText="Onbekend" />
+                                <TextField id="tbOuder2" fx:id="tbOuder2a" editable="false" layoutX="122.0" layoutY="46.0" prefWidth="200.0" promptText="Onbekend" />
+                                <TextField id="tbGrootouder1" fx:id="tbGrootouder1a" editable="false" layoutX="122.0" layoutY="87.0" prefWidth="200.0" promptText="Onbekend" />
+                                <TextField id="tbGrootouder2" fx:id="tbGrootouder2a" editable="false" layoutX="122.0" layoutY="118.0" prefWidth="200.0" promptText="Onbekend" />
+                                <Label id="lblGrootouder1" layoutX="32.0" layoutY="169.0" text="Grootouder 1b" />
+                                <Label id="lblGrootouder2" layoutX="32.0" layoutY="200.0" text="Grootouder 2b" />
+                                <TextField id="tbGrootouder1" fx:id="tbGrootouder1b" editable="false" layoutX="121.0" layoutY="165.0" prefWidth="200.0" promptText="Onbekend" />
+                                <TextField id="tbGrootouder2" fx:id="tbGrootouder2b" editable="false" layoutX="121.0" layoutY="196.0" prefWidth="200.0" promptText="Onbekend" />
                               </children>
                             </Pane>
                           </center>
@@ -65,7 +65,7 @@
                         </BorderPane>
                         <AnchorPane>
                           <children>
-                            <GridPane gridLinesVisible="false" hgap="4.0" style="-fx-background-color: #e9e9e9;" vgap="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <GridPane gridLinesVisible="false" hgap="6.0" style="-fx-background-color: #e9e9e9;" vgap="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                               <children>
                                 <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Nr" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
                                   <GridPane.margin>
@@ -78,7 +78,10 @@
                                 <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Achternaam" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="3" />
                                 <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="-1.0" text="Geslacht" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="4" />
                                 <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="GebDat" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="5" />
-                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="GebPlaats" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="6" />
+                                <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="GebPlaats" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                                                   <GridPane.margin>
+                                                      <Insets right="5.0" />
+                                                   </GridPane.margin></Label>
                                 <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Ouderlijk Gezin" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="7" />
                                 <TextField fx:id="tfVoornamen" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <TextField fx:id="tfTussenvoegsel" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -96,7 +99,7 @@
                                 <TextField id="tfPersoonNr" fx:id="tfGebPlaats" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                 <TextField id="tfPersoonNr" fx:id="tfGebDatum" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                 <TextField fx:id="tfGeslacht" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                <ListView fx:id="lvAlsOuderBetrokkenBij" onEditCancel="null" onEditCommit="null" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.rowSpan="2" />
+                                <ListView fx:id="lvAlsOuderBetrokkenBij" onEditCancel="null" onEditCommit="null" prefHeight="66.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.rowSpan="2" />
                               </children>
                               <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="10.0" prefWidth="68.0" />
@@ -202,13 +205,13 @@
                   <children>
                     <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="285.9998779296875" prefWidth="700.0" style="-fx-background-color: #e9e9e9;">
                       <children>
-                        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="286.0" prefWidth="693.0">
+                        <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="323.0" prefWidth="750.0" AnchorPane.bottomAnchor="-37.0">
                           <children>
                             <TextField fx:id="tbNewVoornamen" layoutX="262.0" layoutY="30.0" prefWidth="200.0" />
-                            <TextField fx:id="tbNewTussenvoegsel" layoutX="262.0" layoutY="52.0" prefWidth="200.0" />
-                            <TextField fx:id="tbNewAchternaam" layoutX="262.0" layoutY="74.0" prefWidth="200.0" />
-                            <TextField fx:id="tbNewGebDat" layoutX="262.0" layoutY="123.0" prefWidth="200.0" promptText="dd-mm-jjjj" />
-                            <ComboBox fx:id="cbNewGeslacht" layoutX="262.0" layoutY="102.0" prefHeight="21.0" prefWidth="200.0" promptText="kies geslacht">
+                            <TextField fx:id="tbNewTussenvoegsel" layoutX="262.0" layoutY="62.0" prefWidth="200.0" />
+                            <TextField fx:id="tbNewAchternaam" layoutX="262.0" layoutY="94.0" prefWidth="200.0" />
+                            <TextField fx:id="tbNewGebDat" layoutX="262.0" layoutY="157.0" prefWidth="200.0" promptText="dd-mm-jjjj" />
+                            <ComboBox fx:id="cbNewGeslacht" layoutX="262.0" layoutY="127.0" prefHeight="21.0" prefWidth="200.0" promptText="kies geslacht">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Item 1" />
@@ -217,8 +220,8 @@
                                 </FXCollections>
                               </items>
                             </ComboBox>
-                            <TextField fx:id="tbNewGebPlaats" layoutX="262.0" layoutY="145.0" prefWidth="200.0" />
-                            <ComboBox fx:id="cbNewOuderlijkGezin" layoutX="262.0" layoutY="167.0" prefHeight="21.0" prefWidth="200.0" promptText="kies (zo mogelijk) ouderlijk gezin">
+                            <TextField fx:id="tbNewGebPlaats" layoutX="262.0" layoutY="189.0" prefWidth="200.0" />
+                            <ComboBox fx:id="cbNewOuderlijkGezin" layoutX="262.0" layoutY="222.0" prefHeight="21.0" prefWidth="200.0" promptText="kies (zo mogelijk) ouderlijk gezin">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Item 1" />
@@ -227,14 +230,14 @@
                                 </FXCollections>
                               </items>
                             </ComboBox>
-                            <Label layoutX="174.0" layoutY="55.0" text="Tussenvoegsel" />
-                            <Label layoutX="189.0" layoutY="77.0" text="Achternaam" />
-                            <Label layoutX="205.0" layoutY="105.0" text="Geslacht" />
-                            <Label layoutX="168.0" layoutY="129.0" text="Geboortedatum" />
-                            <Label layoutX="171.0" layoutY="151.0" text="Geboorteplaats" />
-                            <Label layoutX="173.0" layoutY="170.0" text="Ouderlijk gezin" />
-                            <Button layoutX="406.0" layoutY="216.0" mnemonicParsing="false" onAction="#cancelPersoonInvoer" text="Cancel" />
-                            <Button layoutX="481.0" layoutY="217.0" mnemonicParsing="false" onAction="#okPersoonInvoer" text="OK" />
+                            <Label layoutX="174.0" layoutY="65.0" text="Tussenvoegsel" />
+                            <Label layoutX="189.0" layoutY="97.0" text="Achternaam" />
+                            <Label layoutX="205.0" layoutY="130.0" text="Geslacht" />
+                            <Label layoutX="168.0" layoutY="163.0" text="Geboortedatum" />
+                            <Label layoutX="171.0" layoutY="195.0" text="Geboorteplaats" />
+                            <Label layoutX="173.0" layoutY="225.0" text="Ouderlijk gezin" />
+                            <Button layoutX="636.0" layoutY="284.0" mnemonicParsing="false" onAction="#cancelPersoonInvoer" text="Cancel" />
+                            <Button layoutX="703.0" layoutY="284.0" mnemonicParsing="false" onAction="#okPersoonInvoer" text="OK" />
                             <Label layoutX="183.0" layoutY="33.0" text="Voornamen" />
                           </children>
                         </AnchorPane>
@@ -250,11 +253,11 @@
                   <children>
                     <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="286.0" prefWidth="667.0">
                       <children>
-                        <SplitPane dividerPositions="0.5007518796992482" focusTraversable="true" layoutX="-1.0" layoutY="1.0" prefHeight="286.0" prefWidth="700.0">
+                        <SplitPane dividerPositions="0.5007518796992482" focusTraversable="true" layoutX="-1.0" layoutY="1.0" prefHeight="315.0" prefWidth="744.0">
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="218.0" style="-fx-background-color: #e9e9e9;">
                               <children>
-                                <ComboBox id="cb_" fx:id="cbGezinnen" layoutX="14.0" layoutY="15.0" onAction="#selectGezin" prefHeight="21.0" prefWidth="252.0" promptText="kies gezin">
+                                <ComboBox id="cb_" fx:id="cbGezinnen" layoutX="14.0" layoutY="15.0" onAction="#selectGezin" prefHeight="25.0" prefWidth="252.0" promptText="kies gezin">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Item 1" />
@@ -265,7 +268,7 @@
                                 </ComboBox>
                               </children>
                             </AnchorPane>
-                            <GridPane gridLinesVisible="false" hgap="4.0" prefHeight="286.0" prefWidth="329.0" style="-fx-background-color: #e9e9e9;" vgap="4.0">
+                            <GridPane gridLinesVisible="false" hgap="6.0" prefHeight="331.0" prefWidth="397.0" style="-fx-background-color: #e9e9e9;" vgap="8.0">
                               <children>
                                 <Label alignment="CENTER_RIGHT" graphicTextGap="4.0" prefWidth="-1.0" text="Nr" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
                                   <GridPane.margin>
