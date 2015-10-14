@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package stamboom.storage;
 
 import java.io.IOException;
@@ -23,6 +19,7 @@ import stamboom.domain.Administratie;
 import stamboom.domain.Geslacht;
 import stamboom.domain.Gezin;
 import stamboom.domain.Persoon;
+import stamboom.util.UserLogging;
 
 public class DatabaseMediator implements IStorageMediator {
 
@@ -37,6 +34,7 @@ public class DatabaseMediator implements IStorageMediator {
         try {
             initConnection();
         } catch (SQLException sqle) {
+            UserLogging.logAction("SQL Exception: ", sqle.toString());
             sqle.printStackTrace();
         }
     }
@@ -87,6 +85,7 @@ public class DatabaseMediator implements IStorageMediator {
                 admin.addPersoon(g, vnamen, achternaam, tVoegsel, c, geboorteplaats, null);
             }
         } catch (SQLException ex) {
+            UserLogging.logAction("SQL Exception: ", ex.toString());
             Logger.getLogger(DatabaseMediator.class.getName()).log(Level.SEVERE, null, ex);
         }
         return admin;
@@ -125,6 +124,7 @@ public class DatabaseMediator implements IStorageMediator {
                 }
             }
         } catch (SQLException ex) {
+            UserLogging.logAction("SQL Exception: ", ex.toString());
             Logger.getLogger(DatabaseMediator.class.getName()).log(Level.SEVERE, null, ex);
         }
         return admin;
@@ -187,6 +187,7 @@ public class DatabaseMediator implements IStorageMediator {
                         }
                     }
                 } catch (SQLException ex) {
+                    UserLogging.logAction("SQL Exception: ", ex.toString());
                     Logger.getLogger(DatabaseMediator.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -214,6 +215,7 @@ public class DatabaseMediator implements IStorageMediator {
                     initConnection();
                     return true;
                 } catch (SQLException ex) {
+                    UserLogging.logAction("SQL Exception: ", ex.toString());
                     System.err.println(ex.getMessage());
                     this.props = null;
                     return false;
@@ -268,6 +270,7 @@ public class DatabaseMediator implements IStorageMediator {
             statements.put(Statement.GET_PERSONEN, conn.prepareCall("{call getPersonen()}"));
             statements.put(Statement.GET_GEZINNEN, conn.prepareCall("{call getGezinnen()}"));
         } catch (ClassNotFoundException | SQLException ex) {
+            UserLogging.logAction("SQL Exception: ", ex.toString());
             System.out.println(ex.toString());
         }
     }
@@ -277,6 +280,7 @@ public class DatabaseMediator implements IStorageMediator {
             conn.close();
             conn = null;
         } catch (SQLException ex) {
+            UserLogging.logAction("SQL Exception: ", ex.toString());
             System.err.println(ex.getMessage());
         }
     }

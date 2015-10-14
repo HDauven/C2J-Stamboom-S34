@@ -145,6 +145,7 @@ public class StamboomFXController extends StamboomController implements Initiali
             c2.setTime(sdf.parse("03-03-1995"));
 
         } catch (ParseException ex) {
+            UserLogging.logAction("Parse Error", "Calendar input invalide.");
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
         getAdministratie().addPersoon(Geslacht.MAN, vnamen, "Philipsen", "", c, "Ysselsteyn", null);
@@ -278,6 +279,7 @@ public class StamboomFXController extends StamboomController implements Initiali
             g.setHuwelijk(c);
             System.out.println("Huwelijk voltrokken.");
         } catch (ParseException ex) {
+            UserLogging.logAction("Parse Error", "Huwelijks input invalide.");
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -293,6 +295,7 @@ public class StamboomFXController extends StamboomController implements Initiali
             g.setScheiding(c);
             System.out.println("Gescheiden");
         } catch (ParseException ex) {
+            UserLogging.logAction("Parse Error", "Scheidingsdatum input invalide.");
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -399,7 +402,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         }
         catch(IllegalArgumentException iae)
         {
-            loggingText.setText(iae.getMessage());
+            loggingText.setText(UserLogging.logAction("Input Warning", "Ongeldige invoer gevonden: " + iae.getMessage()));
         }
 
         clearTabGezinInvoer();
@@ -475,6 +478,7 @@ public class StamboomFXController extends StamboomController implements Initiali
                 this.deserialize(f);
             }
         } catch (IOException ex) {
+            UserLogging.logAction("IO Exception: ", ex.toString());
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.initComboboxes();
@@ -498,6 +502,7 @@ public class StamboomFXController extends StamboomController implements Initiali
                 this.serialize(f);
             }
         } catch (IOException ex) {
+            UserLogging.logAction("IO Exception: ", ex.toString());
             Logger.getLogger(StamboomFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -601,6 +606,7 @@ public class StamboomFXController extends StamboomController implements Initiali
             stage.show();
 
         } catch (IOException e) {
+            UserLogging.logAction("IO Exception: ", e.toString());
             e.printStackTrace();
         }
     }
