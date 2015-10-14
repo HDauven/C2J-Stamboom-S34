@@ -1,0 +1,23 @@
+#Version: 0.1
+#Date: 2015-10-14 00:00:02
+#Software: Stamboom Applicatie
+#Authors: Stef Philips & Hein Dauven
+#Remark: This is an automatically generated log file.
+#Remark: Customer-Care can request these files if necessary.
+00:00:02 Input Error: Selecteer een geslacht.
+00:00:17 Input Error: Selecteer een geslacht.
+00:01:07 Input Error: Selecteer een geslacht.
+00:22:50 Input Error: Selecteer een geslacht.
+00:22:54 Input Error: Selecteer een geslacht.
+00:23:22 Input Error: Selecteer een geslacht.
+00:23:26 Input Error: Selecteer een geslacht.
+10:20:13 Input Error: Selecteer een geslacht.
+10:20:21 Input Error: Voer een of meerdere voornamen in.
+10:20:31 Input Warning: eerste ouder is niet ingevoerd
+10:20:36 Input Warning: Invoer ongehuwd gezin is niet geaccepteerd
+10:20:47 Input Warning: Invoer huwelijk is niet geaccepteerd
+10:54:23 Input Warning: huwelijksdatum :Ongeldige dag
+10:54:55 Input Warning: huwelijksdatum :Ongeldige dag
+10:55:27 Input Warning: Invoer huwelijk is niet geaccepteerd
+10:59:32 Input Warning: huwelijksdatum :Ongeldige dag
+11:02:11 Input Warning: Invoer huwelijk is niet geaccepteerd
