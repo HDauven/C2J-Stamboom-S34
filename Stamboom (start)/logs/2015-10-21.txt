@@ -1,0 +1,9 @@
+#Version: 0.1
+#Date: 2015-10-21 15:20:00
+#Software: Stamboom Applicatie
+#Authors: Stef Philips & Hein Dauven
+#Remark: This is an automatically generated log file.
+#Remark: Customer-Care can request these files if necessary.
+15:20:00 Input Error: Selecteer een geslacht.
+15:42:34 GUI Error: De GUI is slecht ontworpen.
+15:43:00 GUI Error: De GUI is slecht ontworpen.

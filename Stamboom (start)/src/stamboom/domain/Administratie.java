@@ -246,13 +246,13 @@ public class Administratie implements Serializable {
         // Controleert of de ouders gelijk aan elkaar zijn en of ze 18+ zijn op
         // de datum dat het huwelijk wordt voltrokken
         if (ouder1 == ouder2)
-            throw new IllegalArgumentException("Ouder 1 en 2 zijn dezelfde persoon.");
+            return null;
                 //|| (now.get(Calendar.YEAR) - ouder1.getGebDat().get(Calendar.YEAR) < 18)
                 //|| (now.get(Calendar.YEAR) - ouder2.getGebDat().get(Calendar.YEAR) < 18)
         if((huwdatum.get(Calendar.YEAR) - ouder1.getGebDat().get(Calendar.YEAR) < 18)
                 || (huwdatum.get(Calendar.YEAR) - ouder2.getGebDat().get(Calendar.YEAR) < 18)) {
             //throw exception test
-            throw new IllegalArgumentException("Minstens één ouder is niet ouder dan 18 op de trouwdatum.");
+            return null;
             //return null;
         }
 
